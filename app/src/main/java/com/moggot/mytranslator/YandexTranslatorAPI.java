@@ -15,7 +15,6 @@
  */
 package com.moggot.mytranslator;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -34,7 +33,6 @@ public abstract class YandexTranslatorAPI {
     protected static final String ENCODING = "UTF-8";
 
     protected static String apiKey;
-    private static String referrer;
 
     protected static final String PARAM_API_KEY = "key=",
             PARAM_LANG_PAIR = "&lang=",
@@ -49,10 +47,6 @@ public abstract class YandexTranslatorAPI {
         apiKey = pKey;
     }
 
-    public static void setReferrer(final String pReferrer) {
-        referrer = pReferrer;
-    }
-
     /**
      * Forms an HTTPS request, sends it using GET method and returns the result of the request as a String.
      *
@@ -62,11 +56,6 @@ public abstract class YandexTranslatorAPI {
      */
     private static String retrieveResponse(final URL url) throws Exception {
         final HttpsURLConnection uc = (HttpsURLConnection) url.openConnection();
-//        if (referrer != null)
-//            uc.setRequestProperty("referer", referrer);
-//        uc.setRequestProperty("Content-Type", "text/plain; charset=" + ENCODING);
-//        uc.setRequestProperty("Accept-Charset", ENCODING);
-//        uc.setRequestMethod("GET");
 
         try {
             final int responseCode = uc.getResponseCode();
@@ -98,7 +87,7 @@ public abstract class YandexTranslatorAPI {
      */
     protected static String retrievePropArrString(final URL url, final String jsonValProperty) throws Exception {
         final String response = retrieveResponse(url);
-        return  jsonObjValToStringArr(response, jsonValProperty);
+        return jsonObjValToStringArr(response, jsonValProperty);
     }
 
     // Helper method to parse a JSONObject containing an array of Strings with the given label.
@@ -107,28 +96,7 @@ public abstract class YandexTranslatorAPI {
         String translatedStr = jsonObj.getString(subObjPropertyName);
         int start = translatedStr.indexOf("[");
         int end = translatedStr.indexOf("]");
-        String translated = translatedStr.substring(start + 2, end - 1);
-        return translated;
-    }
-
-    // Helper method to parse a JSONArray. Reads an array of JSONObjects and returns a String Array
-    // containing the toString() of the desired property. If propertyName is null, just return the String value.
-    private static String[] jsonArrToStringArr(final String inputString, final String propertyName) throws Exception {
-        final JSONArray jsonArr = new JSONArray(inputString);
-        String[] values = new String[jsonArr.length()];
-
-        for (int i = 0; i < jsonArr.length(); ++i) {
-            final JSONObject json = jsonArr.getJSONObject(i);
-            if (propertyName != null && propertyName.length() != 0) {
-
-                if (json.has(propertyName)) {
-                    values[i] = json.get(propertyName).toString();
-                }
-            } else {
-                values[i] = json.toString();
-            }
-        }
-        return values;
+        return translatedStr.substring(start + 2, end - 1);
     }
 
     /**
@@ -161,8 +129,6 @@ public abstract class YandexTranslatorAPI {
 
     //Check if ready to make request, if not, throw a RuntimeException
     protected static void validateServiceState() throws Exception {
-        int a = 9;
-
         if (apiKey == null || apiKey.length() < 27) {
             throw new RuntimeException("INVALID_API_KEY - Please set the API Key with your Yandex API Key");
         }

@@ -3,6 +3,7 @@ package com.moggot.mytranslator;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.moggot.mytranslator.Detect.Detect;
 import com.moggot.mytranslator.language.Language;
 import com.moggot.mytranslator.translate.Translate;
 
@@ -22,12 +23,12 @@ public class TranslationTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... params) {
         try {
-
             Translate.setKey(ApiKeys.YANDEX_API_KEY);
             String translation = Translate.execute("hello mother father sister", Language.ENGLISH, Language.RUSSIAN);
-            Log.v(LOG_TAG, "transition 11= " + translation);
-//            String a = YandexTranslate.translate("de", "привет, мама");
-//            Log.v(LOG_TAG, "transition2 = " + a);
+            Log.v(LOG_TAG, "transition1 = " + translation);
+
+            Language language = Detect.execute("sveiki,");
+            Log.v(LOG_TAG, "transition2 = " + language.toString());
         } catch (Exception e) {
 
             e.printStackTrace();
