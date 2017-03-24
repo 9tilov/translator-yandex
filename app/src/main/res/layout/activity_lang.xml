@@ -1,9 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.moggot.mytranslator.LangActivity">
+    android:orientation="vertical"
+    android:weightSum="10">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:background="@color/background"
+        android:orientation="horizontal"
+        android:weightSum="">
+
+        <Button
+            android:layout_width="@dimen/change_back_width"
+            android:layout_height="@dimen/change_back_height"
+            android:background="@drawable/back" />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/tvTextLang"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="9" />
+
+</LinearLayout>

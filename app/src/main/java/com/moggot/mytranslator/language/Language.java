@@ -1,88 +1,131 @@
-/*
- * Copyright 2013 Robert Theis
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.moggot.mytranslator.language;
 
 /**
  * Language - an enum of language codes supported by the Yandex API
  */
 public enum Language {
-  ALBANIAN("sq"),
-  ARMENIAN("hy"),
-  AZERBAIJANI("az"),
-  BELARUSIAN("be"),
-  BULGARIAN("bg"),
-  CATALAN("ca"),
-  CROATIAN("hr"),
-  CZECH("cs"),
-  DANISH("da"),
-  DUTCH("nl"),
-  ENGLISH("en"),
-  ESTONIAN("et"),
-  FINNISH("fi"),
-  FRENCH("fr"),
-  GERMAN("de"),
-  GEORGIAN("ka"),
-  GREEK("el"),
-  HUNGARIAN("hu"),
-  ITALIAN("it"),
-  LATVIAN("lv"),
-  LITHUANIAN("lt"),
-  MACEDONIAN("mk"),
-  NORWEGIAN("no"),
-  POLISH("pl"),
-  PORTUGUESE("pt"),
-  ROMANIAN("ro"),
-  RUSSIAN("ru"),
-  SERBIAN("sr"),
-  SLOVAK("sk"),
-  SLOVENIAN("sl"),
-  SPANISH("es"),
-  SWEDISH("sv"),
-  TURKISH("tr"),
-  UKRAINIAN("uk");
+    AFRICAANS("af"),
+    ALBANIAN("sq"),
+    AMHARIC("am"),
+    ARABIC("ar"),
+    ARMENIAN("hy"),
+    AZERBAIJANI("az"),
+    BASHKIR("ba"),
+    BASQUE("eu"),
+    BELARUSIAN("be"),
+    BENGALI("bn"),
+    BOSNIAN("bs"),
+    BULGARIAN("bg"),
+    CATALAN("ca"),
+    CEBUANO("ceb"),
+    CHINESE("zh"),
+    CROATIAN("hr"),
+    CZECH("cs"),
+    DANISH("da"),
+    DUTCH("nl"),
+    ENGLISH("en"),
+    ESPERANTO("eo"),
+    ESTONIAN("et"),
+    FINNISH("fi"),
+    FRENCH("fr"),
+    GALICIAN("gl"),
+    GERMAN("de"),
+    GEORGIAN("ka"),
+    GREEK("el"),
+    GUJARATI("gu"),
+    HAITIAN("ht"),
+    HEBREW("he"),
+    HINDI("hi"),
+    HUNGARIAN("hu"),
+    ICELANDIC("is"),
+    INDONESIAN("id"),
+    IRISH("ga"),
+    ITALIAN("it"),
+    JAPANESE("ja"),
+    JAVANESE("jv"),
+    KANNADA("kn"),
+    KAZAKH("kk"),
+    KOREAN("ko"),
+    KYRGYZ("ky"),
+    LATIN("la"),
+    LATVIAN("lv"),
+    LITHUANIAN("lt"),
+    LUXEMBOURGISH("lb"),
+    MACEDONIAN("mk"),
+    MALAGASY("mg"),
+    MALAY("ms"),
+    MALAYALAM("ml"),
+    MALTESE("mt"),
+    MAORI("mi"),
+    MARATHI("mr"),
+    MARI("mhr"),
+    MINING("mrj"),
+    MONGOLIAN("mn"),
+    NEPALI("ne"),
+    NORWEGIAN("no"),
+    PAPIAMENTO("pap"),
+    PERSIAN("fa"),
+    POLISH("pl"),
+    PUNDJABI("pa"),
+    PORTUGUESE("pt"),
+    ROMANIAN("ro"),
+    RUSSIAN("ru"),
+    SCOTTISH("gd"),
+    SCYTHE("xh"),
+    SERBIAN("sr"),
+    SINHALA("si"),
+    SLOVAK("sk"),
+    SLOVENIAN("sl"),
+    SPANISH("es"),
+    SUNDANESE("su"),
+    SWAHILI("sw"),
+    SWEDISH("sv"),
+    TAGALOG("tl"),
+    TAJIK("tg"),
+    TAMIL("ta"),
+    TATAR("tt"),
+    TELUGU("te"),
+    THAI("th"),
+    TURKISH("tr"),
+    UDMURT("udm"),
+    UKRAINIAN("uk"),
+    URDU("ur"),
+    UZBEK("uz"),
+    VIETNAMESE("vi"),
+    WELSH("cy"),
+    YIDDISH("yi");
 
-  /**
-   * String representation of this language.
-   */
-  private final String language;
+    /**
+     * String representation of this language.
+     */
+    private final String language;
 
-  /**
-   * Enum constructor.
-   * @param pLanguage The language identifier.
-   */
-  private Language(final String pLanguage) {
-    language = pLanguage;
-  }
-
-  public static Language fromString(final String pLanguage) {
-    for (Language l : values()) {
-      if (l.toString().equals(pLanguage)) {
-        return l;
-      }
+    /**
+     * Enum constructor.
+     *
+     * @param language The language identifier.
+     */
+    Language(final String language) {
+        this.language = language;
     }
-    return null;
-  }
 
-  /**
-   * Returns the String representation of this language.
-   * @return The String representation of this language.
-   */
-  @Override
-  public String toString() {
-    return language;
-  }
+    public static Language fromString(final String language) {
+        for (Language l : values()) {
+            if (l.toString().equals(language)) {
+                return l;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns the String representation of this language.
+     *
+     * @return The String representation of this language.
+     */
+    @Override
+    public String toString() {
+        return language;
+    }
 
 }
