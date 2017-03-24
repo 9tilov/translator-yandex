@@ -4,8 +4,8 @@ package com.moggot.mytranslator.Detect;
  * Created by toor on 23.03.17.
  */
 
+import com.moggot.mytranslator.Consts;
 import com.moggot.mytranslator.YandexTranslatorAPI;
-import com.moggot.mytranslator.language.Language;
 
 import java.net.URL;
 import java.net.URLEncoder;
@@ -30,13 +30,13 @@ public final class Detect extends YandexTranslatorAPI {
      * @return A String containing the language
      * @throws Exception on error.
      */
-    public static Language execute(final String text) throws Exception {
+    public static Consts.Lang execute(final String text) throws Exception {
         validateServiceState(text);
         final String params =
                 PARAM_API_KEY + URLEncoder.encode(apiKey, ENCODING)
                         + PARAM_TEXT + URLEncoder.encode(text, ENCODING);
         final URL url = new URL(SERVICE_URL + params);
-        return Language.fromString(retrievePropString(url, DETECTION_LABEL));
+        return Consts.Lang.fromString(retrievePropString(url, DETECTION_LABEL));
     }
 
     private static void validateServiceState(final String text) throws Exception {

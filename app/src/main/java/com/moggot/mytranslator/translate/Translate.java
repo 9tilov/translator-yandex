@@ -17,6 +17,7 @@ package com.moggot.mytranslator.translate;
 
 import android.util.Log;
 
+import com.moggot.mytranslator.Consts;
 import com.moggot.mytranslator.YandexTranslatorAPI;
 import com.moggot.mytranslator.language.Language;
 
@@ -40,7 +41,7 @@ public final class Translate extends YandexTranslatorAPI {
     ;
 
     /**
-     * Translates text from a given Language to another given Language using Yandex.
+     * Translates text from a given Lang to another given Lang using Yandex.
      *
      * @param text The String to translate.
      * @param from The language code to translate from.
@@ -48,7 +49,7 @@ public final class Translate extends YandexTranslatorAPI {
      * @return The translated String.
      * @throws Exception on error.
      */
-    public static String execute(final String text, final Language from, final Language to) throws Exception {
+    public static String execute(final String text, final Consts.Lang from, final Consts.Lang to) throws Exception {
         validateServiceState(text);
         final String params =
                 PARAM_API_KEY + URLEncoder.encode(apiKey, ENCODING) +

@@ -1,5 +1,6 @@
 package com.moggot.mytranslator;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,7 +10,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.moggot.mytranslator.language.Language;
 import com.moggot.mytranslator.translate.Translate;
 
 public class MainActivity extends AppCompatActivity {
@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "MainActivity";
 
-    private TextView tvTextLang, tvTranslationLang, tvTranslation;
+    private TextView tvInputLang, tvOutputLang, tvTranslation;
 
     private EditText etText;
 
@@ -26,13 +26,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tvTextLang = (TextView) findViewById(R.id.tvTextLang);
-        tvTranslationLang = (TextView) findViewById(R.id.tvTranslationLang);
+        tvInputLang = (TextView) findViewById(R.id.tvInputLang);
+        tvOutputLang = (TextView) findViewById(R.id.tvOutputLang);
         tvTranslation = (TextView) findViewById(R.id.tvTranslation);
 
         etText = (EditText) findViewById(R.id.etText);
-
-
         etText.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -47,15 +45,27 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable str) {
                 TranslationTask feed = new TranslationTask();
-                feed.execute(str.toString(), Language.RUSSIAN.toString(), Language.ENGLISH.toString());
+                feed.execute(str.toString(), Consts.Lang.RUSSIAN.toString(), Consts.Lang.ENGLISH.toString());
             }
         });
     }
 
     public void onClickChangeLang(View view) {
-        String tmp = tvTextLang.getText().toString();
-        tvTextLang.setText(tvTranslationLang.getText().toString());
-        tvTranslationLang.setText(tmp);
+        String tmp = tvInputLang.getText().toString();
+        tvInputLang.setText(tvOutputLang.getText().toString());
+        tvOutputLang.setText(tmp);
+    }
+
+    public void onClickInputLang(View view) {
+        Intent intent = new Intent(this, LangActivity.class);
+        intent.putExtra(Consts.EXTRA_LANG, Consts.LANG_TYPE.INPUT);
+        startActivity(intent);
+    }
+
+    public void onClickOutputLang(View view) {
+        Intent intent = new Intent(this, LangActivity.class);
+        intent.putExtra(Consts.EXTRA_LANG, Consts.LANG_TYPE.OUTPUT);
+        startActivity(intent);
     }
 
 
@@ -72,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             try {
                 Translate.setKey(ApiKeys.YANDEX_API_KEY);
-                return Translate.execute(params[0], Language.fromString(params[1]), Language.fromString(params[2]));
+                return Translate.execute(params[0], Consts.Lang.fromString(params[1]), Consts.Lang.fromString(params[2]));
             } catch (Exception e) {
 
                 e.printStackTrace();

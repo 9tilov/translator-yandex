@@ -5,6 +5,9 @@
     <dimen name="change_lang_width">30dp</dimen>
     <dimen name="change_lang_height">30dp</dimen>
 
-    <dimen name="change_back_width">50dp</dimen>
-    <dimen name="change_back_height">50dp</dimen>
+    <dimen name="change_back_width">30dp</dimen>
+    <dimen name="change_back_height">30dp</dimen>
+
+    <dimen name="check_width">20dp</dimen>
+    <dimen name="check_height">20dp</dimen>
 </resources>

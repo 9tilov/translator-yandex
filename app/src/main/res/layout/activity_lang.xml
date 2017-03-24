@@ -10,18 +10,18 @@
         android:layout_height="0dip"
         android:layout_weight="1"
         android:background="@color/background"
-        android:orientation="horizontal"
-        android:weightSum="">
+        android:orientation="horizontal">
 
         <Button
             android:layout_width="@dimen/change_back_width"
             android:layout_height="@dimen/change_back_height"
+            android:layout_gravity="center"
             android:background="@drawable/back" />
 
     </LinearLayout>
 
     <ListView
-        android:id="@+id/tvTextLang"
+        android:id="@+id/lvLanguages"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="9" />
