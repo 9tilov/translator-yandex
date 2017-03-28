@@ -15,6 +15,8 @@
  */
 package com.moggot.mytranslator;
 
+import android.util.Log;
+
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -31,6 +33,8 @@ import javax.net.ssl.HttpsURLConnection;
 public abstract class YandexTranslatorAPI {
     //Encoding type
     protected static final String ENCODING = "UTF-8";
+
+    private static final String LOG_TAG = "YandexTranslatorAPI";
 
     protected static String apiKey;
 
@@ -94,6 +98,7 @@ public abstract class YandexTranslatorAPI {
     private static String jsonObjValToStringArr(final String inputString, final String subObjPropertyName) throws Exception {
         JSONObject jsonObj = new JSONObject(inputString);
         String translatedStr = jsonObj.getString(subObjPropertyName);
+        Log.v(LOG_TAG, "var = " + translatedStr);
         int start = translatedStr.indexOf("[");
         int end = translatedStr.indexOf("]");
         return translatedStr.substring(start + 2, end - 1);

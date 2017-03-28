@@ -9,7 +9,7 @@ public class MyGenerator {
     private static final String PROJECT_DIR = System.getProperty("user.dir");
 
     public static void main(String[] args) {
-        Schema schema = new Schema(1, "com.moggot.mytranslator.translateData");
+        Schema schema = new Schema(1, "com.moggot.mytranslator.translator");
         schema.enableKeepSectionsByDefault();
 
         addTables(schema);

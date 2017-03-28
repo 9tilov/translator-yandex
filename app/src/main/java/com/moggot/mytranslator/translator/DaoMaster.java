@@ -1,4 +1,4 @@
-package com.moggot.mytranslator.translateData;
+package com.moggot.mytranslator.translator;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

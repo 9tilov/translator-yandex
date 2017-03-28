@@ -5,6 +5,7 @@
     <string name="en">English</string>
     <string name="ar">Arabic</string>
     <string name="af">Africaans</string>
+    <string name="az">Azerbaijani</string>
     <string name="eu">Basque</string>
     <string name="ba">Bashkir</string>
     <string name="be">Belarusian</string>
@@ -88,6 +89,7 @@
     <string name="jv">Javanese</string>
     <string name="ja">Japanese</string>
 
+    <string name="az_short" translatable="false">az</string>
     <string name="sq_short" translatable="false">sq</string>
     <string name="am_short" translatable="false">am</string>
     <string name="en_short" translatable="false">en</string>

@@ -1,4 +1,4 @@
-package com.moggot.mytranslator.translateData;
+package com.moggot.mytranslator.translator;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteStatement;
@@ -25,8 +25,9 @@ public class DataDao extends AbstractDao<Data, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Text = new Property(1, String.class, "text", false, "TEXT");
         public final static Property Translation = new Property(2, String.class, "translation", false, "TRANSLATION");
-        public final static Property Language = new Property(3, String.class, "language", false, "LANGUAGE");
-        public final static Property IsFavorites = new Property(4, Boolean.class, "isFavorites", false, "IS_FAVORITES");
+        public final static Property InputLanguage = new Property(3, String.class, "inputLanguage", false, "INPUT_LANGUAGE");
+        public final static Property OutputLanguage = new Property(4, String.class, "outputLanguage", false, "OUTPUT_LANGUAGE");
+        public final static Property IsFavorites = new Property(5, Boolean.class, "isFavorites", false, "IS_FAVORITES");
     }
 
 
@@ -45,8 +46,9 @@ public class DataDao extends AbstractDao<Data, Long> {
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "\"TEXT\" TEXT NOT NULL ," + // 1: text
                 "\"TRANSLATION\" TEXT NOT NULL ," + // 2: translation
-                "\"LANGUAGE\" TEXT," + // 3: language
-                "\"IS_FAVORITES\" INTEGER);"); // 4: isFavorites
+                "\"INPUT_LANGUAGE\" TEXT NOT NULL ," + // 3: inputLanguage
+                "\"OUTPUT_LANGUAGE\" TEXT NOT NULL ," + // 4: outputLanguage
+                "\"IS_FAVORITES\" INTEGER);"); // 5: isFavorites
     }
 
     /** Drops the underlying database table. */
@@ -65,15 +67,12 @@ public class DataDao extends AbstractDao<Data, Long> {
         }
         stmt.bindString(2, entity.getText());
         stmt.bindString(3, entity.getTranslation());
- 
-        String language = entity.getLanguage();
-        if (language != null) {
-            stmt.bindString(4, language);
-        }
+        stmt.bindString(4, entity.getInputLanguage());
+        stmt.bindString(5, entity.getOutputLanguage());
  
         Boolean isFavorites = entity.getIsFavorites();
         if (isFavorites != null) {
-            stmt.bindLong(5, isFavorites ? 1L: 0L);
+            stmt.bindLong(6, isFavorites ? 1L: 0L);
         }
     }
 
@@ -87,15 +86,12 @@ public class DataDao extends AbstractDao<Data, Long> {
         }
         stmt.bindString(2, entity.getText());
         stmt.bindString(3, entity.getTranslation());
- 
-        String language = entity.getLanguage();
-        if (language != null) {
-            stmt.bindString(4, language);
-        }
+        stmt.bindString(4, entity.getInputLanguage());
+        stmt.bindString(5, entity.getOutputLanguage());
  
         Boolean isFavorites = entity.getIsFavorites();
         if (isFavorites != null) {
-            stmt.bindLong(5, isFavorites ? 1L: 0L);
+            stmt.bindLong(6, isFavorites ? 1L: 0L);
         }
     }
 
@@ -110,8 +106,9 @@ public class DataDao extends AbstractDao<Data, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getString(offset + 1), // text
             cursor.getString(offset + 2), // translation
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // language
-            cursor.isNull(offset + 4) ? null : cursor.getShort(offset + 4) != 0 // isFavorites
+            cursor.getString(offset + 3), // inputLanguage
+            cursor.getString(offset + 4), // outputLanguage
+            cursor.isNull(offset + 5) ? null : cursor.getShort(offset + 5) != 0 // isFavorites
         );
         return entity;
     }
@@ -121,8 +118,9 @@ public class DataDao extends AbstractDao<Data, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setText(cursor.getString(offset + 1));
         entity.setTranslation(cursor.getString(offset + 2));
-        entity.setLanguage(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setIsFavorites(cursor.isNull(offset + 4) ? null : cursor.getShort(offset + 4) != 0);
+        entity.setInputLanguage(cursor.getString(offset + 3));
+        entity.setOutputLanguage(cursor.getString(offset + 4));
+        entity.setIsFavorites(cursor.isNull(offset + 5) ? null : cursor.getShort(offset + 5) != 0);
      }
     
     @Override

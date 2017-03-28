@@ -1,4 +1,4 @@
-package com.moggot.mytranslator.Detect;
+package com.moggot.mytranslator.detect;
 
 /**
  * Created by toor on 23.03.17.

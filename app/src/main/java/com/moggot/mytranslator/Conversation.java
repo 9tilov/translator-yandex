@@ -29,6 +29,7 @@ public class Conversation {
         shortToLong.put(context.getString(R.string.en_short), context.getString(R.string.en));
         shortToLong.put(context.getString(R.string.ar_short), context.getString(R.string.ar));
         shortToLong.put(context.getString(R.string.af_short), context.getString(R.string.af));
+        shortToLong.put(context.getString(R.string.az_short), context.getString(R.string.az));
         shortToLong.put(context.getString(R.string.eu_short), context.getString(R.string.eu));
         shortToLong.put(context.getString(R.string.ba_short), context.getString(R.string.ba));
         shortToLong.put(context.getString(R.string.be_short), context.getString(R.string.be));

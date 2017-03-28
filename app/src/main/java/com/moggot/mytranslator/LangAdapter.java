@@ -1,5 +1,6 @@
 package com.moggot.mytranslator;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,7 +92,7 @@ public class LangAdapter extends BaseAdapter {
             viewHolder.iwCheck.setChecked(false);
         }
 
-        LangData langData = new LangData();
+        final LangData langData = new LangData();
         AdapterDisplay adapterDisplay = new AdapterDisplay(context, view, langData);
         final Language language = getLang(position);
         langData.setLanguage(language);
@@ -102,8 +103,24 @@ public class LangAdapter extends BaseAdapter {
             public void onClick(View view) {
                 setSelectedIndex(position);
                 notifyDataSetChanged();
+                if (language.getType() == Consts.LANG_TYPE.INPUT) {
+                    Language oppositeLang = LangSharedPreferences.loadLanguage(context, Consts.LANG_TYPE.OUTPUT);
+                    if (language.getName().equals(oppositeLang.getName())) {
+                        Language currentLanguage = LangSharedPreferences.loadLanguage(context, Consts.LANG_TYPE.INPUT);
+                        currentLanguage.setType(Consts.LANG_TYPE.OUTPUT);
+                        LangSharedPreferences.saveLanguage(context, currentLanguage);
+                    }
+                } else {
+                    Language oppositeLang = LangSharedPreferences.loadLanguage(context, Consts.LANG_TYPE.INPUT);
+                    if (language.getName().equals(oppositeLang.getName())) {
+                        Language currentLanguage = LangSharedPreferences.loadLanguage(context, Consts.LANG_TYPE.OUTPUT);
+                        currentLanguage.setType(Consts.LANG_TYPE.INPUT);
+                        LangSharedPreferences.saveLanguage(context, currentLanguage);
+                    }
+                }
                 LangSharedPreferences.saveLanguage(context, language);
-                viewHolder.iwCheck.setVisibility(View.VISIBLE);
+                ((Activity)context).finish();
+
             }
 
         });
@@ -119,6 +136,7 @@ public class LangAdapter extends BaseAdapter {
         languages.add(new Language(context.getString(R.string.en_short), type));
         languages.add(new Language(context.getString(R.string.ru_short), type));
         languages.add(new Language(context.getString(R.string.xh_short), type));
+        languages.add(new Language(context.getString(R.string.az_short), type));
 //        languages.add(context.getString(R.string.sq));
 //        languages.add(context.getString(R.string.am));
 //        languages.add(context.getString(R.string.en));

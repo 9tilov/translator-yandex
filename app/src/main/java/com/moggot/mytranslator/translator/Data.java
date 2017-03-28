@@ -1,4 +1,4 @@
-package com.moggot.mytranslator.translateData;
+package com.moggot.mytranslator.translator;
 
 import org.greenrobot.greendao.annotation.*;
 
@@ -21,7 +21,12 @@ public class Data {
 
     @NotNull
     private String translation;
-    private String language;
+
+    @NotNull
+    private String inputLanguage;
+
+    @NotNull
+    private String outputLanguage;
     private Boolean isFavorites;
 
     // KEEP FIELDS - put your custom fields here
@@ -36,11 +41,12 @@ public class Data {
     }
 
     @Generated
-    public Data(Long id, String text, String translation, String language, Boolean isFavorites) {
+    public Data(Long id, String text, String translation, String inputLanguage, String outputLanguage, Boolean isFavorites) {
         this.id = id;
         this.text = text;
         this.translation = translation;
-        this.language = language;
+        this.inputLanguage = inputLanguage;
+        this.outputLanguage = outputLanguage;
         this.isFavorites = isFavorites;
     }
 
@@ -72,12 +78,24 @@ public class Data {
         this.translation = translation;
     }
 
-    public String getLanguage() {
-        return language;
+    @NotNull
+    public String getInputLanguage() {
+        return inputLanguage;
     }
 
-    public void setLanguage(String language) {
-        this.language = language;
+    /** Not-null value; ensure this value is available before it is saved to the database. */
+    public void setInputLanguage(@NotNull String inputLanguage) {
+        this.inputLanguage = inputLanguage;
+    }
+
+    @NotNull
+    public String getOutputLanguage() {
+        return outputLanguage;
+    }
+
+    /** Not-null value; ensure this value is available before it is saved to the database. */
+    public void setOutputLanguage(@NotNull String outputLanguage) {
+        this.outputLanguage = outputLanguage;
     }
 
     public Boolean getIsFavorites() {

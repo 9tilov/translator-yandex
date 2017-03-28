@@ -17,9 +17,9 @@
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="4"
+            android:clickable="true"
             android:gravity="center"
             android:onClick="onClickInputLang"
-            android:clickable="true"
             android:text="Russian" />
 
         <Button
@@ -34,23 +34,24 @@
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="4"
+            android:clickable="true"
             android:gravity="center"
             android:onClick="onClickOutputLang"
-            android:clickable="true"
             android:text="English" />
 
     </LinearLayout>
 
-    <EditText
+    <com.moggot.mytranslator.BackAwareEditText
         android:id="@+id/etText"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="30"
         android:gravity="top"
-        android:inputType="textMultiLine" />
+        android:imeOptions="actionDone"
+        android:inputType="textEmailAddress|textEmailSubject"/>
 
-    <TextView
-        android:id="@+id/tvTranslation"
+    <FrameLayout
+        android:id="@+id/frgmCont"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="60" />

@@ -1,8 +1,9 @@
 package com.moggot.mytranslator;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.moggot.mytranslator.language.Language;
 
@@ -15,9 +16,11 @@ public class LangSharedPreferences {
     private static final String inputLang = "inputLanguage";
     private static final String outputLang = "outputLanguage";
 
+    private static final String LOG_TAG = "LangSharedPreferences";
+
     public static void saveLanguage(Context context, Language language) {
-        android.content.SharedPreferences sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        Log.v(LOG_TAG, "context = " + context);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Consts.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         switch (language.getType()) {
             case INPUT:
@@ -35,8 +38,7 @@ public class LangSharedPreferences {
     }
 
     public static Language loadLanguage(Context context, Consts.LANG_TYPE type) {
-        SharedPreferences sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Consts.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         switch (type) {
             case INPUT:
                 return new Language(sharedPreferences.getString(inputLang, "en"), type);
