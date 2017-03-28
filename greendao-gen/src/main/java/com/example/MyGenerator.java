@@ -4,7 +4,7 @@ import org.greenrobot.greendao.generator.DaoGenerator;
 import org.greenrobot.greendao.generator.Entity;
 import org.greenrobot.greendao.generator.Schema;
 
-public class MainGenerator {
+public class MyGenerator {
 
     private static final String PROJECT_DIR = System.getProperty("user.dir");
 
@@ -32,7 +32,8 @@ public class MainGenerator {
         translateData.addIdProperty().primaryKey().autoincrement();
         translateData.addStringProperty("text").notNull();
         translateData.addStringProperty("translation").notNull();
-        translateData.addStringProperty("language");
+        translateData.addStringProperty("inputLanguage").notNull();
+        translateData.addStringProperty("outputLanguage").notNull();
         translateData.addBooleanProperty("isFavorites");
 
         return translateData;

@@ -1,9 +1,12 @@
 package com.moggot.mytranslator;
 
 import android.content.Context;
+import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,11 +15,15 @@ import java.util.Map;
 
 public class Conversation {
 
-    private static Map<String, String> shortToLong = new HashMap<>();
+    private static final String LOG_TAG = "Conversation";
+
+    private  Map<String, String> shortToLong = new HashMap<>();
+    private  Map<String, Integer> langToPosition = new HashMap<>();
     private Context context;
 
     public Conversation(Context context) {
         this.context = context;
+
         shortToLong.put(context.getString(R.string.sq_short), context.getString(R.string.sq));
         shortToLong.put(context.getString(R.string.am_short), context.getString(R.string.am));
         shortToLong.put(context.getString(R.string.en_short), context.getString(R.string.en));
@@ -106,15 +113,27 @@ public class Conversation {
         shortToLong.put(context.getString(R.string.ja_short), context.getString(R.string.ja));
     }
 
-    public static String getLongLangName(String shortLangName) {
-        return shortToLong.get(shortLangName);
+    public String getLongLangName(String shortLangName) {
+        String a = shortToLong.get(shortLangName);
+        Log.v(LOG_TAG, "a = " + a);
+        return a;
     }
 
-    public static String getKeyByValue(String value) {
+    public String getKeyByValue(String value) {
         for (Map.Entry<String, String> entry : shortToLong.entrySet()) {
             if (entry.getValue().equals(value))
                 return entry.getKey();
         }
         return null;
     }
+
+//    public static int getLangPosition(Context context, String lang) {
+//        CharSequence[] languages = context.getResources().getTextArray(R.array.languages);
+//        List<String> languagesList = new ArrayList<>();
+//        for (int i= 0; i< languages.length; ++i) {
+//            languagesList.add(languages[i].toString());
+//        }
+//
+//
+//    }
 }

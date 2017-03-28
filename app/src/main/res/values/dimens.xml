@@ -2,12 +2,12 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="twodp">2dp</dimen>
-    <dimen name="change_lang_width">30dp</dimen>
+    <dimen name="change_lang_width">35dp</dimen>
     <dimen name="change_lang_height">30dp</dimen>
 
     <dimen name="change_back_width">30dp</dimen>
     <dimen name="change_back_height">30dp</dimen>
 
-    <dimen name="check_width">20dp</dimen>
-    <dimen name="check_height">20dp</dimen>
+    <dimen name="check_width">30dp</dimen>
+    <dimen name="check_height">30dp</dimen>
 </resources>

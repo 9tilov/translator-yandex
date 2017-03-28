@@ -2,10 +2,12 @@ package com.moggot.mytranslator.observer;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.moggot.mytranslator.Conversation;
 import com.moggot.mytranslator.R;
-import com.moggot.mytranslator.SharedPreferences;
+import com.moggot.mytranslator.LangSharedPreferences;
 import com.moggot.mytranslator.language.Language;
 
 /**
@@ -36,27 +38,15 @@ public class AdapterDisplay implements Observer {
     }
 
     private void displayLang() {
-        ((TextView) view.findViewById(R.id.tvLang)).setText(language.getName());
+        Conversation conversation = new Conversation(context);
+        ((TextView) view.findViewById(R.id.tvLang)).setText(conversation.getLongLangName(language.getName()));
     }
 
     private void displayCheck() {
-        switch (language.getType()) {
-            case INPUT:
-                String inputLang = SharedPreferences.LoadInputLanguage(context);
-                if (inputLang.equals(language.getName()))
-                    (view.findViewById(R.id.iwChecked)).setVisibility(View.VISIBLE);
-                else
-                    (view.findViewById(R.id.iwChecked)).setVisibility(View.GONE);
-                break;
-            case OUTPUT:
-                String outputLang = SharedPreferences.LoadOutputLanguage(context);
-                if (outputLang.equals(language.getName()))
-                    (view.findViewById(R.id.iwChecked)).setVisibility(View.VISIBLE);
-                else
-                    (view.findViewById(R.id.iwChecked)).setVisibility(View.GONE);
-                break;
-            default:
-                break;
-        }
+        Language lang = LangSharedPreferences.loadLanguage(context, this.language.getType());
+        if ((lang.getName()).equals(this.language.getName()))
+            ((RadioButton) view.findViewById(R.id.radio1)).setChecked(true);
+        else
+            ((RadioButton) view.findViewById(R.id.radio1)).setChecked(false);
     }
 }

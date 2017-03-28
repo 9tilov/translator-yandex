@@ -87,4 +87,10 @@
     <string name="eo">Эсперанто</string>
     <string name="jv">Яванский</string>
     <string name="ja">Японский</string>
+
+    <string-array name="languages">
+        <item>English</item>
+        <item>Russian</item>
+        <item>Scythes</item>
+    </string-array>
 </resources>
