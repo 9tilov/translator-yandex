@@ -174,10 +174,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             Fragment translatorFragment = getFragmentManager().findFragmentById(R.id.frgmCont);
-            View view = translatorFragment.getView();
-            if (view == null)
-                return;
-            TextView tvTranslator = (TextView) view.findViewById(R.id.tvTranslation);
+            TextView tvTranslator = (TextView) translatorFragment.getView().findViewById(R.id.tvTranslation);
             if (tvTranslator == null)
                 return;
             tvTranslator.setText(result);

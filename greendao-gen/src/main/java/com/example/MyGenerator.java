@@ -27,7 +27,7 @@ public class MyGenerator {
     }
 
     private static Entity addTranslationData(final Schema schema) {
-        Entity translateData = schema.addEntity("Data");
+        Entity translateData = schema.addEntity("Translator");
 
         translateData.addIdProperty().primaryKey().autoincrement();
         translateData.addStringProperty("text").notNull();

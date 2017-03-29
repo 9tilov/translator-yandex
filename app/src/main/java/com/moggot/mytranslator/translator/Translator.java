@@ -8,10 +8,10 @@ import org.greenrobot.greendao.annotation.*;
 // KEEP INCLUDES END
 
 /**
- * Entity mapped to table "DATA".
+ * Entity mapped to table "TRANSLATOR".
  */
 @Entity
-public class Data {
+public class Translator {
 
     @Id(autoincrement = true)
     private Long id;
@@ -33,15 +33,15 @@ public class Data {
     // KEEP FIELDS END
 
     @Generated
-    public Data() {
+    public Translator() {
     }
 
-    public Data(Long id) {
+    public Translator(Long id) {
         this.id = id;
     }
 
     @Generated
-    public Data(Long id, String text, String translation, String inputLanguage, String outputLanguage, Boolean isFavorites) {
+    public Translator(Long id, String text, String translation, String inputLanguage, String outputLanguage, Boolean isFavorites) {
         this.id = id;
         this.text = text;
         this.translation = translation;
