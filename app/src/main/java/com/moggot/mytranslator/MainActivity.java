@@ -3,6 +3,7 @@ package com.moggot.mytranslator;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -18,6 +19,7 @@ import com.moggot.mytranslator.fragments.TranslationFragment;
 import com.moggot.mytranslator.language.Language;
 import com.moggot.mytranslator.observer.LangData;
 import com.moggot.mytranslator.observer.TraslatorDisplay;
+import com.moggot.mytranslator.translate.Translate;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -61,7 +63,12 @@ public class MainActivity extends AppCompatActivity {
                     ft.replace(R.id.frgmCont, fragment);
                     ft.commit();
                 } else {
-                    if (!isTranslationStarted) {
+                    if (isTranslationStarted) {
+                        TranslationTask task = new TranslationTask();
+                        Language inputLang = LangSharedPreferences.loadLanguage(MainActivity.this, Consts.LANG_TYPE.INPUT);
+                        Language outputLang = LangSharedPreferences.loadLanguage(MainActivity.this, Consts.LANG_TYPE.OUTPUT);
+                        task.execute(str.toString(), inputLang.getName(), outputLang.getName());
+                    } else {
                         isTranslationStarted = true;
                         fragment = new TranslationFragment();
                         ft = getFragmentManager().beginTransaction();
@@ -90,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickChangeLang(View view) {
-        Log.v(LOG_TAG, "main");
         Language inputLang = LangSharedPreferences.loadLanguage(this, Consts.LANG_TYPE.INPUT);
         Language outputLang = LangSharedPreferences.loadLanguage(this, Consts.LANG_TYPE.OUTPUT);
         LangSharedPreferences.saveLanguage(this, new Language(inputLang.getName(), Consts.LANG_TYPE.OUTPUT));
@@ -99,14 +105,16 @@ public class MainActivity extends AppCompatActivity {
         LangData langData = new LangData();
         TraslatorDisplay adapterDisplay = new TraslatorDisplay(this, langData);
         inputLang = LangSharedPreferences.loadLanguage(this, Consts.LANG_TYPE.INPUT);
-        langData.setLanguage(inputLang);
-        adapterDisplay.display();
         outputLang = LangSharedPreferences.loadLanguage(this, Consts.LANG_TYPE.OUTPUT);
+        langData.setLanguage(inputLang);
         langData.setLanguage(outputLang);
         adapterDisplay.display();
 
-
-
+        Fragment translatorFragment = getFragmentManager().findFragmentById(R.id.frgmCont);
+        TextView tvTranslation = (TextView) translatorFragment.getView().findViewById(R.id.tvTranslation);
+        if (tvTranslation == null)
+            return;
+        etText.setText(tvTranslation.getText().toString());
     }
 
     public void onClickInputLang(View view) {
@@ -127,11 +135,53 @@ public class MainActivity extends AppCompatActivity {
         LangData langData = new LangData();
         TraslatorDisplay adapterDisplay = new TraslatorDisplay(this, langData);
         Language inputLang = LangSharedPreferences.loadLanguage(this, Consts.LANG_TYPE.INPUT);
-        langData.setLanguage(inputLang);
-        adapterDisplay.display();
         Language outputLang = LangSharedPreferences.loadLanguage(this, Consts.LANG_TYPE.OUTPUT);
+        langData.setLanguage(inputLang);
         langData.setLanguage(outputLang);
         adapterDisplay.display();
+
+        TranslationTask task = new TranslationTask();
+        task.execute(etText.getText().toString(), inputLang.getName(), outputLang.getName());
+    }
+
+    private class TranslationTask extends AsyncTask<String, String, String> {
+
+        private static final String LOG_TAG = "TranslationTask";
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                Translate.setKey(ApiKeys.YANDEX_API_KEY);
+                return Translate.execute(params[0], Consts.Lang.fromString(params[1]), Consts.Lang.fromString(params[2]));
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            Fragment translatorFragment = getFragmentManager().findFragmentById(R.id.frgmCont);
+            View view = translatorFragment.getView();
+            if (view == null)
+                return;
+            TextView tvTranslator = (TextView) view.findViewById(R.id.tvTranslation);
+            if (tvTranslator == null)
+                return;
+            tvTranslator.setText(result);
+        }
     }
 
 

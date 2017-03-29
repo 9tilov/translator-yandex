@@ -116,7 +116,6 @@ public class Conversation {
 
     public String getLongLangName(String shortLangName) {
         String a = shortToLong.get(shortLangName);
-        Log.v(LOG_TAG, "a = " + a);
         return a;
     }
 

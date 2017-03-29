@@ -99,6 +99,7 @@ public abstract class YandexTranslatorAPI {
         JSONObject jsonObj = new JSONObject(inputString);
         String translatedStr = jsonObj.getString(subObjPropertyName);
         Log.v(LOG_TAG, "var = " + translatedStr);
+        Log.v(LOG_TAG, "inputString = " + inputString);
         int start = translatedStr.indexOf("[");
         int end = translatedStr.indexOf("]");
         return translatedStr.substring(start + 2, end - 1);
