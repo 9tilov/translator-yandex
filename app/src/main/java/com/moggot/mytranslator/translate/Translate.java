@@ -19,7 +19,6 @@ import android.util.Log;
 
 import com.moggot.mytranslator.Consts;
 import com.moggot.mytranslator.YandexTranslatorAPI;
-import com.moggot.mytranslator.language.Language;
 
 import java.net.URL;
 import java.net.URLEncoder;

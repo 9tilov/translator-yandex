@@ -9,9 +9,11 @@ import android.widget.BaseAdapter;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.moggot.mytranslator.language.Language;
-import com.moggot.mytranslator.observer.AdapterDisplay;
-import com.moggot.mytranslator.observer.LangData;
+import com.moggot.mytranslator.observer.AdapterInputLanguageDisplay;
+import com.moggot.mytranslator.observer.AdapterOutputLanguageDisplay;
+import com.moggot.mytranslator.observer.Display;
+import com.moggot.mytranslator.observer.TranslatorData;
+import com.moggot.mytranslator.translator.Translator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +22,9 @@ import java.util.List;
  * Created by toor on 24.03.17.
  */
 
-public class LangAdapter extends BaseAdapter {
+public class LanguageAdapter extends BaseAdapter {
 
-    private static final String LOG_TAG = "LangAdapter";
+    private static final String LOG_TAG = "LanguageAdapter";
 
     private static class ViewHolder {
         private TextView tvLang;
@@ -31,12 +33,12 @@ public class LangAdapter extends BaseAdapter {
 
     private Context context;
     private LayoutInflater inflater;
-    private List<Language> languages;
+    private List<String> languages;
     private Consts.LANG_TYPE type;
 
     private int selectedIndex;
 
-    public LangAdapter(Context context, Consts.LANG_TYPE type) {
+    public LanguageAdapter(Context context, Consts.LANG_TYPE type) {
         this.context = context;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.languages = new ArrayList<>();
@@ -58,8 +60,8 @@ public class LangAdapter extends BaseAdapter {
         return languages.get(position);
     }
 
-    private Language getLang(int position) {
-        return ((Language) getItem(position));
+    private String getLang(int position) {
+        return ((String) getItem(position));
     }
 
     @Override
@@ -81,7 +83,7 @@ public class LangAdapter extends BaseAdapter {
 
         viewHolder.tvLang = (TextView) view
                 .findViewById(R.id.tvLang);
-        viewHolder.iwCheck = (RadioButton) view.findViewById(R.id.radio1);
+        viewHolder.iwCheck = (RadioButton) view.findViewById(R.id.check);
 
         viewHolder.tvLang.setTag(languages.get(position));
         viewHolder.iwCheck.setTag(languages.get(position));
@@ -92,10 +94,20 @@ public class LangAdapter extends BaseAdapter {
             viewHolder.iwCheck.setChecked(false);
         }
 
-        final LangData langData = new LangData();
-        AdapterDisplay adapterDisplay = new AdapterDisplay(context, view, langData);
-        final Language language = getLang(position);
-        langData.setLanguage(language);
+
+        final String language = getLang(position);
+        Translator translator;
+        TranslatorData translatorData = new TranslatorData();
+        Display adapterDisplay;
+        if (type == Consts.LANG_TYPE.INPUT) {
+            translator = new Translator(null, null, null, language, null, false);
+            adapterDisplay = new AdapterInputLanguageDisplay(context, view, translatorData);
+        } else {
+            translator = new Translator(null, null, null, null, language, false);
+            adapterDisplay = new AdapterOutputLanguageDisplay(context, view, translatorData);
+        }
+
+        translatorData.setTranslator(translator);
         adapterDisplay.display();
 
         view.setOnClickListener(new View.OnClickListener() {
@@ -103,23 +115,23 @@ public class LangAdapter extends BaseAdapter {
             public void onClick(View view) {
                 setSelectedIndex(position);
                 notifyDataSetChanged();
-                if (language.getType() == Consts.LANG_TYPE.INPUT) {
-                    Language oppositeLang = LangSharedPreferences.loadLanguage(context, Consts.LANG_TYPE.OUTPUT);
-                    if (language.getName().equals(oppositeLang.getName())) {
-                        Language currentLanguage = LangSharedPreferences.loadLanguage(context, Consts.LANG_TYPE.INPUT);
-                        currentLanguage.setType(Consts.LANG_TYPE.OUTPUT);
-                        LangSharedPreferences.saveLanguage(context, currentLanguage);
+
+                if (type == Consts.LANG_TYPE.INPUT) {
+                    String oppositeLang = LangSharedPreferences.loadOutputLanguage(context);
+                    if (language.equals(oppositeLang)) {
+                        String currentLanguage = LangSharedPreferences.loadInputLanguage(context);
+                        LangSharedPreferences.saveOutputLanguage(context, currentLanguage);
                     }
+                    LangSharedPreferences.saveInputLanguage(context, language);
                 } else {
-                    Language oppositeLang = LangSharedPreferences.loadLanguage(context, Consts.LANG_TYPE.INPUT);
-                    if (language.getName().equals(oppositeLang.getName())) {
-                        Language currentLanguage = LangSharedPreferences.loadLanguage(context, Consts.LANG_TYPE.OUTPUT);
-                        currentLanguage.setType(Consts.LANG_TYPE.INPUT);
-                        LangSharedPreferences.saveLanguage(context, currentLanguage);
+                    String oppositeLang = LangSharedPreferences.loadInputLanguage(context);
+                    if (language.equals(oppositeLang)) {
+                        String currentLanguage = LangSharedPreferences.loadOutputLanguage(context);
+                        LangSharedPreferences.saveInputLanguage(context, currentLanguage);
                     }
+                    LangSharedPreferences.saveOutputLanguage(context, language);
                 }
-                LangSharedPreferences.saveLanguage(context, language);
-                ((Activity)context).finish();
+                ((Activity) context).finish();
 
             }
 
@@ -133,10 +145,10 @@ public class LangAdapter extends BaseAdapter {
 
     private void fillLangList() {
 
-        languages.add(new Language(context.getString(R.string.en_short), type));
-        languages.add(new Language(context.getString(R.string.ru_short), type));
-        languages.add(new Language(context.getString(R.string.xh_short), type));
-        languages.add(new Language(context.getString(R.string.az_short), type));
+        languages.add(context.getString(R.string.en_short));
+        languages.add(context.getString(R.string.ru_short));
+        languages.add(context.getString(R.string.xh_short));
+        languages.add(context.getString(R.string.az_short));
 //        languages.add(context.getString(R.string.sq));
 //        languages.add(context.getString(R.string.am));
 //        languages.add(context.getString(R.string.en));

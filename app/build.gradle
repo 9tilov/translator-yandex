@@ -26,7 +26,11 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.google.code.gson:gson:2.7'
     compile 'org.greenrobot:greendao:3.2.0'
+    compile project(":library")
+    compile 'com.daimajia.easing:library:1.0.0@aar'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.daimajia.androidanimations:library:1.1.2@aar'
+    compile 'jp.wasabeef:recyclerview-animators:1.0.3@aar'
     testCompile 'junit:junit:4.12'
 }

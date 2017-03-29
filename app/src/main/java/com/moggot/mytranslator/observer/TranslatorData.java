@@ -1,6 +1,6 @@
 package com.moggot.mytranslator.observer;
 
-import com.moggot.mytranslator.language.Language;
+import com.moggot.mytranslator.translator.Translator;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -9,13 +9,13 @@ import java.util.List;
  * Created by toor on 22.02.17.
  */
 
-public class LangData implements Observable {
+public class TranslatorData implements Observable {
 
     private List<Observer> observers;
 
-    private Language language;
+    private Translator record;
 
-    public LangData() {
+    public TranslatorData() {
         observers = new LinkedList<>();
     }
 
@@ -33,12 +33,12 @@ public class LangData implements Observable {
     @Override
     public void notifyObservers() {
         for (Observer observer : observers) {
-            observer.update(language);
+            observer.update(record);
         }
     }
 
-    public void setLanguage(Language language) {
-        this.language = language;
+    public void setTranslator(Translator record) {
+        this.record = record;
         notifyObservers();
     }
 }

@@ -16,10 +16,11 @@ import android.widget.TextView;
 
 import com.moggot.mytranslator.fragments.HistoryFragment;
 import com.moggot.mytranslator.fragments.TranslationFragment;
-import com.moggot.mytranslator.language.Language;
-import com.moggot.mytranslator.observer.LangData;
+import com.moggot.mytranslator.observer.Display;
+import com.moggot.mytranslator.observer.TranslatorData;
 import com.moggot.mytranslator.observer.TraslatorDisplay;
 import com.moggot.mytranslator.translate.Translate;
+import com.moggot.mytranslator.translator.Translator;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,18 +32,26 @@ public class MainActivity extends AppCompatActivity {
 
     private Fragment fragment;
     private FragmentTransaction ft;
+    private Translator translator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        etText = (BackAwareEditText) findViewById(R.id.etText);
+
         ft = getFragmentManager().beginTransaction();
         fragment = new HistoryFragment();
         ft.add(R.id.frgmCont, fragment);
         ft.commit();
 
-        etText = (BackAwareEditText) findViewById(R.id.etText);
+        translator = new Translator(null
+                , etText.getText().toString()
+                , ""
+                , getString(R.string.en_short)
+                , getString(R.string.ru_short)
+                , false);
         etText.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -63,18 +72,16 @@ public class MainActivity extends AppCompatActivity {
                     ft.replace(R.id.frgmCont, fragment);
                     ft.commit();
                 } else {
-                    if (isTranslationStarted) {
-                        TranslationTask task = new TranslationTask();
-                        Language inputLang = LangSharedPreferences.loadLanguage(MainActivity.this, Consts.LANG_TYPE.INPUT);
-                        Language outputLang = LangSharedPreferences.loadLanguage(MainActivity.this, Consts.LANG_TYPE.OUTPUT);
-                        task.execute(str.toString(), inputLang.getName(), outputLang.getName());
-                    } else {
+                    if (!isTranslationStarted) {
                         isTranslationStarted = true;
                         fragment = new TranslationFragment();
                         ft = getFragmentManager().beginTransaction();
                         ft.replace(R.id.frgmCont, fragment);
                         ft.commit();
                     }
+                    TranslationTask task = new TranslationTask();
+                    translator.setText(str.toString());
+                    task.execute(translator);
                 }
             }
         });
@@ -97,18 +104,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickChangeLang(View view) {
-        Language inputLang = LangSharedPreferences.loadLanguage(this, Consts.LANG_TYPE.INPUT);
-        Language outputLang = LangSharedPreferences.loadLanguage(this, Consts.LANG_TYPE.OUTPUT);
-        LangSharedPreferences.saveLanguage(this, new Language(inputLang.getName(), Consts.LANG_TYPE.OUTPUT));
-        LangSharedPreferences.saveLanguage(this, new Language(outputLang.getName(), Consts.LANG_TYPE.INPUT));
+        String inputLang = LangSharedPreferences.loadInputLanguage(this);
+        String outputLang = LangSharedPreferences.loadOutputLanguage(this);
+        LangSharedPreferences.saveInputLanguage(this, outputLang);
+        LangSharedPreferences.saveOutputLanguage(this, inputLang);
 
-        LangData langData = new LangData();
-        TraslatorDisplay adapterDisplay = new TraslatorDisplay(this, langData);
-        inputLang = LangSharedPreferences.loadLanguage(this, Consts.LANG_TYPE.INPUT);
-        outputLang = LangSharedPreferences.loadLanguage(this, Consts.LANG_TYPE.OUTPUT);
-        langData.setLanguage(inputLang);
-        langData.setLanguage(outputLang);
-        adapterDisplay.display();
+        TranslatorData translatorData = new TranslatorData();
+        Display traslatorDisplay = new TraslatorDisplay(this, translatorData);
+        inputLang = LangSharedPreferences.loadInputLanguage(this);
+        outputLang = LangSharedPreferences.loadOutputLanguage(this);
+
+        translator.setInputLanguage(inputLang);
+        translator.setOutputLanguage(outputLang);
+
+        translatorData.setTranslator(translator);
+        traslatorDisplay.display();
 
         Fragment translatorFragment = getFragmentManager().findFragmentById(R.id.frgmCont);
         TextView tvTranslation = (TextView) translatorFragment.getView().findViewById(R.id.tvTranslation);
@@ -118,13 +128,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickInputLang(View view) {
-        Intent intent = new Intent(this, LangActivity.class);
+        Intent intent = new Intent(this, LanguageActivity.class);
         intent.putExtra(Consts.EXTRA_LANG, Consts.LANG_TYPE.INPUT.getType());
         startActivity(intent);
     }
 
     public void onClickOutputLang(View view) {
-        Intent intent = new Intent(this, LangActivity.class);
+        Intent intent = new Intent(this, LanguageActivity.class);
         intent.putExtra(Consts.EXTRA_LANG, Consts.LANG_TYPE.OUTPUT.getType());
         startActivity(intent);
     }
@@ -132,19 +142,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        LangData langData = new LangData();
-        TraslatorDisplay adapterDisplay = new TraslatorDisplay(this, langData);
-        Language inputLang = LangSharedPreferences.loadLanguage(this, Consts.LANG_TYPE.INPUT);
-        Language outputLang = LangSharedPreferences.loadLanguage(this, Consts.LANG_TYPE.OUTPUT);
-        langData.setLanguage(inputLang);
-        langData.setLanguage(outputLang);
-        adapterDisplay.display();
+        TranslatorData translatorData = new TranslatorData();
+        Display traslatorDisplay = new TraslatorDisplay(this, translatorData);
+        String inputLang = LangSharedPreferences.loadInputLanguage(this);
+        String outputLang = LangSharedPreferences.loadOutputLanguage(this);
+        translator.setInputLanguage(inputLang);
+        translator.setOutputLanguage(outputLang);
+        translatorData.setTranslator(translator);
+        traslatorDisplay.display();
 
         TranslationTask task = new TranslationTask();
-        task.execute(etText.getText().toString(), inputLang.getName(), outputLang.getName());
+        task.execute(translator);
     }
 
-    private class TranslationTask extends AsyncTask<String, String, String> {
+    private class TranslationTask extends AsyncTask<Translator, String, String> {
 
         private static final String LOG_TAG = "TranslationTask";
 
@@ -154,10 +165,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected String doInBackground(String... params) {
+        protected String doInBackground(Translator... params) {
             try {
                 Translate.setKey(ApiKeys.YANDEX_API_KEY);
-                return Translate.execute(params[0], Consts.Lang.fromString(params[1]), Consts.Lang.fromString(params[2]));
+                return Translate.execute(params[0].getText()
+                        , Consts.Lang.fromString(params[0].getInputLanguage())
+                        , Consts.Lang.fromString(params[0].getOutputLanguage()));
             } catch (Exception e) {
 
                 e.printStackTrace();
@@ -178,8 +191,8 @@ public class MainActivity extends AppCompatActivity {
             if (tvTranslator == null)
                 return;
             tvTranslator.setText(result);
+            translator.setTranslation(result);
+
         }
     }
-
-
 }

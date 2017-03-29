@@ -27,7 +27,7 @@ public class Translator {
 
     @NotNull
     private String outputLanguage;
-    private Boolean isFavorites;
+    private boolean isFavorites;
 
     // KEEP FIELDS - put your custom fields here
     // KEEP FIELDS END
@@ -41,7 +41,7 @@ public class Translator {
     }
 
     @Generated
-    public Translator(Long id, String text, String translation, String inputLanguage, String outputLanguage, Boolean isFavorites) {
+    public Translator(Long id, String text, String translation, String inputLanguage, String outputLanguage, boolean isFavorites) {
         this.id = id;
         this.text = text;
         this.translation = translation;
@@ -98,11 +98,11 @@ public class Translator {
         this.outputLanguage = outputLanguage;
     }
 
-    public Boolean getIsFavorites() {
+    public boolean getIsFavorites() {
         return isFavorites;
     }
 
-    public void setIsFavorites(Boolean isFavorites) {
+    public void setIsFavorites(boolean isFavorites) {
         this.isFavorites = isFavorites;
     }
 
