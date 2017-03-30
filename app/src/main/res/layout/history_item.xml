@@ -11,24 +11,30 @@
         android:layout_height="0dip"
         android:layout_weight="1">
 
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/rlDelete"
             android:layout_width="@dimen/swipe_icon_width"
             android:layout_height="match_parent"
-            android:background="#FF3B30">
+            android:background="@color/delete">
 
-            <ImageView
-                android:id="@+id/trash"
-                android:layout_width="@dimen/trash_size"
-                android:layout_height="@dimen/trash_size"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/ic_delete_sweep_white_24px" />
-        </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/adapterIwDelete"
+                    android:layout_width="@dimen/trash_size"
+                    android:layout_height="@dimen/trash_size"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_delete_sweep_white_24px" />
+            </RelativeLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#ffffff"
+            android:background="@color/background_light"
             android:orientation="horizontal"
             android:padding="10dp"
             android:weightSum="10">
@@ -50,18 +56,26 @@
 
                 <TextView
                     android:id="@+id/adapterTvText"
+                    style="@style/TextHistory"
                     android:layout_width="match_parent"
                     android:layout_height="0dip"
                     android:layout_weight="1"
+                    android:ellipsize="end"
                     android:gravity="center"
+                    android:maxLines="1"
+                    android:scrollHorizontally="true"
                     android:text="text" />
 
                 <TextView
                     android:id="@+id/adapterTvTranslation"
+                    style="@style/TextHistory"
                     android:layout_width="match_parent"
                     android:layout_height="0dip"
                     android:layout_weight="1"
+                    android:ellipsize="end"
                     android:gravity="center"
+                    android:maxLines="1"
+                    android:scrollHorizontally="true"
                     android:text="translation" />
 
             </LinearLayout>
@@ -75,10 +89,14 @@
 
                 <TextView
                     android:id="@+id/adapterTvInputLang"
+                    style="@style/TextHistory"
                     android:layout_width="0dip"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:ellipsize="end"
                     android:gravity="center"
+                    android:maxLines="1"
+                    android:scrollHorizontally="true"
                     android:text="en" />
 
                 <RelativeLayout
@@ -97,10 +115,14 @@
 
                 <TextView
                     android:id="@+id/adapterTvOutputLang"
+                    style="@style/TextHistory"
                     android:layout_width="0dip"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:ellipsize="end"
                     android:gravity="center"
+                    android:maxLines="1"
+                    android:scrollHorizontally="true"
                     android:text="ru" />
 
             </LinearLayout>

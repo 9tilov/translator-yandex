@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
 
+import com.moggot.mytranslator.adapter.LanguageAdapter;
+
 public class LanguageActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "LanguageActivity";

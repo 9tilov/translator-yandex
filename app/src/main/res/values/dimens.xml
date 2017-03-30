@@ -10,6 +10,8 @@
 
     <dimen name="swipe_icon_width">70dp</dimen>
     <dimen name="trash_size">30dp</dimen>
+    <dimen name="text_size_lang">20sp</dimen>
+    <dimen name="text_size_history">15sp</dimen>
 
     <dimen name="check_width">30dp</dimen>
     <dimen name="check_height">30dp</dimen>

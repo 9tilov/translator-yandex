@@ -1,4 +1,4 @@
-package com.moggot.mytranslator;
+package com.moggot.mytranslator.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,6 +9,9 @@ import android.widget.BaseAdapter;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.moggot.mytranslator.Consts;
+import com.moggot.mytranslator.LangSharedPreferences;
+import com.moggot.mytranslator.R;
 import com.moggot.mytranslator.observer.AdapterInputLanguageDisplay;
 import com.moggot.mytranslator.observer.AdapterOutputLanguageDisplay;
 import com.moggot.mytranslator.observer.Display;

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputConnection;
 
 public class BackAwareEditText extends AppCompatEditText {
 
@@ -35,5 +37,14 @@ public class BackAwareEditText extends AppCompatEditText {
 
     public interface BackPressedListener {
         void onImeBack(BackAwareEditText editText);
+    }
+
+
+    //Для того чтобы работали одновременно флаги textMultiLine и actionDone
+    @Override
+    public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
+        InputConnection conn = super.onCreateInputConnection(outAttrs);
+        outAttrs.imeOptions &= ~EditorInfo.IME_FLAG_NO_ENTER_ACTION;
+        return conn;
     }
 }

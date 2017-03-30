@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
@@ -90,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
 
+                    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                     if (etText.getText().toString().isEmpty()) {
                         return false;
                     }
@@ -102,9 +104,19 @@ public class MainActivity extends AppCompatActivity {
         etText.setBackPressedListener(new BackAwareEditText.BackPressedListener() {
             @Override
             public void onImeBack(BackAwareEditText editText) {
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                 if (etText.getText().toString().isEmpty())
                     return;
                 saveRecord(translator);
+            }
+        });
+
+        etText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    etText.setSelection(etText.getText().length());
+                }
             }
         });
     }
@@ -153,6 +165,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LanguageActivity.class);
         intent.putExtra(Consts.EXTRA_LANG, Consts.LANG_TYPE.OUTPUT.getType());
         startActivity(intent);
+    }
+
+    public void onClickClear(View view) {
+        etText.setText("");
     }
 
     @Override

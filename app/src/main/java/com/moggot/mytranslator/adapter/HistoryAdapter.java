@@ -1,18 +1,22 @@
-package com.moggot.mytranslator;
+package com.moggot.mytranslator.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.BaseSwipeAdapter;
+import com.moggot.mytranslator.DataBase;
+import com.moggot.mytranslator.R;
 import com.moggot.mytranslator.observer.AdapterHistoryDisplay;
 import com.moggot.mytranslator.observer.Display;
 import com.moggot.mytranslator.observer.TranslatorData;
@@ -43,11 +47,12 @@ public class HistoryAdapter extends BaseSwipeAdapter {
         private ImageView iwFavorites;
         private TextView tvInputLang;
         private TextView tvOutputLang;
+        private LinearLayout rlDelete;
     }
 
     public void update(List<Translator> items) {
         this.records = items;
-        notifyDataSetChanged();
+        notifyDatasetChanged();
     }
 
     @Override
@@ -58,7 +63,7 @@ public class HistoryAdapter extends BaseSwipeAdapter {
     @Override
     public View generateView(final int position, ViewGroup parent) {
         ViewHolder viewHolder = new ViewHolder();
-        View view = LayoutInflater.from(context).inflate(R.layout.history_item, null, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.history_item, parent, false);
         view.setTag(viewHolder);
 
         viewHolder.tvText = (TextView) view.findViewById(R.id.adapterTvText);
@@ -66,34 +71,33 @@ public class HistoryAdapter extends BaseSwipeAdapter {
         viewHolder.iwFavorites = (ImageView) view.findViewById(R.id.adapterIwFavorites);
         viewHolder.tvInputLang = (TextView) view.findViewById(R.id.adapterTvInputLang);
         viewHolder.tvOutputLang = (TextView) view.findViewById(R.id.adapterTvOutputLang);
+        viewHolder.rlDelete = (LinearLayout) view.findViewById(R.id.rlDelete);
 
         viewHolder.tvText.setTag(records.get(position));
         viewHolder.tvTranslation.setTag(records.get(position));
         viewHolder.iwFavorites.setTag(records.get(position));
         viewHolder.tvInputLang.setTag(records.get(position));
         viewHolder.tvOutputLang.setTag(records.get(position));
+        viewHolder.rlDelete.setTag(records.get(position));
 
-        Translator translator = getTranslator(position);
-        TranslatorData translatorData = new TranslatorData();
-        Display adapterDisplay;
-        adapterDisplay = new AdapterHistoryDisplay(context, view, translatorData);
-        translatorData.setTranslator(translator);
-        adapterDisplay.display();
+        final Translator translator = getTranslator(position);
 
         SwipeLayout swipeLayout = (SwipeLayout) view.findViewById(getSwipeLayoutResourceId(position));
         swipeLayout.addSwipeListener(new SimpleSwipeListener() {
             @Override
             public void onOpen(SwipeLayout layout) {
-                YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.trash));
+                YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.adapterIwDelete));
             }
         });
-        view.findViewById(R.id.trash).setOnClickListener(new View.OnClickListener() {
+        viewHolder.rlDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "click delete", Toast.LENGTH_SHORT).show();
                 records.remove(position);
                 update(records);
+                DataBase db = new DataBase(context);
+                db.deleteRecord(translator);
                 closeItem(position);
+                Log.v(LOG_TAG, "delete");
             }
         });
         return view;
@@ -101,6 +105,12 @@ public class HistoryAdapter extends BaseSwipeAdapter {
 
     @Override
     public void fillValues(int position, View convertView) {
+        final Translator translator = getTranslator(position);
+        TranslatorData translatorData = new TranslatorData();
+        Display adapterDisplay;
+        adapterDisplay = new AdapterHistoryDisplay(context, convertView, translatorData);
+        translatorData.setTranslator(translator);
+        adapterDisplay.display();
     }
 
     @Override

@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">MyTranslator</string>
+
+    <string name="edittext_hint">Enter text&#8230;</string>
+
     <string name="sq">Albanian</string>
     <string name="am">Amharic</string>
     <string name="en">English</string>

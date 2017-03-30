@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.moggot.mytranslator.DataBase;
-import com.moggot.mytranslator.HistoryAdapter;
+import com.moggot.mytranslator.adapter.HistoryAdapter;
 import com.moggot.mytranslator.R;
 import com.moggot.mytranslator.translator.Translator;
 
