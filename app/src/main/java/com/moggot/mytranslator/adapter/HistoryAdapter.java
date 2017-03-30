@@ -89,6 +89,20 @@ public class HistoryAdapter extends BaseSwipeAdapter {
                 YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.adapterIwDelete));
             }
         });
+
+        viewHolder.iwFavorites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (translator.getIsFavorites())
+                    translator.setIsFavorites(false);
+                else
+                    translator.setIsFavorites(true);
+                DataBase db = new DataBase(context);
+                db.editRecord(translator);
+                update(records);
+                Log.v(LOG_TAG, "favorites");
+            }
+        });
         viewHolder.rlDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

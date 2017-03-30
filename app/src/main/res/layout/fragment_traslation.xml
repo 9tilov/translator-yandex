@@ -2,12 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="horizontal"
+    android:weightSum="10">
 
     <TextView
         android:id="@+id/tvTranslation"
-        android:layout_width="match_parent"
+        style="@style/Translation"
+        android:layout_width="0dip"
         android:layout_height="match_parent"
-        android:text="HELLO"/>
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_weight="9"
+        android:text="" />
+
+    <RelativeLayout
+        android:layout_width="0dip"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickAddFavorites"
+            android:background="@drawable/ic_bookmark_black_24px" />
+    </RelativeLayout>
 
 </LinearLayout>

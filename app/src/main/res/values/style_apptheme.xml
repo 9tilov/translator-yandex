@@ -7,6 +7,11 @@
         <item name="android:textColor">@color/text</item>
     </style>
 
+    <style name="Translation">
+        <item name="android:textSize">@dimen/text_size_translation</item>
+        <item name="android:textColor">@color/text</item>
+    </style>
+
     <style name="TextHistory">
         <item name="android:textSize">@dimen/text_size_history</item>
         <item name="android:textColor">@color/text</item>

@@ -41,6 +41,8 @@ public class AdapterHistoryDisplay extends Display {
     private void displayFavoritesFlag() {
         if (translator.getIsFavorites())
             ((ImageView) view.findViewById(R.id.adapterIwFavorites)).setBackgroundResource(R.drawable.ic_bookmark_black_24px);
+        else
+            ((ImageView) view.findViewById(R.id.adapterIwFavorites)).setBackgroundResource(R.drawable.ic_bookmark_border_black_24px);
     }
 
     private void displayInputLang() {
