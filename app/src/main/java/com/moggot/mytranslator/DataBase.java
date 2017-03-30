@@ -2,6 +2,7 @@ package com.moggot.mytranslator;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.moggot.mytranslator.translator.DaoMaster;
 import com.moggot.mytranslator.translator.DaoSession;
@@ -21,13 +22,27 @@ public class DataBase {
 
     private final String DB_NAME = "alarm_db";
 
+    private static final String LOG_TAG = "DataBase";
+
     public DataBase(Context context) {
         this.context = context;
         translatorDao = setupDb();
     }
 
     public void addRecord(Translator record) {
-        translatorDao.insert(record);
+
+        Translator tmpRecord;
+        try {
+            tmpRecord = translatorDao.queryBuilder().where(TranslatorDao.Properties.Text.eq(record.getText())
+                    , TranslatorDao.Properties.Translation.eq(record.getTranslation())
+                    , TranslatorDao.Properties.InputLanguage.eq(record.getInputLanguage())
+                    , TranslatorDao.Properties.OutputLanguage.eq(record.getOutputLanguage())).unique();
+        } catch (Exception ex) {
+            tmpRecord = null;
+        }
+
+        if (tmpRecord == null)
+            translatorDao.insertOrReplace(record);
     }
 
     public void editRecord(Translator record) {

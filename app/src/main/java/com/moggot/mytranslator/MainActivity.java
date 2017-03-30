@@ -89,7 +89,11 @@ public class MainActivity extends AppCompatActivity {
         etText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                    Log.v(LOG_TAG, "Enter pressed");
+
+                    if (etText.getText().toString().isEmpty()) {
+                        return false;
+                    }
+                    saveRecord(translator);
                 }
                 return false;
             }
@@ -98,9 +102,18 @@ public class MainActivity extends AppCompatActivity {
         etText.setBackPressedListener(new BackAwareEditText.BackPressedListener() {
             @Override
             public void onImeBack(BackAwareEditText editText) {
-                Log.v(LOG_TAG, "acacac");
+                if (etText.getText().toString().isEmpty())
+                    return;
+                saveRecord(translator);
             }
         });
+    }
+
+    private void saveRecord(Translator translator) {
+        Translator tmpTranslator = new Translator(null, translator.getText(), translator.getTranslation()
+                , translator.getInputLanguage(), translator.getOutputLanguage(), translator.getIsFavorites());
+        DataBase db = new DataBase(this);
+        db.addRecord(tmpTranslator);
     }
 
     public void onClickChangeLang(View view) {
@@ -121,7 +134,10 @@ public class MainActivity extends AppCompatActivity {
         traslatorDisplay.display();
 
         Fragment translatorFragment = getFragmentManager().findFragmentById(R.id.frgmCont);
-        TextView tvTranslation = (TextView) translatorFragment.getView().findViewById(R.id.tvTranslation);
+        View tmpView = translatorFragment.getView();
+        if (tmpView == null)
+            return;
+        TextView tvTranslation = (TextView) tmpView.findViewById(R.id.tvTranslation);
         if (tvTranslation == null)
             return;
         etText.setText(tvTranslation.getText().toString());
@@ -187,7 +203,10 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             Fragment translatorFragment = getFragmentManager().findFragmentById(R.id.frgmCont);
-            TextView tvTranslator = (TextView) translatorFragment.getView().findViewById(R.id.tvTranslation);
+            View view = translatorFragment.getView();
+            if (view == null)
+                return;
+            TextView tvTranslator = (TextView) view.findViewById(R.id.tvTranslation);
             if (tvTranslator == null)
                 return;
             tvTranslator.setText(result);
