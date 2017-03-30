@@ -164,4 +164,6 @@ public class Consts {
     public static final String EXTRA_TEXT = "extra_text";
     public static final String EXTRA_INPUT_LANG = "extra_input_lang";
     public static final String EXTRA_OUTPUT_LANG = "extra_output_lang";
+    public static final String TAG_FRAGMENT_TRANSLATOR = "tag_fragment_translator";
+    public static final String TAG_FRAGMENT_HISTORY = "tag_fragment_history";
 }

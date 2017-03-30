@@ -8,14 +8,14 @@ import android.widget.TextView;
 import com.moggot.mytranslator.R;
 
 /**
- * Created by toor on 29.03.17.
+ * Created by toor on 30.03.17.
  */
 
-public class AdapterHistoryDisplay extends Display {
+public class AdapterFavoritesDisplay extends Display {
 
     private View view;
 
-    public AdapterHistoryDisplay(Context context, View view, TranslatorData translatorData) {
+    public AdapterFavoritesDisplay(Context context, View view, TranslatorData translatorData) {
         super(context);
         this.view = view;
         translatorData.registerObserver(this);
@@ -39,10 +39,7 @@ public class AdapterHistoryDisplay extends Display {
     }
 
     private void displayFavoritesFlag() {
-        if (translator.getIsFavorites())
-            ((ImageView) view.findViewById(R.id.adapterIwFavorites)).setBackgroundResource(R.drawable.ic_bookmark_24px);
-        else
-            ((ImageView) view.findViewById(R.id.adapterIwFavorites)).setBackgroundResource(R.drawable.ic_bookmark_border_black_24px);
+        ((ImageView) view.findViewById(R.id.adapterIwFavorites)).setBackgroundResource(R.drawable.ic_bookmark_24px);
     }
 
     private void displayInputLang() {

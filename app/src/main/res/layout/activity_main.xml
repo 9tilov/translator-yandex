@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:weightSum="100">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="10"
@@ -101,10 +101,59 @@
             android:scrollHorizontally="false" />
     </RelativeLayout>
 
-    <FrameLayout
-        android:id="@+id/frgmCont"
+    <TabHost
+        android:id="@+id/tabhost"
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="60" />
+        android:layout_weight="60">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+
+                <LinearLayout
+                    android:id="@+id/tabTranslator"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <FrameLayout
+                        android:id="@+id/frgmCont"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tabFavorites"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ListView
+                        android:id="@+id/lvFavorites"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="-4dp"
+                android:layout_weight="0" />
+
+        </LinearLayout>
+
+    </TabHost>
 
 </LinearLayout>
+
+

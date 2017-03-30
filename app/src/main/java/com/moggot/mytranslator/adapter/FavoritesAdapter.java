@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
@@ -17,6 +16,7 @@ import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 import com.moggot.mytranslator.DataBase;
 import com.moggot.mytranslator.R;
+import com.moggot.mytranslator.observer.AdapterFavoritesDisplay;
 import com.moggot.mytranslator.observer.AdapterHistoryDisplay;
 import com.moggot.mytranslator.observer.Display;
 import com.moggot.mytranslator.observer.TranslatorData;
@@ -25,21 +25,20 @@ import com.moggot.mytranslator.translator.Translator;
 import java.util.List;
 
 /**
- * Created by toor on 29.03.17.
+ * Created by toor on 30.03.17.
  */
 
-public class HistoryAdapter extends BaseSwipeAdapter {
+public class FavoritesAdapter extends BaseSwipeAdapter {
 
     private Context context;
     private List<Translator> records;
 
-    private static final String LOG_TAG = "HistoryAdapter";
+    private static final String LOG_TAG = "FavoritesAdapter";
 
-    public HistoryAdapter(Context context, List<Translator> records) {
+    public FavoritesAdapter(Context context, List<Translator> records) {
         this.context = context;
         this.records = records;
     }
-
 
     private static class ViewHolder {
         private TextView tvText;
@@ -121,7 +120,7 @@ public class HistoryAdapter extends BaseSwipeAdapter {
     public void fillValues(int position, View convertView) {
         final Translator translator = getTranslator(position);
         TranslatorData translatorData = new TranslatorData();
-        Display adapterDisplay = new AdapterHistoryDisplay(context, convertView, translatorData);
+        Display adapterDisplay = new AdapterFavoritesDisplay(context, convertView, translatorData);
         translatorData.setTranslator(translator);
         adapterDisplay.display();
     }

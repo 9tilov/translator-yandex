@@ -12,4 +12,7 @@
     <color name="frame">#644036</color>
 
     <color name="image">#644036</color>
+
+    <color name="tab_selected">#644036</color>
+    <color name="tab_deselected">#C6AF89</color>
 </resources>

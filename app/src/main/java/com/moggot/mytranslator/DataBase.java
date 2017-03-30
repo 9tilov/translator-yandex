@@ -61,6 +61,10 @@ public class DataBase {
         return translatorDao.queryBuilder().build().list();
     }
 
+    public List<Translator> getFavoritesRecords() {
+        return translatorDao.queryBuilder().where(TranslatorDao.Properties.IsFavorites.eq(true)).list();
+    }
+
     private TranslatorDao setupDb() {
         DaoMaster.DevOpenHelper masterHelper = new DaoMaster.DevOpenHelper(context, DB_NAME, null); //create database db file if not exist
         SQLiteDatabase db = masterHelper.getWritableDatabase();  //get the created database db file

@@ -4,16 +4,23 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ListView;
+import android.widget.TabHost;
 import android.widget.TextView;
 
+import com.moggot.mytranslator.adapter.FavoritesAdapter;
+import com.moggot.mytranslator.adapter.HistoryAdapter;
 import com.moggot.mytranslator.fragments.HistoryFragment;
 import com.moggot.mytranslator.fragments.TranslationFragment;
 import com.moggot.mytranslator.observer.Display;
@@ -21,6 +28,8 @@ import com.moggot.mytranslator.observer.TranslatorData;
 import com.moggot.mytranslator.observer.TraslatorDisplay;
 import com.moggot.mytranslator.translate.Translate;
 import com.moggot.mytranslator.translator.Translator;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,7 +48,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initTabhost();
+
         etText = (BackAwareEditText) findViewById(R.id.etText);
+
 
         ft = getFragmentManager().beginTransaction();
         fragment = new HistoryFragment();
@@ -69,14 +81,14 @@ public class MainActivity extends AppCompatActivity {
                     isTranslationStarted = false;
                     ft = getFragmentManager().beginTransaction();
                     fragment = new HistoryFragment();
-                    ft.replace(R.id.frgmCont, fragment);
+                    ft.replace(R.id.frgmCont, fragment, Consts.TAG_FRAGMENT_HISTORY);
                     ft.commit();
                 } else {
                     if (!isTranslationStarted) {
                         isTranslationStarted = true;
                         fragment = new TranslationFragment();
                         ft = getFragmentManager().beginTransaction();
-                        ft.replace(R.id.frgmCont, fragment);
+                        ft.replace(R.id.frgmCont, fragment, Consts.TAG_FRAGMENT_TRANSLATOR);
                         ft.commit();
                     }
                     TranslationTask task = new TranslationTask();
@@ -120,6 +132,51 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void initTabhost() {
+        TabHost tabHost = (TabHost) findViewById(R.id.tabhost);
+
+
+        tabHost.setup();
+
+        TabHost.TabSpec tabSpec = tabHost.newTabSpec("tag1");
+
+        tabSpec.setContent(R.id.tabTranslator);
+        tabSpec.setIndicator("", ContextCompat.getDrawable(this, R.drawable.tab_selector_translator));
+        tabHost.addTab(tabSpec);
+
+        tabSpec = tabHost.newTabSpec("tag2");
+        tabSpec.setContent(R.id.tabFavorites);
+        tabSpec.setIndicator("", ContextCompat.getDrawable(this, R.drawable.tab_selector_history));
+        tabHost.addTab(tabSpec);
+
+        tabHost.setCurrentTab(0);
+
+        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+                Log.v(LOG_TAG, "tabId = " + tabId);
+                if (tabId.equals("tag1")) {
+                    Fragment historyFragment = getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_HISTORY);
+                    if (historyFragment != null && historyFragment.isVisible()) {
+                        ListView listView = (ListView) historyFragment.getView().findViewById(R.id.lvHistory);
+                        DataBase db = new DataBase(MainActivity.this);
+                        List<Translator> records = db.getAllRecords();
+                        HistoryAdapter adapter = new HistoryAdapter(MainActivity.this, records);
+                        listView.setAdapter(adapter);
+                    }
+                }
+                if (tabId.equals("tag2")) {
+                    Log.v(LOG_TAG, "tag2");
+                    ListView listView = (ListView) findViewById(R.id.lvFavorites);
+                    DataBase db = new DataBase(MainActivity.this);
+                    List<Translator> records = db.getFavoritesRecords();
+                    FavoritesAdapter adapter = new FavoritesAdapter(MainActivity.this, records);
+                    listView.setAdapter(adapter);
+                }
+            }
+        });
+    }
+
     private void saveRecord(Translator translator) {
         Translator tmpTranslator = new Translator(null, translator.getText(), translator.getTranslation()
                 , translator.getInputLanguage(), translator.getOutputLanguage(), translator.getIsFavorites());
@@ -144,14 +201,11 @@ public class MainActivity extends AppCompatActivity {
         translatorData.setTranslator(translator);
         traslatorDisplay.display();
 
-        Fragment translatorFragment = getFragmentManager().findFragmentById(R.id.frgmCont);
-        View tmpView = translatorFragment.getView();
-        if (tmpView == null)
-            return;
-        TextView tvTranslation = (TextView) tmpView.findViewById(R.id.tvTranslation);
-        if (tvTranslation == null)
-            return;
-        etText.setText(tvTranslation.getText().toString());
+        Fragment translatorFragment = getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
+        if (translatorFragment != null && translatorFragment.isVisible()) {
+            TextView tvTranslation = (TextView) translatorFragment.getView().findViewById(R.id.tvTranslation);
+            etText.setText(tvTranslation.getText().toString());
+        }
     }
 
     public void onClickInputLang(View view) {
@@ -222,16 +276,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            Fragment translatorFragment = getFragmentManager().findFragmentById(R.id.frgmCont);
-            View view = translatorFragment.getView();
-            if (view == null)
-                return;
-            TextView tvTranslator = (TextView) view.findViewById(R.id.tvTranslation);
-            if (tvTranslator == null)
-                return;
-            tvTranslator.setText(result);
-            translator.setTranslation(result);
-
+            Fragment translatorFragment = getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
+            if (translatorFragment != null && translatorFragment.isVisible()) {
+                TextView tvTranslator = (TextView) translatorFragment.getView().findViewById(R.id.tvTranslation);
+                tvTranslator.setText(result);
+                translator.setTranslation(result);
+            }
         }
     }
 }
