@@ -6,8 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
@@ -47,7 +45,6 @@ public class HistoryAdapter extends BaseSwipeAdapter {
         private ImageView iwFavorites;
         private TextView tvInputLang;
         private TextView tvOutputLang;
-        private LinearLayout rlDelete;
     }
 
     public void update(List<Translator> items) {
@@ -71,25 +68,22 @@ public class HistoryAdapter extends BaseSwipeAdapter {
         viewHolder.iwFavorites = (ImageView) view.findViewById(R.id.adapterIwFavorites);
         viewHolder.tvInputLang = (TextView) view.findViewById(R.id.adapterTvInputLang);
         viewHolder.tvOutputLang = (TextView) view.findViewById(R.id.adapterTvOutputLang);
-        viewHolder.rlDelete = (LinearLayout) view.findViewById(R.id.rlDelete);
 
         viewHolder.tvText.setTag(records.get(position));
         viewHolder.tvTranslation.setTag(records.get(position));
         viewHolder.iwFavorites.setTag(records.get(position));
         viewHolder.tvInputLang.setTag(records.get(position));
         viewHolder.tvOutputLang.setTag(records.get(position));
-        viewHolder.rlDelete.setTag(records.get(position));
-
-        final Translator translator = getTranslator(position);
 
         SwipeLayout swipeLayout = (SwipeLayout) view.findViewById(getSwipeLayoutResourceId(position));
         swipeLayout.addSwipeListener(new SimpleSwipeListener() {
             @Override
             public void onOpen(SwipeLayout layout) {
-                YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.adapterIwDelete));
+                YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.adapterIwTrash));
             }
         });
 
+        final Translator translator = getTranslator(position);
         viewHolder.iwFavorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,7 +97,7 @@ public class HistoryAdapter extends BaseSwipeAdapter {
                 Log.v(LOG_TAG, "favorites");
             }
         });
-        viewHolder.rlDelete.setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.adapterRlDelete).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 records.remove(position);

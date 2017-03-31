@@ -9,9 +9,13 @@
     <color name="text">#644036</color>
     <color name="delete">#FF3B30</color>
 
+    <color name="image_disable">#CCCCCC</color>
+
     <color name="frame">#644036</color>
 
     <color name="image">#644036</color>
+
+    <color name="separator">#644036</color>
 
     <color name="tab_selected">#644036</color>
     <color name="tab_deselected">#C6AF89</color>

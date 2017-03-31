@@ -5,8 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
@@ -17,7 +15,6 @@ import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 import com.moggot.mytranslator.DataBase;
 import com.moggot.mytranslator.R;
 import com.moggot.mytranslator.observer.AdapterFavoritesDisplay;
-import com.moggot.mytranslator.observer.AdapterHistoryDisplay;
 import com.moggot.mytranslator.observer.Display;
 import com.moggot.mytranslator.observer.TranslatorData;
 import com.moggot.mytranslator.translator.Translator;
@@ -43,10 +40,8 @@ public class FavoritesAdapter extends BaseSwipeAdapter {
     private static class ViewHolder {
         private TextView tvText;
         private TextView tvTranslation;
-        private ImageView iwFavorites;
         private TextView tvInputLang;
         private TextView tvOutputLang;
-        private LinearLayout rlDelete;
     }
 
     public void update(List<Translator> items) {
@@ -67,42 +62,24 @@ public class FavoritesAdapter extends BaseSwipeAdapter {
 
         viewHolder.tvText = (TextView) view.findViewById(R.id.adapterTvText);
         viewHolder.tvTranslation = (TextView) view.findViewById(R.id.adapterTvTranslation);
-        viewHolder.iwFavorites = (ImageView) view.findViewById(R.id.adapterIwFavorites);
         viewHolder.tvInputLang = (TextView) view.findViewById(R.id.adapterTvInputLang);
         viewHolder.tvOutputLang = (TextView) view.findViewById(R.id.adapterTvOutputLang);
-        viewHolder.rlDelete = (LinearLayout) view.findViewById(R.id.rlDelete);
 
         viewHolder.tvText.setTag(records.get(position));
         viewHolder.tvTranslation.setTag(records.get(position));
-        viewHolder.iwFavorites.setTag(records.get(position));
         viewHolder.tvInputLang.setTag(records.get(position));
         viewHolder.tvOutputLang.setTag(records.get(position));
-        viewHolder.rlDelete.setTag(records.get(position));
-
-        final Translator translator = getTranslator(position);
 
         SwipeLayout swipeLayout = (SwipeLayout) view.findViewById(getSwipeLayoutResourceId(position));
         swipeLayout.addSwipeListener(new SimpleSwipeListener() {
             @Override
             public void onOpen(SwipeLayout layout) {
-                YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.adapterIwDelete));
+                YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.adapterIwTrash));
             }
         });
 
-        viewHolder.iwFavorites.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (translator.getIsFavorites())
-                    translator.setIsFavorites(false);
-                else
-                    translator.setIsFavorites(true);
-                DataBase db = new DataBase(context);
-                db.editRecord(translator);
-                update(records);
-                Log.v(LOG_TAG, "favorites");
-            }
-        });
-        viewHolder.rlDelete.setOnClickListener(new View.OnClickListener() {
+        final Translator translator = getTranslator(position);
+        view.findViewById(R.id.adapterRlDelete).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 records.remove(position);

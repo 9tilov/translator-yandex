@@ -24,5 +24,4 @@ public class TranslationFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_traslation, container, false);
     }
 
-
 }

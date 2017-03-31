@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -52,18 +52,13 @@ public class MainActivity extends AppCompatActivity {
 
         etText = (BackAwareEditText) findViewById(R.id.etText);
 
-
+        createTranslator();
         ft = getFragmentManager().beginTransaction();
         fragment = new HistoryFragment();
         ft.add(R.id.frgmCont, fragment);
         ft.commit();
 
-        translator = new Translator(null
-                , etText.getText().toString()
-                , ""
-                , getString(R.string.en_short)
-                , getString(R.string.ru_short)
-                , false);
+
         etText.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -86,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     if (!isTranslationStarted) {
                         isTranslationStarted = true;
+                        createTranslator();
                         fragment = new TranslationFragment();
                         ft = getFragmentManager().beginTransaction();
                         ft.replace(R.id.frgmCont, fragment, Consts.TAG_FRAGMENT_TRANSLATOR);
@@ -101,8 +97,7 @@ public class MainActivity extends AppCompatActivity {
         etText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-
-                    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                    hideKeyboard();
                     if (etText.getText().toString().isEmpty()) {
                         return false;
                     }
@@ -115,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         etText.setBackPressedListener(new BackAwareEditText.BackPressedListener() {
             @Override
             public void onImeBack(BackAwareEditText editText) {
-                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                hideKeyboard();
                 if (etText.getText().toString().isEmpty())
                     return;
                 saveRecord(translator);
@@ -154,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String tabId) {
-                Log.v(LOG_TAG, "tabId = " + tabId);
                 if (tabId.equals("tag1")) {
                     Fragment historyFragment = getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_HISTORY);
                     if (historyFragment != null && historyFragment.isVisible()) {
@@ -166,7 +160,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 if (tabId.equals("tag2")) {
-                    Log.v(LOG_TAG, "tag2");
                     ListView listView = (ListView) findViewById(R.id.lvFavorites);
                     DataBase db = new DataBase(MainActivity.this);
                     List<Translator> records = db.getFavoritesRecords();
@@ -175,6 +168,21 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void createTranslator() {
+        String inputLanguage = LangSharedPreferences.loadInputLanguage(this);
+        String outputLanguage = LangSharedPreferences.loadOutputLanguage(this);
+        translator = new Translator(null
+                , etText.getText().toString()
+                , ""
+                , inputLanguage
+                , outputLanguage
+                , false);
+    }
+
+    private void hideKeyboard() {
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     private void saveRecord(Translator translator) {
@@ -225,19 +233,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickAddFavorites(View view) {
-        translator.setIsFavorites(true);
-        saveRecord(translator);
+        Fragment translatorFragment = getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
+        if (translatorFragment != null && translatorFragment.isVisible()) {
+            Button btnFavorites = (Button) translatorFragment.getView().findViewById(R.id.btnFavorites);
+            if (translator.getIsFavorites()) {
+                translator.setIsFavorites(false);
+                btnFavorites.setBackgroundResource(R.drawable.ic_bookmark_border_black_24px);
+            } else {
+                translator.setIsFavorites(true);
+                btnFavorites.setBackgroundResource(R.drawable.ic_bookmark_24px);
+            }
+        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        TranslatorData translatorData = new TranslatorData();
-        Display traslatorDisplay = new TraslatorDisplay(this, translatorData);
+
         String inputLang = LangSharedPreferences.loadInputLanguage(this);
         String outputLang = LangSharedPreferences.loadOutputLanguage(this);
         translator.setInputLanguage(inputLang);
         translator.setOutputLanguage(outputLang);
+
+        TranslatorData translatorData = new TranslatorData();
+        Display traslatorDisplay = new TraslatorDisplay(this, translatorData);
         translatorData.setTranslator(translator);
         traslatorDisplay.display();
 

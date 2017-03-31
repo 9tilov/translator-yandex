@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="100">
+    android:weightSum="100"
+    android:background="@color/background_light">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -101,6 +102,7 @@
             android:scrollHorizontally="false" />
     </RelativeLayout>
 
+
     <TabHost
         android:id="@+id/tabhost"
         android:layout_width="match_parent"
@@ -143,12 +145,18 @@
 
             </FrameLayout>
 
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/separator" />
+
             <TabWidget
                 android:id="@android:id/tabs"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="-4dp"
-                android:layout_weight="0" />
+                android:layout_weight="0"
+                android:background="@color/background" />
 
         </LinearLayout>
 
