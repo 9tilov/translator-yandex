@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         createTranslator();
         ft = getFragmentManager().beginTransaction();
         fragment = new HistoryFragment();
-        ft.add(R.id.frgmCont, fragment);
+        ft.add(R.id.frgmCont, fragment, Consts.TAG_FRAGMENT_HISTORY);
         ft.commit();
 
 
@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     TranslationTask task = new TranslationTask();
                     translator.setText(str.toString());
+                    translator.setIsFavorites(false);
                     task.execute(translator);
                 }
             }
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         etText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                    hideKeyboard();
+                    Log.v(LOG_TAG, "enter");
                     if (etText.getText().toString().isEmpty()) {
                         return false;
                     }
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         etText.setBackPressedListener(new BackAwareEditText.BackPressedListener() {
             @Override
             public void onImeBack(BackAwareEditText editText) {
-                hideKeyboard();
+                Log.v(LOG_TAG, "back");
                 if (etText.getText().toString().isEmpty())
                     return;
                 saveRecord(translator);
@@ -133,13 +134,13 @@ public class MainActivity extends AppCompatActivity {
 
         tabHost.setup();
 
-        TabHost.TabSpec tabSpec = tabHost.newTabSpec("tag1");
+        TabHost.TabSpec tabSpec = tabHost.newTabSpec(getString(R.string.tag_translator));
 
         tabSpec.setContent(R.id.tabTranslator);
         tabSpec.setIndicator("", ContextCompat.getDrawable(this, R.drawable.tab_selector_translator));
         tabHost.addTab(tabSpec);
 
-        tabSpec = tabHost.newTabSpec("tag2");
+        tabSpec = tabHost.newTabSpec(getString(R.string.tag_favorites));
         tabSpec.setContent(R.id.tabFavorites);
         tabSpec.setIndicator("", ContextCompat.getDrawable(this, R.drawable.tab_selector_history));
         tabHost.addTab(tabSpec);
@@ -149,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String tabId) {
-                if (tabId.equals("tag1")) {
+                if (tabId.equals(getString(R.string.tag_translator))) {
                     Fragment historyFragment = getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_HISTORY);
                     if (historyFragment != null && historyFragment.isVisible()) {
                         ListView listView = (ListView) historyFragment.getView().findViewById(R.id.lvHistory);
@@ -159,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
                         listView.setAdapter(adapter);
                     }
                 }
-                if (tabId.equals("tag2")) {
+                if (tabId.equals(getString(R.string.tag_favorites))) {
                     ListView listView = (ListView) findViewById(R.id.lvFavorites);
                     DataBase db = new DataBase(MainActivity.this);
                     List<Translator> records = db.getFavoritesRecords();
@@ -181,20 +182,11 @@ public class MainActivity extends AppCompatActivity {
                 , false);
     }
 
-    private void hideKeyboard() {
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-    }
-
     private void saveRecord(Translator translator) {
-        Translator tmpTranslator = new Translator(null, translator.getText(), translator.getTranslation()
-                , translator.getInputLanguage(), translator.getOutputLanguage(), translator.getIsFavorites());
+//        Translator tmpTranslator = new Translator(null, translator.getText(), translator.getTranslation()
+//                , translator.getInputLanguage(), translator.getOutputLanguage(), translator.getIsFavorites());
         DataBase db = new DataBase(this);
-        db.addRecord(tmpTranslator);
-    }
-
-    private void editRecord(Translator translator) {
-        DataBase db = new DataBase(this);
-        db.editRecord(translator);
+        db.addRecord(translator);
     }
 
     public void onClickChangeLang(View view) {
@@ -238,6 +230,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickAddFavorites(View view) {
+        DataBase db = new DataBase(this);
+        long id = translator.getId();
         Fragment translatorFragment = getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
         if (translatorFragment != null && translatorFragment.isVisible()) {
             Button btnFavorites = (Button) translatorFragment.getView().findViewById(R.id.btnFavorites);
@@ -248,7 +242,9 @@ public class MainActivity extends AppCompatActivity {
                 translator.setIsFavorites(true);
                 btnFavorites.setBackgroundResource(R.drawable.ic_bookmark_24px);
             }
-            editRecord(translator);
+
+            db.editRecord(translator);
+
         }
     }
 

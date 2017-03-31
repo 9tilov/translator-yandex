@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">MyTranslator</string>
 
+    <string name="tag_translator" translatable="false">tag_translator</string>
+    <string name="tag_favorites" translatable="false">tag_favorites</string>
+
     <string name="edittext_hint">Enter text&#8230;</string>
 
     <string name="sq">Albanian</string>

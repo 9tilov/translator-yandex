@@ -44,8 +44,9 @@ public class FavoritesAdapter extends BaseSwipeAdapter {
         private TextView tvOutputLang;
     }
 
-    public void update(List<Translator> items) {
-        this.records = items;
+    private void update() {
+        DataBase db = new DataBase(context);
+        records = db.getFavoritesRecords();
         notifyDatasetChanged();
     }
 
@@ -82,12 +83,11 @@ public class FavoritesAdapter extends BaseSwipeAdapter {
         view.findViewById(R.id.adapterRlDelete).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                records.remove(position);
-                update(records);
                 translator.setIsFavorites(false);
                 DataBase db = new DataBase(context);
                 db.editRecord(translator);
                 closeItem(position);
+                update();
                 Log.v(LOG_TAG, "delete");
             }
         });

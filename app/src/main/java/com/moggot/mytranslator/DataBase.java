@@ -42,7 +42,7 @@ public class DataBase {
         }
 
         if (tmpRecord == null)
-            translatorDao.insertOrReplace(record);
+            translatorDao.insert(record);
     }
 
     public void editRecord(Translator record) {

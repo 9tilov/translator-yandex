@@ -1,6 +1,7 @@
 package com.moggot.mytranslator.adapter;
 
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,8 +48,9 @@ public class HistoryAdapter extends BaseSwipeAdapter {
         private TextView tvOutputLang;
     }
 
-    public void update(List<Translator> items) {
-        this.records = items;
+    private void update() {
+        DataBase db = new DataBase(context);
+        records = db.getAllRecords();
         notifyDatasetChanged();
     }
 
@@ -87,24 +89,23 @@ public class HistoryAdapter extends BaseSwipeAdapter {
         viewHolder.iwFavorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.v(LOG_TAG, "position = " + position);
                 if (translator.getIsFavorites())
                     translator.setIsFavorites(false);
                 else
                     translator.setIsFavorites(true);
                 DataBase db = new DataBase(context);
                 db.editRecord(translator);
-                update(records);
-                Log.v(LOG_TAG, "favorites");
+                update();
             }
         });
         view.findViewById(R.id.adapterRlDelete).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                records.remove(position);
-                update(records);
                 DataBase db = new DataBase(context);
                 db.deleteRecord(translator);
                 closeItem(position);
+                update();
                 Log.v(LOG_TAG, "delete");
             }
         });
