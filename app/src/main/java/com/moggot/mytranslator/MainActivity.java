@@ -192,6 +192,11 @@ public class MainActivity extends AppCompatActivity {
         db.addRecord(tmpTranslator);
     }
 
+    private void editRecord(Translator translator) {
+        DataBase db = new DataBase(this);
+        db.editRecord(translator);
+    }
+
     public void onClickChangeLang(View view) {
         String inputLang = LangSharedPreferences.loadInputLanguage(this);
         String outputLang = LangSharedPreferences.loadOutputLanguage(this);
@@ -243,6 +248,7 @@ public class MainActivity extends AppCompatActivity {
                 translator.setIsFavorites(true);
                 btnFavorites.setBackgroundResource(R.drawable.ic_bookmark_24px);
             }
+            editRecord(translator);
         }
     }
 

@@ -1,32 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_light"
-    android:orientation="horizontal"
-    android:weightSum="10">
+    android:background="@color/background_light">
 
     <TextView
         android:id="@+id/tvTranslation"
         style="@style/Translation"
-        android:layout_width="0dip"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_weight="9"
-        android:text="" />
+        android:layout_marginEnd="@dimen/image"
+        android:layout_marginRight="@dimen/image" />
 
-    <RelativeLayout
-        android:layout_width="0dip"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
+    <Button
+        android:id="@+id/btnFavorites"
+        android:layout_width="@dimen/image"
+        android:layout_height="@dimen/image"
+        android:background="@drawable/ic_bookmark_border_black_24px"
+        android:onClick="onClickAddFavorites"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
-        <Button
-            android:id="@+id/btnFavorites"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_bookmark_border_black_24px"
-            android:onClick="onClickAddFavorites" />
-    </RelativeLayout>
-
-</LinearLayout>
+</RelativeLayout>

@@ -52,6 +52,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:ellipsize="end"
+                android:maxLength="20"
                 android:maxLines="1"
                 android:scrollHorizontally="true"
                 android:text="text" />
@@ -64,6 +65,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:ellipsize="end"
+                android:maxLength="20"
                 android:maxLines="1"
                 android:scrollHorizontally="true"
                 android:text="translation" />

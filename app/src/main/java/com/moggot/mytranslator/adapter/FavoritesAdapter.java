@@ -84,8 +84,9 @@ public class FavoritesAdapter extends BaseSwipeAdapter {
             public void onClick(View view) {
                 records.remove(position);
                 update(records);
+                translator.setIsFavorites(false);
                 DataBase db = new DataBase(context);
-                db.deleteRecord(translator);
+                db.editRecord(translator);
                 closeItem(position);
                 Log.v(LOG_TAG, "delete");
             }
