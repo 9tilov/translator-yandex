@@ -12,7 +12,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.ListView;
@@ -42,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private Fragment fragment;
     private FragmentTransaction ft;
     private Translator translator;
+    private DataBase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +52,13 @@ public class MainActivity extends AppCompatActivity {
 
         etText = (BackAwareEditText) findViewById(R.id.etText);
 
-        createTranslator();
+        db = new DataBase(this);
+
         ft = getFragmentManager().beginTransaction();
         fragment = new HistoryFragment();
         ft.add(R.id.frgmCont, fragment, Consts.TAG_FRAGMENT_HISTORY);
         ft.commit();
+
 
 
         etText.addTextChangedListener(new TextWatcher() {
@@ -81,15 +83,13 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     if (!isTranslationStarted) {
                         isTranslationStarted = true;
-                        createTranslator();
                         fragment = new TranslationFragment();
                         ft = getFragmentManager().beginTransaction();
                         ft.replace(R.id.frgmCont, fragment, Consts.TAG_FRAGMENT_TRANSLATOR);
                         ft.commit();
                     }
+                    createTranslator(str.toString());
                     TranslationTask task = new TranslationTask();
-                    translator.setText(str.toString());
-                    translator.setIsFavorites(false);
                     task.execute(translator);
                 }
             }
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                     if (etText.getText().toString().isEmpty()) {
                         return false;
                     }
-                    saveRecord(translator);
+                    db.addRecord(translator);
                 }
                 return false;
             }
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.v(LOG_TAG, "back");
                 if (etText.getText().toString().isEmpty())
                     return;
-                saveRecord(translator);
+                db.addRecord(translator);
             }
         });
 
@@ -154,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
                     Fragment historyFragment = getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_HISTORY);
                     if (historyFragment != null && historyFragment.isVisible()) {
                         ListView listView = (ListView) historyFragment.getView().findViewById(R.id.lvHistory);
-                        DataBase db = new DataBase(MainActivity.this);
                         List<Translator> records = db.getAllRecords();
                         HistoryAdapter adapter = new HistoryAdapter(MainActivity.this, records);
                         listView.setAdapter(adapter);
@@ -162,7 +161,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (tabId.equals(getString(R.string.tag_favorites))) {
                     ListView listView = (ListView) findViewById(R.id.lvFavorites);
-                    DataBase db = new DataBase(MainActivity.this);
                     List<Translator> records = db.getFavoritesRecords();
                     FavoritesAdapter adapter = new FavoritesAdapter(MainActivity.this, records);
                     listView.setAdapter(adapter);
@@ -171,22 +169,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void createTranslator() {
+    private void createTranslator(String text) {
         String inputLanguage = LangSharedPreferences.loadInputLanguage(this);
         String outputLanguage = LangSharedPreferences.loadOutputLanguage(this);
         translator = new Translator(null
-                , etText.getText().toString()
+                , text
                 , ""
                 , inputLanguage
                 , outputLanguage
                 , false);
-    }
-
-    private void saveRecord(Translator translator) {
-//        Translator tmpTranslator = new Translator(null, translator.getText(), translator.getTranslation()
-//                , translator.getInputLanguage(), translator.getOutputLanguage(), translator.getIsFavorites());
-        DataBase db = new DataBase(this);
-        db.addRecord(translator);
     }
 
     public void onClickChangeLang(View view) {
@@ -216,13 +207,13 @@ public class MainActivity extends AppCompatActivity {
     public void onClickInputLang(View view) {
         Intent intent = new Intent(this, LanguageActivity.class);
         intent.putExtra(Consts.EXTRA_LANG, Consts.LANG_TYPE.INPUT.getType());
-        startActivity(intent);
+        startActivityForResult(intent, Consts.REQUEST_CODE_ACTIVITY_LANGUAGE);
     }
 
     public void onClickOutputLang(View view) {
         Intent intent = new Intent(this, LanguageActivity.class);
         intent.putExtra(Consts.EXTRA_LANG, Consts.LANG_TYPE.OUTPUT.getType());
-        startActivity(intent);
+        startActivityForResult(intent, Consts.REQUEST_CODE_ACTIVITY_LANGUAGE);
     }
 
     public void onClickClear(View view) {
@@ -230,8 +221,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickAddFavorites(View view) {
-        DataBase db = new DataBase(this);
-        long id = translator.getId();
         Fragment translatorFragment = getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
         if (translatorFragment != null && translatorFragment.isVisible()) {
             Button btnFavorites = (Button) translatorFragment.getView().findViewById(R.id.btnFavorites);
@@ -249,21 +238,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case Consts.REQUEST_CODE_ACTIVITY_LANGUAGE:
+                String inputLang = LangSharedPreferences.loadInputLanguage(this);
+                String outputLang = LangSharedPreferences.loadOutputLanguage(this);
+                translator.setInputLanguage(inputLang);
+                translator.setOutputLanguage(outputLang);
 
-        String inputLang = LangSharedPreferences.loadInputLanguage(this);
-        String outputLang = LangSharedPreferences.loadOutputLanguage(this);
-        translator.setInputLanguage(inputLang);
-        translator.setOutputLanguage(outputLang);
+                TranslatorData translatorData = new TranslatorData();
+                Display traslatorDisplay = new TraslatorDisplay(this, translatorData);
+                translatorData.setTranslator(translator);
+                traslatorDisplay.display();
 
-        TranslatorData translatorData = new TranslatorData();
-        Display traslatorDisplay = new TraslatorDisplay(this, translatorData);
-        translatorData.setTranslator(translator);
-        traslatorDisplay.display();
-
-        TranslationTask task = new TranslationTask();
-        task.execute(translator);
+                TranslationTask task = new TranslationTask();
+                task.execute(translator);
+                break;
+        }
     }
 
     private class TranslationTask extends AsyncTask<Translator, String, String> {

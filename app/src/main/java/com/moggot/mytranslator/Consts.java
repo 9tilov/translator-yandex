@@ -161,9 +161,8 @@ public class Consts {
 
     public static final String SHARED_PREF_NAME = "my_shared_pref";
     public static final String EXTRA_LANG = "extra_lang";
-    public static final String EXTRA_TEXT = "extra_text";
-    public static final String EXTRA_INPUT_LANG = "extra_input_lang";
-    public static final String EXTRA_OUTPUT_LANG = "extra_output_lang";
     public static final String TAG_FRAGMENT_TRANSLATOR = "tag_fragment_translator";
     public static final String TAG_FRAGMENT_HISTORY = "tag_fragment_history";
+
+    public static final int REQUEST_CODE_ACTIVITY_LANGUAGE = 0;
 }

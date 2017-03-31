@@ -29,12 +29,14 @@ public class FavoritesAdapter extends BaseSwipeAdapter {
 
     private Context context;
     private List<Translator> records;
+    private DataBase db;
 
     private static final String LOG_TAG = "FavoritesAdapter";
 
     public FavoritesAdapter(Context context, List<Translator> records) {
         this.context = context;
         this.records = records;
+        this.db = new DataBase(context);
     }
 
     private static class ViewHolder {
@@ -45,7 +47,6 @@ public class FavoritesAdapter extends BaseSwipeAdapter {
     }
 
     private void update() {
-        DataBase db = new DataBase(context);
         records = db.getFavoritesRecords();
         notifyDatasetChanged();
     }
@@ -84,7 +85,6 @@ public class FavoritesAdapter extends BaseSwipeAdapter {
             @Override
             public void onClick(View view) {
                 translator.setIsFavorites(false);
-                DataBase db = new DataBase(context);
                 db.editRecord(translator);
                 closeItem(position);
                 update();

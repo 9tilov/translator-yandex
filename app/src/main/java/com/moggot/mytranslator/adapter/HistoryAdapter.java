@@ -1,7 +1,6 @@
 package com.moggot.mytranslator.adapter;
 
 import android.content.Context;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,12 +30,14 @@ public class HistoryAdapter extends BaseSwipeAdapter {
 
     private Context context;
     private List<Translator> records;
+    private DataBase db;
 
     private static final String LOG_TAG = "HistoryAdapter";
 
     public HistoryAdapter(Context context, List<Translator> records) {
         this.context = context;
         this.records = records;
+        this.db = new DataBase(context);
     }
 
 
@@ -49,7 +50,6 @@ public class HistoryAdapter extends BaseSwipeAdapter {
     }
 
     private void update() {
-        DataBase db = new DataBase(context);
         records = db.getAllRecords();
         notifyDatasetChanged();
     }
@@ -94,7 +94,6 @@ public class HistoryAdapter extends BaseSwipeAdapter {
                     translator.setIsFavorites(false);
                 else
                     translator.setIsFavorites(true);
-                DataBase db = new DataBase(context);
                 db.editRecord(translator);
                 update();
             }
@@ -102,7 +101,6 @@ public class HistoryAdapter extends BaseSwipeAdapter {
         view.findViewById(R.id.adapterRlDelete).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DataBase db = new DataBase(context);
                 db.deleteRecord(translator);
                 closeItem(position);
                 update();
