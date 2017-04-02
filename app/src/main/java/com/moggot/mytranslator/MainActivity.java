@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     private Fragment fragment;
     private FragmentTransaction ft;
     private Translator translator;
-    private DataBase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +51,12 @@ public class MainActivity extends AppCompatActivity {
 
         etText = (BackAwareEditText) findViewById(R.id.etText);
 
-        db = new DataBase(this);
+        createTranslator();
 
         ft = getFragmentManager().beginTransaction();
         fragment = new HistoryFragment();
         ft.add(R.id.frgmCont, fragment, Consts.TAG_FRAGMENT_HISTORY);
         ft.commit();
-
-
 
         etText.addTextChangedListener(new TextWatcher() {
 
@@ -88,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                         ft.replace(R.id.frgmCont, fragment, Consts.TAG_FRAGMENT_TRANSLATOR);
                         ft.commit();
                     }
-                    createTranslator(str.toString());
+                    translator.setText(str.toString());
                     TranslationTask task = new TranslationTask();
                     task.execute(translator);
                 }
@@ -98,11 +95,12 @@ public class MainActivity extends AppCompatActivity {
         etText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                    Log.v(LOG_TAG, "enter");
                     if (etText.getText().toString().isEmpty()) {
                         return false;
                     }
+                    DataBase db = new DataBase(MainActivity.this);
                     db.addRecord(translator);
+                    createTranslator();
                 }
                 return false;
             }
@@ -111,10 +109,11 @@ public class MainActivity extends AppCompatActivity {
         etText.setBackPressedListener(new BackAwareEditText.BackPressedListener() {
             @Override
             public void onImeBack(BackAwareEditText editText) {
-                Log.v(LOG_TAG, "back");
                 if (etText.getText().toString().isEmpty())
                     return;
+                DataBase db = new DataBase(MainActivity.this);
                 db.addRecord(translator);
+                createTranslator();
             }
         });
 
@@ -130,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void initTabhost() {
         TabHost tabHost = (TabHost) findViewById(R.id.tabhost);
-
 
         tabHost.setup();
 
@@ -150,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String tabId) {
+                DataBase db = new DataBase(MainActivity.this);
                 if (tabId.equals(getString(R.string.tag_translator))) {
                     Fragment historyFragment = getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_HISTORY);
                     if (historyFragment != null && historyFragment.isVisible()) {
@@ -169,11 +168,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void createTranslator(String text) {
+    private void createTranslator() {
         String inputLanguage = LangSharedPreferences.loadInputLanguage(this);
         String outputLanguage = LangSharedPreferences.loadOutputLanguage(this);
         translator = new Translator(null
-                , text
+                , etText.getText().toString()
                 , ""
                 , inputLanguage
                 , outputLanguage
@@ -232,7 +231,8 @@ public class MainActivity extends AppCompatActivity {
                 btnFavorites.setBackgroundResource(R.drawable.ic_bookmark_24px);
             }
 
-            db.editRecord(translator);
+            DataBase db = new DataBase(this);
+            db.addRecord(translator);
 
         }
     }
@@ -288,6 +288,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+            if (result == null)
+                return;
             Fragment translatorFragment = getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
             if (translatorFragment != null && translatorFragment.isVisible()) {
                 TextView tvTranslator = (TextView) translatorFragment.getView().findViewById(R.id.tvTranslation);

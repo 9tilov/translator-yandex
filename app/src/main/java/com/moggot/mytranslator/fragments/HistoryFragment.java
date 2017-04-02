@@ -12,6 +12,7 @@ import com.moggot.mytranslator.adapter.HistoryAdapter;
 import com.moggot.mytranslator.R;
 import com.moggot.mytranslator.translator.Translator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**

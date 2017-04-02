@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -39,13 +38,6 @@ public class FavoritesAdapter extends BaseSwipeAdapter {
         this.db = new DataBase(context);
     }
 
-    private static class ViewHolder {
-        private TextView tvText;
-        private TextView tvTranslation;
-        private TextView tvInputLang;
-        private TextView tvOutputLang;
-    }
-
     private void update() {
         records = db.getFavoritesRecords();
         notifyDatasetChanged();
@@ -58,19 +50,7 @@ public class FavoritesAdapter extends BaseSwipeAdapter {
 
     @Override
     public View generateView(final int position, ViewGroup parent) {
-        ViewHolder viewHolder = new ViewHolder();
-        View view = LayoutInflater.from(context).inflate(R.layout.history_item, parent, false);
-        view.setTag(viewHolder);
-
-        viewHolder.tvText = (TextView) view.findViewById(R.id.adapterTvText);
-        viewHolder.tvTranslation = (TextView) view.findViewById(R.id.adapterTvTranslation);
-        viewHolder.tvInputLang = (TextView) view.findViewById(R.id.adapterTvInputLang);
-        viewHolder.tvOutputLang = (TextView) view.findViewById(R.id.adapterTvOutputLang);
-
-        viewHolder.tvText.setTag(records.get(position));
-        viewHolder.tvTranslation.setTag(records.get(position));
-        viewHolder.tvInputLang.setTag(records.get(position));
-        viewHolder.tvOutputLang.setTag(records.get(position));
+        View view = LayoutInflater.from(context).inflate(R.layout.history_item, null);
 
         SwipeLayout swipeLayout = (SwipeLayout) view.findViewById(getSwipeLayoutResourceId(position));
         swipeLayout.addSwipeListener(new SimpleSwipeListener() {
@@ -80,23 +60,22 @@ public class FavoritesAdapter extends BaseSwipeAdapter {
             }
         });
 
+        return view;
+    }
+
+    @Override
+    public void fillValues(final int position, View convertView) {
+
         final Translator translator = getTranslator(position);
-        view.findViewById(R.id.adapterRlDelete).setOnClickListener(new View.OnClickListener() {
+        convertView.findViewById(R.id.adapterRlDelete).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 translator.setIsFavorites(false);
                 db.editRecord(translator);
                 closeItem(position);
                 update();
-                Log.v(LOG_TAG, "delete");
             }
         });
-        return view;
-    }
-
-    @Override
-    public void fillValues(int position, View convertView) {
-        final Translator translator = getTranslator(position);
         TranslatorData translatorData = new TranslatorData();
         Display adapterDisplay = new AdapterFavoritesDisplay(context, convertView, translatorData);
         translatorData.setTranslator(translator);

@@ -34,15 +34,18 @@ public class DataBase {
         Translator tmpRecord;
         try {
             tmpRecord = translatorDao.queryBuilder().where(TranslatorDao.Properties.Text.eq(record.getText())
-                    , TranslatorDao.Properties.Translation.eq(record.getTranslation())
                     , TranslatorDao.Properties.InputLanguage.eq(record.getInputLanguage())
                     , TranslatorDao.Properties.OutputLanguage.eq(record.getOutputLanguage())).unique();
         } catch (Exception ex) {
             tmpRecord = null;
         }
 
-        if (tmpRecord == null)
-            translatorDao.insert(record);
+        if (tmpRecord == null) {
+            translatorDao.insertOrReplace(record);
+        } else {
+            tmpRecord.setIsFavorites(record.getIsFavorites());
+            editRecord(tmpRecord);
+        }
     }
 
     public void editRecord(Translator record) {
@@ -58,7 +61,7 @@ public class DataBase {
     }
 
     public List<Translator> getAllRecords() {
-        return translatorDao.queryBuilder().build().list();
+        return translatorDao.loadAll();
     }
 
     public List<Translator> getFavoritesRecords() {
