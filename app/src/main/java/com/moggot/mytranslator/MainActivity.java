@@ -20,12 +20,9 @@ import android.widget.TextView;
 
 import com.moggot.mytranslator.adapter.FavoritesAdapter;
 import com.moggot.mytranslator.adapter.HistoryAdapter;
-import com.moggot.mytranslator.fragments.HistoryFragment;
-import com.moggot.mytranslator.fragments.TranslationFragment;
 import com.moggot.mytranslator.observer.Display;
 import com.moggot.mytranslator.observer.TranslatorData;
 import com.moggot.mytranslator.observer.TraslatorDisplay;
-import com.moggot.mytranslator.translate.Translate;
 import com.moggot.mytranslator.translator.Translator;
 
 import java.util.List;
@@ -36,14 +33,11 @@ public class MainActivity extends AppCompatActivity {
 
     private BackAwareEditText etText;
 
-    private boolean isTranslationStarted = false;
-
-    private Fragment fragment;
-    private FragmentTransaction ft;
     private Translator translator;
+    private TranslatorContext translatorContext;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -53,10 +47,10 @@ public class MainActivity extends AppCompatActivity {
 
         createTranslator();
 
-        ft = getFragmentManager().beginTransaction();
-        fragment = new HistoryFragment();
-        ft.add(R.id.frgmCont, fragment, Consts.TAG_FRAGMENT_HISTORY);
-        ft.commit();
+        initWindow();
+
+        State stateOff = new TranlationOff(MainActivity.this);
+        translatorContext.setState(stateOff);
 
         etText.addTextChangedListener(new TextWatcher() {
 
@@ -71,24 +65,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable str) {
-                if (str.toString().isEmpty()) {
-                    isTranslationStarted = false;
-                    ft = getFragmentManager().beginTransaction();
-                    fragment = new HistoryFragment();
-                    ft.replace(R.id.frgmCont, fragment, Consts.TAG_FRAGMENT_HISTORY);
-                    ft.commit();
-                } else {
-                    if (!isTranslationStarted) {
-                        isTranslationStarted = true;
-                        fragment = new TranslationFragment();
-                        ft = getFragmentManager().beginTransaction();
-                        ft.replace(R.id.frgmCont, fragment, Consts.TAG_FRAGMENT_TRANSLATOR);
-                        ft.commit();
-                    }
-                    translator.setText(str.toString());
-                    TranslationTask task = new TranslationTask();
-                    task.execute(translator);
-                }
+                State stateOn = new TranslationOn(MainActivity.this);
+                translatorContext.setState(stateOn);
+                translator.setText(str.toString());
+                translatorContext.show(translator);
             }
         });
 
@@ -98,9 +78,7 @@ public class MainActivity extends AppCompatActivity {
                     if (etText.getText().toString().isEmpty()) {
                         return false;
                     }
-                    DataBase db = new DataBase(MainActivity.this);
-                    db.addRecord(translator);
-                    createTranslator();
+                    saveRecord();
                 }
                 return false;
             }
@@ -111,9 +89,7 @@ public class MainActivity extends AppCompatActivity {
             public void onImeBack(BackAwareEditText editText) {
                 if (etText.getText().toString().isEmpty())
                     return;
-                DataBase db = new DataBase(MainActivity.this);
-                db.addRecord(translator);
-                createTranslator();
+                saveRecord();
             }
         });
 
@@ -125,6 +101,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void saveRecord() {
+        if (etText.getText().toString().isEmpty())
+            return;
+        DataBase db = new DataBase(MainActivity.this);
+        db.addRecord(translator);
+        createTranslator();
     }
 
     private void initTabhost() {
@@ -177,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
                 , inputLanguage
                 , outputLanguage
                 , false);
+        translatorContext = new TranslatorContext(this, translator);
     }
 
     public void onClickChangeLang(View view) {
@@ -185,38 +170,41 @@ public class MainActivity extends AppCompatActivity {
         LangSharedPreferences.saveInputLanguage(this, outputLang);
         LangSharedPreferences.saveOutputLanguage(this, inputLang);
 
-        TranslatorData translatorData = new TranslatorData();
-        Display traslatorDisplay = new TraslatorDisplay(this, translatorData);
         inputLang = LangSharedPreferences.loadInputLanguage(this);
         outputLang = LangSharedPreferences.loadOutputLanguage(this);
 
         translator.setInputLanguage(inputLang);
         translator.setOutputLanguage(outputLang);
 
-        translatorData.setTranslator(translator);
-        traslatorDisplay.display();
+        initWindow();
 
         Fragment translatorFragment = getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
         if (translatorFragment != null && translatorFragment.isVisible()) {
             TextView tvTranslation = (TextView) translatorFragment.getView().findViewById(R.id.tvTranslation);
             etText.setText(tvTranslation.getText().toString());
         }
+
+        saveRecord();
     }
 
     public void onClickInputLang(View view) {
         Intent intent = new Intent(this, LanguageActivity.class);
         intent.putExtra(Consts.EXTRA_LANG, Consts.LANG_TYPE.INPUT.getType());
         startActivityForResult(intent, Consts.REQUEST_CODE_ACTIVITY_LANGUAGE);
+        saveRecord();
     }
 
     public void onClickOutputLang(View view) {
         Intent intent = new Intent(this, LanguageActivity.class);
         intent.putExtra(Consts.EXTRA_LANG, Consts.LANG_TYPE.OUTPUT.getType());
         startActivityForResult(intent, Consts.REQUEST_CODE_ACTIVITY_LANGUAGE);
+        saveRecord();
     }
 
     public void onClickClear(View view) {
         etText.setText("");
+        State stateOff = new TranlationOff(MainActivity.this);
+        translatorContext.setState(stateOff);
     }
 
     public void onClickAddFavorites(View view) {
@@ -237,6 +225,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void initWindow() {
+        TranslatorData translatorData = new TranslatorData();
+        Display traslatorDisplay = new TraslatorDisplay(this, translatorData);
+        translatorData.setTranslator(translator);
+        traslatorDisplay.display();
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -246,56 +241,15 @@ public class MainActivity extends AppCompatActivity {
                 translator.setInputLanguage(inputLang);
                 translator.setOutputLanguage(outputLang);
 
-                TranslatorData translatorData = new TranslatorData();
-                Display traslatorDisplay = new TraslatorDisplay(this, translatorData);
-                translatorData.setTranslator(translator);
-                traslatorDisplay.display();
+                initWindow();
 
-                TranslationTask task = new TranslationTask();
-                task.execute(translator);
+                State stateOn = new TranslationOn(MainActivity.this);
+                translatorContext.setState(stateOn);
+                translator.setText(etText.getText().toString());
+                translatorContext.show(translator);
+                saveRecord();
+
                 break;
-        }
-    }
-
-    private class TranslationTask extends AsyncTask<Translator, String, String> {
-
-        private static final String LOG_TAG = "TranslationTask";
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(Translator... params) {
-            try {
-                Translate.setKey(ApiKeys.YANDEX_API_KEY);
-                return Translate.execute(params[0].getText()
-                        , Consts.Lang.fromString(params[0].getInputLanguage())
-                        , Consts.Lang.fromString(params[0].getOutputLanguage()));
-            } catch (Exception e) {
-
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(String... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            if (result == null)
-                return;
-            Fragment translatorFragment = getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
-            if (translatorFragment != null && translatorFragment.isVisible()) {
-                TextView tvTranslator = (TextView) translatorFragment.getView().findViewById(R.id.tvTranslation);
-                tvTranslator.setText(result);
-                translator.setTranslation(result);
-            }
         }
     }
 }
