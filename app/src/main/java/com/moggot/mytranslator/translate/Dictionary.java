@@ -1,12 +1,18 @@
 package com.moggot.mytranslator.translate;
 
+import android.content.Context;
+import android.support.v4.content.ContextCompat;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 
+import com.moggot.mytranslator.ApiKeys;
 import com.moggot.mytranslator.Consts;
+import com.moggot.mytranslator.R;
 import com.moggot.mytranslator.YandexTranslatorAPI;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -24,12 +30,13 @@ import javax.net.ssl.HttpsURLConnection;
 public class Dictionary extends YandexTranslatorAPI {
 
     private static final String SERVICE_URL = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup?";
-    private static final String TRANSLATION_LABEL = "text";
+    private static final String apiKey = ApiKeys.YANDEX_DICTIONARY_API_KEY;
+    private Context context;
 
     private static final String LOG_TAG = "Dictionary";
 
-    //prevent instantiation
-    private Dictionary() {
+    public Dictionary(Context context) {
+        this.context = context;
     }
 
     /**
@@ -41,41 +48,36 @@ public class Dictionary extends YandexTranslatorAPI {
      * @return The translated String.
      * @throws Exception on error.
      */
-    public static String execute(final String text, final Consts.Lang from, final Consts.Lang to) throws Exception {
-        validateServiceState(text);
+    public String execute(final String text, final Consts.Lang from, final Consts.Lang to) throws Exception {
+        validateServiceState(text, apiKey);
         final String params =
                 PARAM_API_KEY + URLEncoder.encode(apiKey, ENCODING) +
                         PARAM_TEXT + URLEncoder.encode(text, ENCODING)
                         + PARAM_LANG_PAIR + URLEncoder.encode(from.toString(), ENCODING) + URLEncoder.encode("-", ENCODING) + URLEncoder.encode(to.toString(), ENCODING);
 
         final URL url = new URL(SERVICE_URL + params);
-        return getResponse(url, TRANSLATION_LABEL).trim();
+        return retrievePropArrString(url).trim();
     }
 
-    private static String getResponse(final URL url, final String jsonValProperty) throws Exception {
-        final String response = retrieveResponse(url);
-        Log.v(LOG_TAG, "response = " + response);
-        return jsonObjValToStringArr(response, jsonValProperty);
-    }
-
-    private static String jsonObjValToStringArr(final String inputString, final String subObjPropertyName) throws Exception {
+    @Override
+    protected String parse(final String inputString) throws Exception {
         JSONObject jsonObject = new JSONObject(inputString);
         StringBuilder strResult = new StringBuilder();
-        JSONArray array = jsonObject.getJSONArray("def");
-        for (int i = 0; i < array.length(); ++i) {
-            JSONObject type = array.getJSONObject(i);
+        JSONArray mainArray = jsonObject.getJSONArray("def");
+        for (int i = 0; i < mainArray.length(); ++i) {
+            JSONObject partOfSpeech = mainArray.getJSONObject(i);
             if (i == 0) {
-                strResult.append(type.getString("text"));
+                strResult.append(partOfSpeech.getString("text"));
                 strResult.append(" ");
                 strResult.append("[");
-                strResult.append(type.getString("ts"));
+                strResult.append(partOfSpeech.getString("ts"));
                 strResult.append("]");
                 strResult.append("\n");
             }
-            String strType = type.getString("pos");
+            String strType = partOfSpeech.getString("pos");
             strResult.append(strType);
             strResult.append("\n");
-            JSONArray typeArray = type.getJSONArray("tr");
+            JSONArray typeArray = partOfSpeech.getJSONArray("tr");
             for (int i_type = 0; i_type < typeArray.length(); ++i_type) {
                 JSONObject word = typeArray.getJSONObject(i_type);
                 StringBuilder synBuffer = new StringBuilder();
@@ -216,14 +218,5 @@ public class Dictionary extends YandexTranslatorAPI {
             throw new Exception("[yandex-translator-api] Error reading translation stream.", ex);
         }
         return outputBuilder.toString();
-    }
-
-
-    private static void validateServiceState(final String text) throws Exception {
-        final int byteLength = text.getBytes(ENCODING).length;
-        if (byteLength > 10240) { // TODO What is the maximum text length allowable for Yandex?
-            throw new RuntimeException("TEXT_TOO_LARGE");
-        }
-        validateServiceState();
     }
 }

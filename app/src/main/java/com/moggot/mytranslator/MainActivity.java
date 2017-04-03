@@ -45,13 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
         initWindow();
 
-
-
         State stateOff = new TranslationOff(MainActivity.this);
         translatorContext.setState(stateOff);
-//        State stateOn = new TranslationOn(MainActivity.this);
-//        translatorContext.setState(stateOn);
-//        translatorContext.show(translator);
 
         etText.addTextChangedListener(new TextWatcher() {
 
@@ -145,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         String inputLanguage = LangSharedPreferences.loadInputLanguage(this);
         String outputLanguage = LangSharedPreferences.loadOutputLanguage(this);
         translator = new Translator(null
-                , ""
+                , etText.getText().toString()
                 , ""
                 , inputLanguage
                 , outputLanguage

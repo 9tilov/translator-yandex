@@ -36,20 +36,9 @@ public abstract class YandexTranslatorAPI {
 
     private static final String LOG_TAG = "YandexTranslatorAPI";
 
-    protected static String apiKey;
-
     protected static final String PARAM_API_KEY = "key=",
             PARAM_LANG_PAIR = "&lang=",
             PARAM_TEXT = "&text=";
-
-    /**
-     * Sets the API key.
-     *
-     * @param pKey The API key.
-     */
-    public static void setKey(final String pKey) {
-        apiKey = pKey;
-    }
 
     /**
      * Forms an HTTPS request, sends it using GET method and returns the result of the request as a String.
@@ -89,22 +78,14 @@ public abstract class YandexTranslatorAPI {
      * Forms a request, sends it using the GET method and returns the contents of the array of strings
      * with the given label, with multiple strings concatenated.
      */
-    protected static String retrievePropArrString(final URL url, final String jsonValProperty) throws Exception {
+    protected String retrievePropArrString(final URL url) throws Exception {
         final String response = retrieveResponse(url);
         Log.v(LOG_TAG, "text = " + response);
-        return jsonObjValToStringArr(response, jsonValProperty);
+        return parse(response);
     }
 
     // Helper method to parse a JSONObject containing an array of Strings with the given label.
-    private static String jsonObjValToStringArr(final String inputString, final String subObjPropertyName) throws Exception {
-        JSONObject jsonObj = new JSONObject(inputString);
-        String translatedStr = jsonObj.getString(subObjPropertyName);
-        Log.v(LOG_TAG, "var = " + translatedStr);
-        Log.v(LOG_TAG, "inputString = " + inputString);
-        int start = translatedStr.indexOf("[");
-        int end = translatedStr.indexOf("]");
-        return translatedStr.substring(start + 2, end - 1);
-    }
+    protected abstract String parse(final String inputString) throws Exception;
 
     /**
      * Reads an InputStream and returns its contents as a String.
@@ -134,8 +115,16 @@ public abstract class YandexTranslatorAPI {
         return outputBuilder.toString();
     }
 
+    protected void validateServiceState(final String text, final String apiKey) throws Exception {
+        final int byteLength = text.getBytes(ENCODING).length;
+        if (byteLength > 10240) { // TODO What is the maximum text length allowable for Yandex?
+            throw new RuntimeException("TEXT_TOO_LARGE");
+        }
+        validateKeyState(apiKey);
+    }
+
     //Check if ready to make request, if not, throw a RuntimeException
-    protected static void validateServiceState() throws Exception {
+    private void validateKeyState(String apiKey) throws Exception {
         if (apiKey == null || apiKey.length() < 27) {
             throw new RuntimeException("INVALID_API_KEY - Please set the API Key with your Yandex API Key");
         }

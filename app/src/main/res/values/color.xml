@@ -11,6 +11,8 @@
 
     <color name="image_disable">#CCCCCC</color>
 
+    <color name="disable">#CCCCCC</color>
+
     <color name="frame">#644036</color>
 
     <color name="image">#644036</color>

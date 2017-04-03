@@ -17,8 +17,12 @@ package com.moggot.mytranslator.translate;
 
 import android.util.Log;
 
+import com.moggot.mytranslator.ApiKeys;
 import com.moggot.mytranslator.Consts;
 import com.moggot.mytranslator.YandexTranslatorAPI;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.net.URL;
 import java.net.URLEncoder;
@@ -29,13 +33,9 @@ import java.net.URLEncoder;
 public final class Translate extends YandexTranslatorAPI {
 
     private static final String SERVICE_URL = "https://translate.yandex.net/api/v1.5/tr.json/translate?";
-    private static final String TRANSLATION_LABEL = "text";
+    private static final String apiKey = ApiKeys.YANDEX_API_KEY;
 
     private static final String LOG_TAG = "Translate";
-
-    //prevent instantiation
-    private Translate() {
-    }
 
     /**
      * Translates text from a given Lang to another given Lang using Yandex.
@@ -46,8 +46,8 @@ public final class Translate extends YandexTranslatorAPI {
      * @return The translated String.
      * @throws Exception on error.
      */
-    public static String execute(final String text, final Consts.Lang from, final Consts.Lang to) throws Exception {
-        validateServiceState(text);
+    public String execute(final String text, final Consts.Lang from, final Consts.Lang to) throws Exception {
+        validateServiceState(text, apiKey);
         final String params =
                 PARAM_API_KEY + URLEncoder.encode(apiKey, ENCODING) +
                         PARAM_TEXT + URLEncoder.encode(text, ENCODING)
@@ -55,14 +55,13 @@ public final class Translate extends YandexTranslatorAPI {
 
         final URL url = new URL(SERVICE_URL + params);
         Log.v(LOG_TAG, "url = " + url.toString());
-        return retrievePropArrString(url, TRANSLATION_LABEL).trim();
+        return retrievePropArrString(url).trim();
     }
 
-    private static void validateServiceState(final String text) throws Exception {
-        final int byteLength = text.getBytes(ENCODING).length;
-        if (byteLength > 10240) { // TODO What is the maximum text length allowable for Yandex?
-            throw new RuntimeException("TEXT_TOO_LARGE");
-        }
-        validateServiceState();
+    @Override
+    protected String parse(final String inputString) throws Exception {
+        JSONObject jsonObj = new JSONObject(inputString);
+        JSONArray jsonArray = jsonObj.getJSONArray("text");
+        return jsonArray.get(0).toString();
     }
 }

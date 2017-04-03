@@ -18,8 +18,10 @@ public class DictionaryTask extends AsyncTask<Translator, Void, String> {
 
     private static final String LOG_TAG = "DictionaryTask";
     private Context context;
+    private Dictionary dictionary;
 
     public DictionaryTask(Context context) {
+        dictionary = new Dictionary(context);
         this.context = context;
     }
 
@@ -31,8 +33,7 @@ public class DictionaryTask extends AsyncTask<Translator, Void, String> {
     @Override
     protected String doInBackground(Translator... params) {
         try {
-            Dictionary.setKey(ApiKeys.YANDEX_DICTIONARY_API_KEY);
-            return Dictionary.execute(params[0].getText()
+            return dictionary.execute(params[0].getText()
                     , Consts.Lang.fromString(params[0].getInputLanguage())
                     , Consts.Lang.fromString(params[0].getOutputLanguage()));
         } catch (Exception e) {

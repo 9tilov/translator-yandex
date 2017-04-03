@@ -20,8 +20,10 @@ public class TranslationTask extends AsyncTask<Translator, Void, String> {
     private static final String LOG_TAG = "TranslationTask";
     private Context context;
     private Translator translator;
+    private Translate translate;
 
     public TranslationTask(Context context) {
+        translate = new Translate();
         this.context = context;
     }
 
@@ -33,9 +35,9 @@ public class TranslationTask extends AsyncTask<Translator, Void, String> {
     @Override
     protected String doInBackground(Translator... params) {
         try {
-            Translate.setKey(ApiKeys.YANDEX_API_KEY);
             translator = params[0];
-            return Translate.execute(params[0].getText()
+
+            return translate.execute(params[0].getText()
                     , Consts.Lang.fromString(params[0].getInputLanguage())
                     , Consts.Lang.fromString(params[0].getOutputLanguage()));
         } catch (Exception e) {
