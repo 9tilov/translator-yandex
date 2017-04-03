@@ -91,6 +91,7 @@ public abstract class YandexTranslatorAPI {
      */
     protected static String retrievePropArrString(final URL url, final String jsonValProperty) throws Exception {
         final String response = retrieveResponse(url);
+        Log.v(LOG_TAG, "text = " + response);
         return jsonObjValToStringArr(response, jsonValProperty);
     }
 

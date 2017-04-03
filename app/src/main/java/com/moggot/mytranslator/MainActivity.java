@@ -1,6 +1,5 @@
 package com.moggot.mytranslator;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
@@ -40,16 +39,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
         etText = (BackAwareEditText) findViewById(R.id.etText);
 
         createTranslator();
 
         initWindow();
 
-        State stateOff = new TranlationOff(MainActivity.this);
+
+
+        State stateOff = new TranslationOff(MainActivity.this);
         translatorContext.setState(stateOff);
+//        State stateOn = new TranslationOn(MainActivity.this);
+//        translatorContext.setState(stateOn);
+//        translatorContext.show(translator);
 
         etText.addTextChangedListener(new TextWatcher() {
 
@@ -64,6 +66,14 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable str) {
+                if (!etText.getText().toString().isEmpty())
+                    ((Button) findViewById(R.id.btnClearText)).setVisibility(View.VISIBLE);
+                else {
+                    ((Button) findViewById(R.id.btnClearText)).setVisibility(View.GONE);
+                    State stateOff = new TranslationOff(MainActivity.this);
+                    translatorContext.setState(stateOff);
+                    return;
+                }
                 Log.v(LOG_TAG, "change = " + str.toString());
                 State stateOn = new TranslationOn(MainActivity.this);
                 translatorContext.setState(stateOn);
@@ -182,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
     public void onClickClear(View view) {
         saveRecord();
         etText.setText("");
-        State stateOff = new TranlationOff(MainActivity.this);
+        State stateOff = new TranslationOff(MainActivity.this);
         translatorContext.setState(stateOff);
     }
 
@@ -195,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         DataBase db = new DataBase(MainActivity.this);
                         db.deleteAll();
-                        State stateOff = new TranlationOff(MainActivity.this);
+                        State stateOff = new TranslationOff(MainActivity.this);
                         translatorContext.setState(stateOff);
                         ((Button) findViewById(R.id.btnDeleteAllHistory)).setVisibility(View.GONE);
                     }
@@ -262,6 +272,9 @@ public class MainActivity extends AppCompatActivity {
     private void initWindow() {
         initTabhost();
         setLanguages();
+
+        if (etText.getText().toString().isEmpty())
+            ((Button) findViewById(R.id.btnClearText)).setVisibility(View.GONE);
     }
 
     @Override

@@ -16,9 +16,9 @@ import java.util.List;
  * Created by toor on 02.04.17.
  */
 
-public class TranlationOff extends State {
+public class TranslationOff extends State {
 
-    public TranlationOff(Context context) {
+    public TranslationOff(Context context) {
         super(context);
 
         FragmentTransaction ft = ((Activity) context).getFragmentManager().beginTransaction();

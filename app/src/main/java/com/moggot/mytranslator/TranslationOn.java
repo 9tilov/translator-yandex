@@ -28,7 +28,9 @@ public class TranslationOn extends State {
 
     @Override
     public void show(Translator translator) {
-        TranslationTask task = new TranslationTask(context);
-        task.execute(translator);
+        TranslationTask translationTask = new TranslationTask(context);
+        translationTask.execute(translator);
+        DictionaryTask dictionaryTask = new DictionaryTask(context);
+        dictionaryTask.execute(translator);
     }
 }

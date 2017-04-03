@@ -8,20 +8,18 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.moggot.mytranslator.translate.Dictionary;
-import com.moggot.mytranslator.translate.Translate;
 import com.moggot.mytranslator.translator.Translator;
 
 /**
- * Created by toor on 02.04.17.
+ * Created by toor on 03.04.17.
  */
 
-public class TranslationTask extends AsyncTask<Translator, Void, String> {
+public class DictionaryTask extends AsyncTask<Translator, Void, String> {
 
-    private static final String LOG_TAG = "TranslationTask";
+    private static final String LOG_TAG = "DictionaryTask";
     private Context context;
-    private Translator translator;
 
-    public TranslationTask(Context context) {
+    public DictionaryTask(Context context) {
         this.context = context;
     }
 
@@ -33,9 +31,8 @@ public class TranslationTask extends AsyncTask<Translator, Void, String> {
     @Override
     protected String doInBackground(Translator... params) {
         try {
-            Translate.setKey(ApiKeys.YANDEX_API_KEY);
-            translator = params[0];
-            return Translate.execute(params[0].getText()
+            Dictionary.setKey(ApiKeys.YANDEX_DICTIONARY_API_KEY);
+            return Dictionary.execute(params[0].getText()
                     , Consts.Lang.fromString(params[0].getInputLanguage())
                     , Consts.Lang.fromString(params[0].getOutputLanguage()));
         } catch (Exception e) {
@@ -58,9 +55,8 @@ public class TranslationTask extends AsyncTask<Translator, Void, String> {
             return;
         Fragment translatorFragment = ((Activity) context).getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
         if (translatorFragment != null && translatorFragment.isVisible()) {
-            TextView tvTranslator = (TextView) translatorFragment.getView().findViewById(R.id.tvTranslation);
+            TextView tvTranslator = (TextView) translatorFragment.getView().findViewById(R.id.tvDictionary);
             tvTranslator.setText(result);
-            translator.setTranslation(result);
         }
     }
 }

@@ -4,24 +4,55 @@
     android:layout_height="match_parent"
     android:background="@color/background_light">
 
-    <TextView
-        android:id="@+id/tvTranslation"
-        style="@style/Translation"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="5dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="@dimen/image"
-        android:layout_marginRight="@dimen/image" />
+        android:orientation="vertical"
+        android:weightSum="10">
+
+        <TextView
+            android:id="@+id/tvTranslation"
+            style="@style/Translation"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_marginEnd="@dimen/image"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="@dimen/image"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="translation" />
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/scrollCreateAlarmActivity"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="9"
+            android:fillViewport="true"
+            android:scrollbars="vertical">
+
+            <TextView
+                android:id="@+id/tvDictionary"
+                style="@style/Dictionary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/image"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="@dimen/image"
+                android:layout_marginStart="5dp"
+                android:text="translation" />
+        </ScrollView>
+    </LinearLayout>
+
 
     <Button
         android:id="@+id/btnFavorites"
         android:layout_width="@dimen/image"
         android:layout_height="@dimen/image"
-        android:background="@drawable/ic_bookmark_border_black_24px"
-        android:onClick="onClickAddFavorites"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentTop="true"
+        android:background="@drawable/ic_bookmark_border_black_24px"
+        android:onClick="onClickAddFavorites" />
 
 </RelativeLayout>
