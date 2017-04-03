@@ -6,6 +6,12 @@
 
     <string name="edittext_hint">Enter text&#8230;</string>
 
+    <string name="dialog_title_delete_history">Delete history?</string>
+    <string name="dialog_title_delete_favorites">Delete favorites?</string>
+
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
+
     <string name="sq">Albanian</string>
     <string name="am">Amharic</string>
     <string name="en">English</string>

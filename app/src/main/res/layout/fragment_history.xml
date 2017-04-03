@@ -2,11 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_light">
+    android:background="@color/background_light"
+    android:orientation="vertical"
+    android:weightSum="10">
+
+    <Button
+        android:id="@+id/btnDeleteAllHistory"
+        android:layout_width="@dimen/trash_size"
+        android:layout_height="@dimen/trash_size"
+        android:background="@drawable/ic_delete_forever_black_24px"
+        android:onClick="onClickDeleteAll"
+        android:layout_gravity="end"/>
 
     <ListView
         android:id="@+id/lvHistory"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dip"
+        android:layout_weight="9"/>
 
 </LinearLayout>

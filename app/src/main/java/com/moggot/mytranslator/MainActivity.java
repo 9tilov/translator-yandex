@@ -1,9 +1,10 @@
 package com.moggot.mytranslator;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +20,6 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.moggot.mytranslator.adapter.FavoritesAdapter;
-import com.moggot.mytranslator.adapter.HistoryAdapter;
 import com.moggot.mytranslator.observer.Display;
 import com.moggot.mytranslator.observer.TranslatorData;
 import com.moggot.mytranslator.observer.TraslatorDisplay;
@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initTabhost();
 
         etText = (BackAwareEditText) findViewById(R.id.etText);
 
@@ -65,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable str) {
+                Log.v(LOG_TAG, "change = " + str.toString());
                 State stateOn = new TranslationOn(MainActivity.this);
                 translatorContext.setState(stateOn);
                 translator.setText(str.toString());
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveRecord() {
-        if (etText.getText().toString().isEmpty())
+        if (translator.getText().isEmpty())
             return;
         DataBase db = new DataBase(MainActivity.this);
         db.addRecord(translator);
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initTabhost() {
-        TabHost tabHost = (TabHost) findViewById(R.id.tabhost);
+        final TabHost tabHost = (TabHost) findViewById(R.id.tabhost);
 
         tabHost.setup();
 
@@ -128,35 +128,14 @@ public class MainActivity extends AppCompatActivity {
         tabHost.addTab(tabSpec);
 
         tabHost.setCurrentTab(0);
-
-        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
-            @Override
-            public void onTabChanged(String tabId) {
-                DataBase db = new DataBase(MainActivity.this);
-                if (tabId.equals(getString(R.string.tag_translator))) {
-                    Fragment historyFragment = getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_HISTORY);
-                    if (historyFragment != null && historyFragment.isVisible()) {
-                        ListView listView = (ListView) historyFragment.getView().findViewById(R.id.lvHistory);
-                        List<Translator> records = db.getAllRecords();
-                        HistoryAdapter adapter = new HistoryAdapter(MainActivity.this, records);
-                        listView.setAdapter(adapter);
-                    }
-                }
-                if (tabId.equals(getString(R.string.tag_favorites))) {
-                    ListView listView = (ListView) findViewById(R.id.lvFavorites);
-                    List<Translator> records = db.getFavoritesRecords();
-                    FavoritesAdapter adapter = new FavoritesAdapter(MainActivity.this, records);
-                    listView.setAdapter(adapter);
-                }
-            }
-        });
+        tabHost.setOnTabChangedListener(new AnimatedTabHostListener(this, tabHost));
     }
 
     private void createTranslator() {
         String inputLanguage = LangSharedPreferences.loadInputLanguage(this);
         String outputLanguage = LangSharedPreferences.loadOutputLanguage(this);
         translator = new Translator(null
-                , etText.getText().toString()
+                , ""
                 , ""
                 , inputLanguage
                 , outputLanguage
@@ -165,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickChangeLang(View view) {
+        saveRecord();
         String inputLang = LangSharedPreferences.loadInputLanguage(this);
         String outputLang = LangSharedPreferences.loadOutputLanguage(this);
         LangSharedPreferences.saveInputLanguage(this, outputLang);
@@ -176,15 +156,13 @@ public class MainActivity extends AppCompatActivity {
         translator.setInputLanguage(inputLang);
         translator.setOutputLanguage(outputLang);
 
-        initWindow();
+        setLanguages();
 
         Fragment translatorFragment = getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
         if (translatorFragment != null && translatorFragment.isVisible()) {
             TextView tvTranslation = (TextView) translatorFragment.getView().findViewById(R.id.tvTranslation);
             etText.setText(tvTranslation.getText().toString());
         }
-
-        saveRecord();
     }
 
     public void onClickInputLang(View view) {
@@ -202,9 +180,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickClear(View view) {
+        saveRecord();
         etText.setText("");
         State stateOff = new TranlationOff(MainActivity.this);
         translatorContext.setState(stateOff);
+    }
+
+    public void onClickDeleteAll(View view) {
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle(getString(R.string.dialog_title_delete_history));
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        DataBase db = new DataBase(MainActivity.this);
+                        db.deleteAll();
+                        State stateOff = new TranlationOff(MainActivity.this);
+                        translatorContext.setState(stateOff);
+                        ((Button) findViewById(R.id.btnDeleteAllHistory)).setVisibility(View.GONE);
+                    }
+                })
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     public void onClickAddFavorites(View view) {
@@ -225,11 +227,41 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void initWindow() {
+    public void onClickDeleteFavorites(View view) {
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle(getString(R.string.dialog_title_delete_favorites));
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        DataBase db = new DataBase(MainActivity.this);
+                        db.deleteAllFavorites();
+                        ListView listView = (ListView) findViewById(R.id.lvFavorites);
+                        List<Translator> records = db.getFavoritesRecords();
+                        FavoritesAdapter adapter = new FavoritesAdapter(MainActivity.this, records);
+                        listView.setAdapter(adapter);
+                        ((Button) findViewById(R.id.btnDeleteAllFavorites)).setVisibility(View.GONE);
+                    }
+                })
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    private void setLanguages() {
         TranslatorData translatorData = new TranslatorData();
         Display traslatorDisplay = new TraslatorDisplay(this, translatorData);
         translatorData.setTranslator(translator);
         traslatorDisplay.display();
+    }
+
+    private void initWindow() {
+        initTabhost();
+        setLanguages();
     }
 
     @Override
@@ -241,13 +273,12 @@ public class MainActivity extends AppCompatActivity {
                 translator.setInputLanguage(inputLang);
                 translator.setOutputLanguage(outputLang);
 
-                initWindow();
+                setLanguages();
 
                 State stateOn = new TranslationOn(MainActivity.this);
                 translatorContext.setState(stateOn);
                 translator.setText(etText.getText().toString());
                 translatorContext.show(translator);
-                saveRecord();
 
                 break;
         }

@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="10"
+        android:layout_weight="8"
         android:background="@color/background"
         android:orientation="horizontal">
 
@@ -61,7 +61,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="25"
+        android:layout_weight="20"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
@@ -110,18 +110,19 @@
         android:id="@+id/tabhost"
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="65">
+        android:layout_weight="72">
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:weightSum="10">
 
             <FrameLayout
                 android:id="@android:id/tabcontent"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_height="0dip"
+                android:layout_weight="9">
 
 
                 <LinearLayout
@@ -138,12 +139,24 @@
                 <LinearLayout
                     android:id="@+id/tabFavorites"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:weightSum="10">
+
+
+                    <Button
+                        android:id="@+id/btnDeleteAllFavorites"
+                        android:layout_width="@dimen/trash_size"
+                        android:layout_height="@dimen/trash_size"
+                        android:background="@drawable/ic_delete_forever_black_24px"
+                        android:onClick="onClickDeleteFavorites"
+                        android:layout_gravity="end"/>
 
                     <ListView
                         android:id="@+id/lvFavorites"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="0dip"
+                        android:layout_weight="9"/>
                 </LinearLayout>
 
             </FrameLayout>
@@ -157,8 +170,8 @@
             <TabWidget
                 android:id="@android:id/tabs"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
+                android:layout_height="0dip"
+                android:layout_weight="1"
                 android:background="@color/background" />
 
         </LinearLayout>

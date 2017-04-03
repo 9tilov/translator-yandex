@@ -90,7 +90,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/adapterTvOutputLang"
                 android:layout_toStartOf="@+id/adapterTvOutputLang"
-                android:background="@drawable/ic_keyboard_arrow_right_black_24px" />
+                android:background="@drawable/ic_keyboard_arrow_right_black_24px"/>
 
             <TextView
                 android:id="@+id/adapterTvOutputLang"

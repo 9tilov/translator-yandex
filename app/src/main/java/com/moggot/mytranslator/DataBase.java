@@ -56,6 +56,18 @@ public class DataBase {
         translatorDao.delete(record);
     }
 
+    public void deleteAll() {
+        translatorDao.deleteAll();
+    }
+
+    public void deleteAllFavorites() {
+        List<Translator> itemsForDelete = translatorDao.queryBuilder().where(TranslatorDao.Properties.IsFavorites.eq(true)).list();
+        for (Translator item : itemsForDelete) {
+            item.setIsFavorites(false);
+            editRecord(item);
+        }
+    }
+
     public Translator getTranslator(long id) {
         return translatorDao.load(id);
     }

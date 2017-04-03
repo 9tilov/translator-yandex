@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.moggot.mytranslator.DataBase;
@@ -31,6 +32,12 @@ public class HistoryFragment extends Fragment {
         List<Translator> records = db.getAllRecords();
         HistoryAdapter adapter = new HistoryAdapter(getActivity(), records);
         listView.setAdapter(adapter);
+
+        if (db.getAllRecords().isEmpty())
+            ((Button) view.findViewById(R.id.btnDeleteAllHistory)).setVisibility(View.GONE);
+        else
+            ((Button) view.findViewById(R.id.btnDeleteAllHistory)).setVisibility(View.VISIBLE);
+
         return view;
     }
 }

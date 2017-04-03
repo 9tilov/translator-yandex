@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.moggot.mytranslator.translate.Translate;
@@ -51,6 +52,7 @@ public class TranslationTask extends AsyncTask<Translator, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
+        Log.v(LOG_TAG, "result = " + result);
         if (result == null)
             return;
         Fragment translatorFragment = ((Activity) context).getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
