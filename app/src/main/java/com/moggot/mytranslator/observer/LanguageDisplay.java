@@ -11,9 +11,9 @@ import com.moggot.mytranslator.R;
  * Created by toor on 26.03.17.
  */
 
-public class TraslatorDisplay extends Display {
+public class LanguageDisplay extends Display {
 
-    public TraslatorDisplay(Context context, TranslatorData translatorData) {
+    public LanguageDisplay(Context context, TranslatorData translatorData) {
         super(context);
         translatorData.registerObserver(this);
     }

@@ -25,7 +25,7 @@ public class TranslationOff extends State {
         Fragment fragment = new HistoryFragment();
         ft.replace(R.id.frgmCont, fragment, Consts.TAG_FRAGMENT_HISTORY);
         ft.commit();
-        isTranslationStarted = false;
+        ((Activity) context).getFragmentManager().executePendingTransactions();
     }
 
     @Override

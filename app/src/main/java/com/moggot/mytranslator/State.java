@@ -15,7 +15,6 @@ import com.moggot.mytranslator.translator.Translator;
 public abstract class State {
 
     protected Context context;
-    protected boolean isTranslationStarted = false;
 
     public State(Context context) {
         this.context = context;

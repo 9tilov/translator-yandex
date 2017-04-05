@@ -103,10 +103,10 @@ public class LanguageAdapter extends BaseAdapter {
         TranslatorData translatorData = new TranslatorData();
         Display adapterDisplay;
         if (type == Consts.LANG_TYPE.INPUT) {
-            translator = new Translator(null, null, null, language, null, false);
+            translator = new Translator(null, null, null, language, null, false, null);
             adapterDisplay = new AdapterInputLanguageDisplay(context, view, translatorData);
         } else {
-            translator = new Translator(null, null, null, null, language, false);
+            translator = new Translator(null, null, null, null, language, false, null);
             adapterDisplay = new AdapterOutputLanguageDisplay(context, view, translatorData);
         }
 

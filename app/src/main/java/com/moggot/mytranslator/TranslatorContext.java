@@ -11,17 +11,11 @@ import com.moggot.mytranslator.translator.Translator;
 public class TranslatorContext {
 
     private State state;
-    private Context context;
     private Translator translator;
 
-    public TranslatorContext(Context context, Translator translator) {
-        this.context = context;
+    public TranslatorContext(Translator translator) {
         this.translator = translator;
         this.state = null;
-    }
-
-    public Context getAppContext() {
-        return this.context;
     }
 
     public Translator getTranslator() {
