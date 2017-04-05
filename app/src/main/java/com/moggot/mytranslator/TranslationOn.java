@@ -2,11 +2,9 @@ package com.moggot.mytranslator;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.moggot.mytranslator.fragments.TranslationFragment;
 import com.moggot.mytranslator.observer.Display;
@@ -44,6 +42,7 @@ public class TranslationOn extends State {
         } else {
             Fragment translatorFragment = ((Activity) context).getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
             if (translatorFragment != null && translatorFragment.isVisible()) {
+                Translator.getInstance().setTranslator(foundRecord);
                 TranslatorData translatorData = new TranslatorData();
                 Display traslatorDisplay = new TranslationDisplay(context, translatorFragment.getView(), translatorData);
                 translatorData.setTranslator(foundRecord);

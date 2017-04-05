@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.moggot.mytranslator.Conversation;
+import com.moggot.mytranslator.LangSharedPreferences;
 import com.moggot.mytranslator.R;
 
 /**
@@ -39,11 +40,13 @@ public class TranslationDisplay extends Display {
     private void displayInputLang() {
         Conversation conversation = new Conversation(context);
         ((TextView) ((Activity) context).findViewById(R.id.tvInputLang)).setText(conversation.getLongLangName(translator.getInputLanguage()));
+        LangSharedPreferences.saveInputLanguage(context, translator.getInputLanguage());
     }
 
     private void displayOutputLang() {
         Conversation conversation = new Conversation(context);
         ((TextView) ((Activity) context).findViewById(R.id.tvOutputLang)).setText(conversation.getLongLangName(translator.getOutputLanguage()));
+        LangSharedPreferences.saveOutputLanguage(context, translator.getOutputLanguage());
     }
 
     private void displayText() {

@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.moggot.mytranslator.adapter.FavoritesAdapter;
 import com.moggot.mytranslator.observer.Display;
+import com.moggot.mytranslator.observer.TranslationDisplay;
 import com.moggot.mytranslator.observer.TranslatorData;
 import com.moggot.mytranslator.observer.LanguageDisplay;
 import com.moggot.mytranslator.translator.Translator;
@@ -37,11 +38,14 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean isTranslationStarted = false;
 
+    private DataBase db;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         etText = (BackAwareEditText) findViewById(R.id.etText);
+        db = new DataBase(this);
         createTranslator();
 
         initWindow();
@@ -74,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
                     translatorContext.setState(stateOn);
                     isTranslationStarted = true;
                 }
+                resetTranslator();
                 translator.setText(cs.toString());
                 translatorContext.show(translator);
             }
@@ -122,8 +127,14 @@ public class MainActivity extends AppCompatActivity {
     private void saveRecord() {
         if (translator.getText().isEmpty())
             return;
-        DataBase db = new DataBase(MainActivity.this);
         db.addRecord(translator);
+        Fragment translatorFragment = getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
+        if (translatorFragment != null && translatorFragment.isVisible()) {
+            TranslatorData translatorData = new TranslatorData();
+            Display traslatorDisplay = new TranslationDisplay(this, translatorFragment.getView(), translatorData);
+            translatorData.setTranslator(translator);
+            traslatorDisplay.display();
+        }
         resetTranslator();
     }
 
@@ -154,26 +165,27 @@ public class MainActivity extends AppCompatActivity {
 
         translator.setInputLanguage(inputLanguage);
         translator.setOutputLanguage(outputLanguage);
-        translator.setText(etText.getText().toString());
-        translator.setTranslation("");
-        translator.setIsFavorites(false);
-        translator.setDetails("");
         translatorContext = new TranslatorContext(translator);
-
     }
 
     private void resetTranslator() {
         translator.setId(null);
-//        translator = new Translator(null
-//                , ""
-//                , ""
-//                , inputLanguage
-//                , outputLanguage
-//                , false
-//                , "");
+
+        translator.setText(etText.getText().toString());
+        translator.setTranslation("");
+        translator.setInputLanguage(LangSharedPreferences.loadInputLanguage(this));
+        translator.setOutputLanguage(LangSharedPreferences.loadOutputLanguage(this));
+        translator.setIsFavorites(false);
+        translator.setDetails("");
+
+        Fragment translatorFragment = getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
+        if (translatorFragment != null && translatorFragment.isVisible()) {
+            ((Button) translatorFragment.getView().findViewById(R.id.btnFavorites)).setBackgroundResource(R.drawable.ic_bookmark_border_black_24px);
+        }
     }
 
     public void onClickChangeLang(View view) {
+        resetTranslator();
         String inputLang = LangSharedPreferences.loadInputLanguage(this);
         String outputLang = LangSharedPreferences.loadOutputLanguage(this);
         LangSharedPreferences.saveInputLanguage(this, outputLang);
@@ -187,11 +199,11 @@ public class MainActivity extends AppCompatActivity {
 
         setLanguages();
 
-        Fragment translatorFragment = getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
-        if (translatorFragment != null && translatorFragment.isVisible()) {
-            TextView tvTranslation = (TextView) translatorFragment.getView().findViewById(R.id.tvTranslation);
-            etText.setText(tvTranslation.getText().toString());
-        }
+        State stateOn = new TranslationOn(this);
+        translatorContext.setState(stateOn);
+        translator.setText(etText.getText().toString());
+        translatorContext.show(translator);
+
     }
 
     public void onClickInputLang(View view) {
@@ -222,7 +234,6 @@ public class MainActivity extends AppCompatActivity {
                 .setCancelable(false)
                 .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        DataBase db = new DataBase(MainActivity.this);
                         db.deleteAll();
                         State stateOff = new TranslationOff(MainActivity.this);
                         translatorContext.setState(stateOff);
@@ -239,12 +250,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickAddFavorites(View view) {
-
         Fragment translatorFragment = getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
         if (translatorFragment != null && translatorFragment.isVisible()) {
-            translator.setText(etText.getText().toString());
-            TextView tvTranslation = (TextView) translatorFragment.getView().findViewById(R.id.tvTranslation);
-            translator.setTranslation(tvTranslation.getText().toString());
             Button btnFavorites = (Button) translatorFragment.getView().findViewById(R.id.btnFavorites);
             if (translator.getIsFavorites()) {
                 translator.setIsFavorites(false);
@@ -253,6 +260,11 @@ public class MainActivity extends AppCompatActivity {
                 translator.setIsFavorites(true);
                 btnFavorites.setBackgroundResource(R.drawable.ic_bookmark_24px);
             }
+
+            if (db.findRecord(translator) != null)
+                db.editRecord(translator);
+            else
+                db.addRecord(translator);
         }
     }
 
@@ -263,7 +275,6 @@ public class MainActivity extends AppCompatActivity {
                 .setCancelable(false)
                 .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        DataBase db = new DataBase(MainActivity.this);
                         db.deleteAllFavorites();
                         ListView listView = (ListView) findViewById(R.id.lvFavorites);
                         List<Translator> records = db.getFavoritesRecords();

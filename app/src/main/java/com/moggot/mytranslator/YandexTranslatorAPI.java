@@ -17,8 +17,6 @@ package com.moggot.mytranslator;
 
 import android.util.Log;
 
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -62,16 +60,6 @@ public abstract class YandexTranslatorAPI {
                 uc.disconnect();
             }
         }
-    }
-
-    /**
-     * Forms a request, sends it using the GET method and returns the value with the given label from the
-     * resulting JSON response.
-     */
-    protected static String retrievePropString(final URL url, final String jsonValProperty) throws Exception {
-        final String response = retrieveResponse(url);
-        JSONObject jsonObj = new JSONObject(response);
-        return jsonObj.get(jsonValProperty).toString();
     }
 
     /**

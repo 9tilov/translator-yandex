@@ -6,8 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.RadioButton;
-import android.widget.TextView;
 
 import com.moggot.mytranslator.Consts;
 import com.moggot.mytranslator.LangSharedPreferences;
@@ -29,24 +27,16 @@ public class LanguageAdapter extends BaseAdapter {
 
     private static final String LOG_TAG = "LanguageAdapter";
 
-    private static class ViewHolder {
-        private TextView tvLang;
-        private RadioButton iwCheck;
-    }
-
     private Context context;
     private LayoutInflater inflater;
     private List<String> languages;
     private Consts.LANG_TYPE type;
-
-    private int selectedIndex;
 
     public LanguageAdapter(Context context, Consts.LANG_TYPE type) {
         this.context = context;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.languages = new ArrayList<>();
         this.type = type;
-        this.selectedIndex = -1;
 
         fillLangList();
     }
@@ -76,47 +66,26 @@ public class LanguageAdapter extends BaseAdapter {
     public View getView(final int position, final View convertView, ViewGroup parent) {
 
         View view = convertView;
-        final ViewHolder viewHolder;
-        if (view == null) {
-            viewHolder = new ViewHolder();
+        if (view == null)
             view = inflater.inflate(R.layout.lang_item, parent, false);
-            view.setTag(viewHolder);
-        } else
-            viewHolder = (ViewHolder) convertView.getTag();
-
-        viewHolder.tvLang = (TextView) view
-                .findViewById(R.id.tvLang);
-        viewHolder.iwCheck = (RadioButton) view.findViewById(R.id.check);
-
-        viewHolder.tvLang.setTag(languages.get(position));
-        viewHolder.iwCheck.setTag(languages.get(position));
-
-        if (selectedIndex == position) {
-            viewHolder.iwCheck.setChecked(true);
-        } else {
-            viewHolder.iwCheck.setChecked(false);
-        }
-
 
         final String language = getLang(position);
-        Translator translator;
         TranslatorData translatorData = new TranslatorData();
         Display adapterDisplay;
         if (type == Consts.LANG_TYPE.INPUT) {
-            translator = new Translator(null, null, null, language, null, false, null);
+            Translator.getInstance().setInputLanguage(language);
             adapterDisplay = new AdapterInputLanguageDisplay(context, view, translatorData);
         } else {
-            translator = new Translator(null, null, null, null, language, false, null);
+            Translator.getInstance().setOutputLanguage(language);
             adapterDisplay = new AdapterOutputLanguageDisplay(context, view, translatorData);
         }
 
-        translatorData.setTranslator(translator);
+        translatorData.setTranslator(Translator.getInstance());
         adapterDisplay.display();
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setSelectedIndex(position);
                 notifyDataSetChanged();
 
                 if (type == Consts.LANG_TYPE.INPUT) {
@@ -142,16 +111,13 @@ public class LanguageAdapter extends BaseAdapter {
         return view;
     }
 
-    public void setSelectedIndex(int index) {
-        selectedIndex = index;
-    }
-
     private void fillLangList() {
 
         languages.add(context.getString(R.string.en_short));
         languages.add(context.getString(R.string.ru_short));
         languages.add(context.getString(R.string.xh_short));
         languages.add(context.getString(R.string.az_short));
+        languages.add(context.getString(R.string.de_short));
 //        languages.add(context.getString(R.string.sq));
 //        languages.add(context.getString(R.string.am));
 //        languages.add(context.getString(R.string.en));

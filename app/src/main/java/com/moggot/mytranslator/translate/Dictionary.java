@@ -1,27 +1,17 @@
 package com.moggot.mytranslator.translate;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 
 import com.moggot.mytranslator.ApiKeys;
 import com.moggot.mytranslator.Consts;
-import com.moggot.mytranslator.R;
 import com.moggot.mytranslator.YandexTranslatorAPI;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
-
-import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by toor on 03.04.17.
@@ -61,6 +51,7 @@ public class Dictionary extends YandexTranslatorAPI {
 
     @Override
     protected String parse(final String inputString) throws Exception {
+        Log.v(LOG_TAG, "inputString = " + inputString);
         JSONObject jsonObject = new JSONObject(inputString);
         StringBuilder strResult = new StringBuilder();
         JSONArray mainArray = jsonObject.getJSONArray("def");
@@ -68,10 +59,16 @@ public class Dictionary extends YandexTranslatorAPI {
             JSONObject partOfSpeech = mainArray.getJSONObject(i);
             if (i == 0) {
                 strResult.append(partOfSpeech.getString("text"));
-                strResult.append(" ");
-                strResult.append("[");
-                strResult.append(partOfSpeech.getString("ts"));
-                strResult.append("]");
+
+                try {
+                    strResult.append(" ");
+                    strResult.append("[");
+                    strResult.append(partOfSpeech.getString("ts"));
+                    strResult.append("]");
+                } catch (Exception e) {
+                }
+
+
                 strResult.append("\n");
             }
             String strType = partOfSpeech.getString("pos");
@@ -146,7 +143,7 @@ public class Dictionary extends YandexTranslatorAPI {
                 }
 
                 StringBuilder strWord = new StringBuilder();
-                strWord.append(String.valueOf(i_type+ 1));
+                strWord.append(String.valueOf(i_type + 1));
                 strWord.append(" ");
                 strWord.append(word.getString("text"));
                 String strGen = "";
@@ -181,42 +178,5 @@ public class Dictionary extends YandexTranslatorAPI {
         }
         Log.v(LOG_TAG, strResult.toString());
         return strResult.toString();
-    }
-
-    private static String retrieveResponse(final URL url) throws Exception {
-        final HttpsURLConnection uc = (HttpsURLConnection) url.openConnection();
-
-        try {
-            final int responseCode = uc.getResponseCode();
-            final String result = inputStreamToString(uc.getInputStream());
-            if (responseCode != 200) {
-                throw new Exception("Error from Yandex API: " + result);
-            }
-            return result;
-        } finally {
-            if (uc != null) {
-                uc.disconnect();
-            }
-        }
-    }
-
-    private static String inputStreamToString(final InputStream inputStream) throws Exception {
-        final StringBuilder outputBuilder = new StringBuilder();
-
-        try {
-            String string;
-            if (inputStream != null) {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, ENCODING));
-                while (null != (string = reader.readLine())) {
-                    // TODO Can we remove this?
-                    // Need to strip the Unicode Zero-width Non-breaking Space. For some reason, the Microsoft AJAX
-                    // services prepend this to every response
-                    outputBuilder.append(string.replaceAll("\uFEFF", ""));
-                }
-            }
-        } catch (Exception ex) {
-            throw new Exception("[yandex-translator-api] Error reading translation stream.", ex);
-        }
-        return outputBuilder.toString();
     }
 }
