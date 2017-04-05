@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.moggot.mytranslator.translate.Translate;
 import com.moggot.mytranslator.translator.DaoMaster;
 import com.moggot.mytranslator.translator.DaoSession;
 import com.moggot.mytranslator.translator.Translator;
@@ -40,12 +41,18 @@ public class DataBase {
             tmpRecord = null;
         }
 
-        if (tmpRecord == null) {
-            translatorDao.insertOrReplace(record);
-        } else {
-            tmpRecord.setIsFavorites(record.getIsFavorites());
-            editRecord(tmpRecord);
-        }
+        if (tmpRecord == null)
+            translatorDao.insert(record);
+    }
+
+    public Translator findRecord(Translator record) {
+        Translator tmpRecord = translatorDao.queryBuilder().where(TranslatorDao.Properties.Text.eq(record.getText())
+                , TranslatorDao.Properties.InputLanguage.eq(record.getInputLanguage())
+                , TranslatorDao.Properties.OutputLanguage.eq(record.getOutputLanguage())).unique();
+        if (tmpRecord != null)
+            return tmpRecord;
+        else
+            return null;
     }
 
     public void editRecord(Translator record) {

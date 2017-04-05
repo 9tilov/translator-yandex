@@ -18,6 +18,7 @@ public class DictionaryTask extends AsyncTask<Translator, Void, String> {
 
     private static final String LOG_TAG = "DictionaryTask";
     private Context context;
+    private Translator translator;
     private Dictionary dictionary;
 
     public DictionaryTask(Context context) {
@@ -33,6 +34,7 @@ public class DictionaryTask extends AsyncTask<Translator, Void, String> {
     @Override
     protected String doInBackground(Translator... params) {
         try {
+            translator = params[0];
             return dictionary.execute(params[0].getText()
                     , Consts.Lang.fromString(params[0].getInputLanguage())
                     , Consts.Lang.fromString(params[0].getOutputLanguage()));
@@ -56,8 +58,9 @@ public class DictionaryTask extends AsyncTask<Translator, Void, String> {
             return;
         Fragment translatorFragment = ((Activity) context).getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
         if (translatorFragment != null && translatorFragment.isVisible()) {
-            TextView tvTranslator = (TextView) translatorFragment.getView().findViewById(R.id.tvDictionary);
+            TextView tvTranslator = (TextView) translatorFragment.getView().findViewById(R.id.tvDetails);
             tvTranslator.setText(result);
+            translator.setDetails(result);
         }
     }
 }

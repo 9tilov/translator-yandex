@@ -28,6 +28,7 @@ public class TranslatorDao extends AbstractDao<Translator, Long> {
         public final static Property InputLanguage = new Property(3, String.class, "inputLanguage", false, "INPUT_LANGUAGE");
         public final static Property OutputLanguage = new Property(4, String.class, "outputLanguage", false, "OUTPUT_LANGUAGE");
         public final static Property IsFavorites = new Property(5, boolean.class, "isFavorites", false, "IS_FAVORITES");
+        public final static Property Details = new Property(6, String.class, "details", false, "DETAILS");
     }
 
 
@@ -48,7 +49,8 @@ public class TranslatorDao extends AbstractDao<Translator, Long> {
                 "\"TRANSLATION\" TEXT NOT NULL ," + // 2: translation
                 "\"INPUT_LANGUAGE\" TEXT NOT NULL ," + // 3: inputLanguage
                 "\"OUTPUT_LANGUAGE\" TEXT NOT NULL ," + // 4: outputLanguage
-                "\"IS_FAVORITES\" INTEGER NOT NULL );"); // 5: isFavorites
+                "\"IS_FAVORITES\" INTEGER NOT NULL ," + // 5: isFavorites
+                "\"DETAILS\" TEXT);"); // 6: details
     }
 
     /** Drops the underlying database table. */
@@ -70,6 +72,11 @@ public class TranslatorDao extends AbstractDao<Translator, Long> {
         stmt.bindString(4, entity.getInputLanguage());
         stmt.bindString(5, entity.getOutputLanguage());
         stmt.bindLong(6, entity.getIsFavorites() ? 1L: 0L);
+ 
+        String details = entity.getDetails();
+        if (details != null) {
+            stmt.bindString(7, details);
+        }
     }
 
     @Override
@@ -85,6 +92,11 @@ public class TranslatorDao extends AbstractDao<Translator, Long> {
         stmt.bindString(4, entity.getInputLanguage());
         stmt.bindString(5, entity.getOutputLanguage());
         stmt.bindLong(6, entity.getIsFavorites() ? 1L: 0L);
+ 
+        String details = entity.getDetails();
+        if (details != null) {
+            stmt.bindString(7, details);
+        }
     }
 
     @Override
@@ -100,7 +112,8 @@ public class TranslatorDao extends AbstractDao<Translator, Long> {
             cursor.getString(offset + 2), // translation
             cursor.getString(offset + 3), // inputLanguage
             cursor.getString(offset + 4), // outputLanguage
-            cursor.getShort(offset + 5) != 0 // isFavorites
+            cursor.getShort(offset + 5) != 0, // isFavorites
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6) // details
         );
         return entity;
     }
@@ -113,6 +126,7 @@ public class TranslatorDao extends AbstractDao<Translator, Long> {
         entity.setInputLanguage(cursor.getString(offset + 3));
         entity.setOutputLanguage(cursor.getString(offset + 4));
         entity.setIsFavorites(cursor.getShort(offset + 5) != 0);
+        entity.setDetails(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
      }
     
     @Override

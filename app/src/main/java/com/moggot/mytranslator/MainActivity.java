@@ -21,7 +21,7 @@ import android.widget.TextView;
 import com.moggot.mytranslator.adapter.FavoritesAdapter;
 import com.moggot.mytranslator.observer.Display;
 import com.moggot.mytranslator.observer.TranslatorData;
-import com.moggot.mytranslator.observer.TraslatorDisplay;
+import com.moggot.mytranslator.observer.LanguageDisplay;
 import com.moggot.mytranslator.translator.Translator;
 
 import java.util.List;
