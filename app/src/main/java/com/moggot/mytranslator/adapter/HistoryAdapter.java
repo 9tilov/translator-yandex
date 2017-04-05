@@ -75,7 +75,7 @@ public class HistoryAdapter extends BaseSwipeAdapter {
 
         final Translator translatorAtPosition = getTranslator(position);
 
-        swipeLayout.setOnClickListener(new View.OnClickListener() {
+        swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.v(LOG_TAG, "click");
@@ -83,13 +83,6 @@ public class HistoryAdapter extends BaseSwipeAdapter {
                 TranslatorContext translatorContext = new TranslatorContext(translatorAtPosition);
                 translatorContext.setState(stateOn);
                 translatorContext.show(translatorAtPosition);
-
-//                if (translatorFragment != null && translatorFragment.isVisible()) {
-//                    TranslatorData translatorData = new TranslatorData();
-//                    Display traslatorDisplay = new TranslationDisplay(context, translatorFragment.getView(), translatorData);
-//                    translatorData.setTranslator(translatorAtPosition);
-//                    traslatorDisplay.display();
-//                }
             }
 
         });
