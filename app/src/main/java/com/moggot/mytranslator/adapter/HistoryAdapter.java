@@ -1,8 +1,5 @@
 package com.moggot.mytranslator.adapter;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,17 +11,13 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.BaseSwipeAdapter;
-import com.moggot.mytranslator.Consts;
 import com.moggot.mytranslator.DataBase;
-import com.moggot.mytranslator.MainActivity;
 import com.moggot.mytranslator.R;
 import com.moggot.mytranslator.State;
 import com.moggot.mytranslator.TranslationOn;
 import com.moggot.mytranslator.TranslatorContext;
-import com.moggot.mytranslator.fragments.TranslationFragment;
 import com.moggot.mytranslator.observer.AdapterHistoryDisplay;
 import com.moggot.mytranslator.observer.Display;
-import com.moggot.mytranslator.observer.TranslationDisplay;
 import com.moggot.mytranslator.observer.TranslatorData;
 import com.moggot.mytranslator.translator.Translator;
 
@@ -48,7 +41,7 @@ public class HistoryAdapter extends BaseSwipeAdapter {
         this.db = new DataBase(context);
     }
 
-    public void update() {
+    private void update() {
         this.records = db.getAllRecords();
         notifyDataSetChanged();
     }

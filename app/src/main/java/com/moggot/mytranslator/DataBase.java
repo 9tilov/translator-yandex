@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.moggot.mytranslator.translate.Translate;
 import com.moggot.mytranslator.translator.DaoMaster;
 import com.moggot.mytranslator.translator.DaoSession;
 import com.moggot.mytranslator.translator.Translator;

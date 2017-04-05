@@ -1,7 +1,5 @@
 package com.moggot.mytranslator;
 
-import android.content.Context;
-
 import com.moggot.mytranslator.translator.Translator;
 
 /**

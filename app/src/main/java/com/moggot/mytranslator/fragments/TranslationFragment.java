@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.moggot.mytranslator.R;
-import com.moggot.mytranslator.TranslatorContext;
-import com.moggot.mytranslator.translator.Translator;
 
 /**
  * Created by toor on 28.03.17.

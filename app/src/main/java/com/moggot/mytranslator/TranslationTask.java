@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.moggot.mytranslator.translate.Dictionary;
 import com.moggot.mytranslator.translate.Translate;
 import com.moggot.mytranslator.translator.Translator;
 
