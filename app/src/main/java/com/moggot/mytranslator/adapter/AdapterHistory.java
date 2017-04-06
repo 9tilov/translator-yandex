@@ -6,7 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TabHost;
+import android.widget.EditText;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -18,34 +18,36 @@ import com.moggot.mytranslator.R;
 import com.moggot.mytranslator.State;
 import com.moggot.mytranslator.TranslationOn;
 import com.moggot.mytranslator.TranslatorContext;
-import com.moggot.mytranslator.observer.AdapterFavoritesDisplay;
+import com.moggot.mytranslator.observer.ActivityDisplay;
+import com.moggot.mytranslator.observer.AdapterHistoryDisplay;
 import com.moggot.mytranslator.observer.Display;
+import com.moggot.mytranslator.observer.FragmentHistoryDisplay;
 import com.moggot.mytranslator.observer.TranslatorData;
 import com.moggot.mytranslator.translator.Translator;
 
 import java.util.List;
 
 /**
- * Created by toor on 30.03.17.
+ * Created by toor on 29.03.17.
  */
 
-public class FavoritesAdapter extends BaseSwipeAdapter {
+public class AdapterHistory extends BaseSwipeAdapter {
 
     private Context context;
     private List<Translator> records;
     private DataBase db;
 
-    private static final String LOG_TAG = "FavoritesAdapter";
+    private static final String LOG_TAG = "AdapterHistory";
 
-    public FavoritesAdapter(Context context, List<Translator> records) {
+    public AdapterHistory(Context context, List<Translator> records) {
         this.context = context;
         this.records = records;
         this.db = new DataBase(context);
     }
 
     private void update() {
-        records = db.getFavoritesRecords();
-        notifyDatasetChanged();
+        this.records = db.getAllRecords();
+        notifyDataSetChanged();
     }
 
     @Override
@@ -59,7 +61,7 @@ public class FavoritesAdapter extends BaseSwipeAdapter {
     }
 
     @Override
-    public void fillValues(final int position, View convertView) {
+    public void fillValues(final int position, final View convertView) {
         SwipeLayout swipeLayout = (SwipeLayout) convertView.findViewById(getSwipeLayoutResourceId(position));
         swipeLayout.addSwipeListener(new SimpleSwipeListener() {
             @Override
@@ -70,33 +72,43 @@ public class FavoritesAdapter extends BaseSwipeAdapter {
 
         final Translator translatorAtPosition = getTranslator(position);
 
+        swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.v(LOG_TAG, "click");
+                TranslatorData translatorData = new TranslatorData();
+                Display fragmentHistoryDisplay = new ActivityDisplay(context, translatorData);
+                translatorData.setTranslator(translatorAtPosition);
+                fragmentHistoryDisplay.display();
+
+            }
+
+        });
+
         convertView.findViewById(R.id.adapterRlDelete).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                translatorAtPosition.setIsFavorites(false);
-                db.editRecord(translatorAtPosition);
+                db.deleteRecord(translatorAtPosition);
                 closeItem(position);
                 update();
             }
         });
 
-        swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
+        convertView.findViewById(R.id.adapterIwFavorites).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.v(LOG_TAG, "click");
-                State stateOn = new TranslationOn(context);
-                TranslatorContext translatorContext = new TranslatorContext(translatorAtPosition);
-                translatorContext.setState(stateOn);
-                translatorContext.show(translatorAtPosition);
-
-                final TabHost tabHost = (TabHost) ((Activity)context).findViewById(R.id.tabhost);
-                tabHost.setCurrentTab(0);
+                Log.v(LOG_TAG, "position = " + position);
+                if (translatorAtPosition.getIsFavorites())
+                    translatorAtPosition.setIsFavorites(false);
+                else
+                    translatorAtPosition.setIsFavorites(true);
+                db.editRecord(translatorAtPosition);
+                update();
             }
-
         });
 
         TranslatorData translatorData = new TranslatorData();
-        Display adapterDisplay = new AdapterFavoritesDisplay(context, convertView, translatorData);
+        Display adapterDisplay = new AdapterHistoryDisplay(context, convertView, translatorData);
         translatorData.setTranslator(translatorAtPosition);
         adapterDisplay.display();
     }

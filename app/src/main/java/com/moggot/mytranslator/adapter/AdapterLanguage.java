@@ -23,16 +23,16 @@ import java.util.List;
  * Created by toor on 24.03.17.
  */
 
-public class LanguageAdapter extends BaseAdapter {
+public class AdapterLanguage extends BaseAdapter {
 
-    private static final String LOG_TAG = "LanguageAdapter";
+    private static final String LOG_TAG = "AdapterLanguage";
 
     private Context context;
     private LayoutInflater inflater;
     private List<String> languages;
     private Consts.LANG_TYPE type;
 
-    public LanguageAdapter(Context context, Consts.LANG_TYPE type) {
+    public AdapterLanguage(Context context, Consts.LANG_TYPE type) {
         this.context = context;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.languages = new ArrayList<>();
@@ -72,15 +72,16 @@ public class LanguageAdapter extends BaseAdapter {
         final String language = getLang(position);
         TranslatorData translatorData = new TranslatorData();
         Display adapterDisplay;
+        Translator translator;
         if (type == Consts.LANG_TYPE.INPUT) {
-            Translator.getInstance().setInputLanguage(language);
+            translator = new Translator(null, null, null, language, null, false, null);
             adapterDisplay = new AdapterInputLanguageDisplay(context, view, translatorData);
         } else {
-            Translator.getInstance().setOutputLanguage(language);
+            translator = new Translator(null, null, null, null, language, false, null);
             adapterDisplay = new AdapterOutputLanguageDisplay(context, view, translatorData);
         }
 
-        translatorData.setTranslator(Translator.getInstance());
+        translatorData.setTranslator(translator);
         adapterDisplay.display();
 
         view.setOnClickListener(new View.OnClickListener() {

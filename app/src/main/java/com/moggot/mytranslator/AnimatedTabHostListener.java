@@ -12,8 +12,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TabHost;
 
-import com.moggot.mytranslator.adapter.FavoritesAdapter;
-import com.moggot.mytranslator.adapter.HistoryAdapter;
+import com.moggot.mytranslator.adapter.AdapterFavorites;
+import com.moggot.mytranslator.adapter.AdapterHistory;
 import com.moggot.mytranslator.translator.Translator;
 
 import java.util.List;
@@ -61,7 +61,7 @@ public class AnimatedTabHostListener implements TabHost.OnTabChangeListener {
 
             ListView listView = (ListView) ((Activity) context).findViewById(R.id.lvFavorites);
             List<Translator> records = db.getFavoritesRecords();
-            FavoritesAdapter adapter = new FavoritesAdapter(context, records);
+            AdapterFavorites adapter = new AdapterFavorites(context, records);
             listView.setAdapter(adapter);
 
             if (db.getFavoritesRecords().isEmpty())
@@ -76,7 +76,7 @@ public class AnimatedTabHostListener implements TabHost.OnTabChangeListener {
             if (historyFragment != null && historyFragment.isVisible()) {
                 ListView listView = (ListView) historyFragment.getView().findViewById(R.id.lvHistory);
                 List<Translator> records = db.getAllRecords();
-                HistoryAdapter adapter = new HistoryAdapter(context, records);
+                AdapterHistory adapter = new AdapterHistory(context, records);
                 listView.setAdapter(adapter);
             }
         }

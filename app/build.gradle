@@ -24,13 +24,14 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    compile project(":library")
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'org.greenrobot:greendao:3.2.0'
-    compile project(":library")
     compile 'com.daimajia.easing:library:1.0.0@aar'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.daimajia.androidanimations:library:1.1.2@aar'
     compile 'jp.wasabeef:recyclerview-animators:1.0.3@aar'
+    compile 'com.android.support:support-v4:25.3.1'
     testCompile 'junit:junit:4.12'
 }

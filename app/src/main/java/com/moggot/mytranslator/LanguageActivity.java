@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
 
-import com.moggot.mytranslator.adapter.LanguageAdapter;
+import com.moggot.mytranslator.adapter.AdapterLanguage;
 
 public class LanguageActivity extends AppCompatActivity {
 
@@ -19,7 +19,7 @@ public class LanguageActivity extends AppCompatActivity {
         Consts.LANG_TYPE type = Consts.LANG_TYPE.fromInteger(getIntent().getIntExtra(Consts.EXTRA_LANG, 0));
 
         ListView listView = (ListView) findViewById(R.id.lvLanguages);
-        LanguageAdapter adapter = new LanguageAdapter(this, type);
+        AdapterLanguage adapter = new AdapterLanguage(this, type);
         listView.setAdapter(adapter);
     }
 

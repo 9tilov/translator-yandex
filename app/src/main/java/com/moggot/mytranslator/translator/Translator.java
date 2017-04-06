@@ -39,26 +39,11 @@ public class Translator {
     private static final String LOG_TAG = "Translator";
     // KEEP FIELDS END
 
-    private static class TranslatorHolder {
-        private final static Translator instance = new Translator();
-    }
-
-    public static Translator getInstance() {
-        return TranslatorHolder.instance;
-    }
-
     @Generated
-    private Translator() {
-        this.id = null;
-        this.text = "";
-        this.translation = "";
-        this.inputLanguage = "";
-        this.outputLanguage = "";
-        this.isFavorites = false;
-        this.details = "";
+    public Translator() {
     }
 
-    private Translator(Long id) {
+    public Translator(Long id) {
         this.id = id;
     }
 
@@ -147,15 +132,15 @@ public class Translator {
 
     // KEEP METHODS - put your custom methods here
 
-    public void setTranslator(Translator translator) {
-        this.id = translator.getId();
-        this.text = translator.getText();
-        this.translation = translator.getTranslation();
-        this.inputLanguage = translator.getInputLanguage();
-        this.outputLanguage = translator.getOutputLanguage();
-        this.isFavorites = translator.getIsFavorites();
-        this.details = translator.getDetails();
-    }
+//    public void setTranslator(Translator translator) {
+//        this.id = translator.getId();
+//        this.text = translator.getText();
+//        this.translation = translator.getTranslation();
+//        this.inputLanguage = translator.getInputLanguage();
+//        this.outputLanguage = translator.getOutputLanguage();
+//        this.isFavorites = translator.getIsFavorites();
+//        this.details = translator.getDetails();
+//    }
     // KEEP METHODS END
 
 }
