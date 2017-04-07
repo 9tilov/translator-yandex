@@ -24,19 +24,20 @@ public class TranslationOff extends State {
         super(context);
 
         FragmentTransaction ft = ((Activity) context).getFragmentManager().beginTransaction();
-        Fragment fragment = new FragmentHistory();
-        ft.replace(R.id.frgmCont, fragment, Consts.TAG_FRAGMENT_HISTORY);
+        ft.replace(R.id.frgmCont, FragmentHistory.newInstance(), Consts.TAG_FRAGMENT_HISTORY);
         ft.commit();
+
         ((Activity) context).getFragmentManager().executePendingTransactions();
     }
 
-    @Override
     public void show(Translator translator) {
+        super.show(translator);
         TranslatorData translatorData = new TranslatorData();
         Fragment fragment = ((Activity) context).getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_HISTORY);
-
-        Display display = new HistoryDisplay(context, fragment.getView(), translatorData);
-        translatorData.setTranslator(translator);
-        display.display();
+        if (fragment != null && fragment.isVisible()) {
+            Display display = new HistoryDisplay(context, fragment.getView(), translatorData);
+            translatorData.setTranslator(translator);
+            display.display();
+        }
     }
 }

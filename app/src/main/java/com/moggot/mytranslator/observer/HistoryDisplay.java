@@ -1,15 +1,11 @@
 package com.moggot.mytranslator.observer;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.moggot.mytranslator.Conversation;
 import com.moggot.mytranslator.DataBase;
-import com.moggot.mytranslator.LangSharedPreferences;
 import com.moggot.mytranslator.R;
 import com.moggot.mytranslator.adapter.AdapterHistory;
 import com.moggot.mytranslator.translator.Translator;
@@ -34,27 +30,8 @@ public class HistoryDisplay extends Display {
 
     @Override
     public void display() {
-        displayInputLang();
-        displayOutputLang();
-        displayClearButton();
         displayClearHistoryButton();
         displayHistoryList();
-    }
-
-    private void displayInputLang() {
-        Conversation conversation = new Conversation(context);
-        ((TextView) ((Activity) context).findViewById(R.id.tvInputLang)).setText(conversation.getLongLangName(translator.getInputLanguage()));
-        LangSharedPreferences.saveInputLanguage(context, translator.getInputLanguage());
-    }
-
-    private void displayOutputLang() {
-        Conversation conversation = new Conversation(context);
-        ((TextView) ((Activity) context).findViewById(R.id.tvOutputLang)).setText(conversation.getLongLangName(translator.getOutputLanguage()));
-        LangSharedPreferences.saveOutputLanguage(context, translator.getOutputLanguage());
-    }
-
-    private void displayClearButton() {
-        ((Button) ((Activity) context).findViewById(R.id.btnClearText)).setVisibility(View.GONE);
     }
 
     private void displayClearHistoryButton() {

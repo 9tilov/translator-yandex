@@ -132,15 +132,15 @@ public class Translator {
 
     // KEEP METHODS - put your custom methods here
 
-//    public void setTranslator(Translator translator) {
-//        this.id = translator.getId();
-//        this.text = translator.getText();
-//        this.translation = translator.getTranslation();
-//        this.inputLanguage = translator.getInputLanguage();
-//        this.outputLanguage = translator.getOutputLanguage();
-//        this.isFavorites = translator.getIsFavorites();
-//        this.details = translator.getDetails();
-//    }
+    public void setTranslator(Translator translator) {
+        this.id = translator.getId();
+        this.text = translator.getText();
+        this.translation = translator.getTranslation();
+        this.inputLanguage = translator.getInputLanguage();
+        this.outputLanguage = translator.getOutputLanguage();
+        this.isFavorites = translator.getIsFavorites();
+        this.details = translator.getDetails();
+    }
     // KEEP METHODS END
 
 }

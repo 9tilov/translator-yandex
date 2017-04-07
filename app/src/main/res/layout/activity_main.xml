@@ -28,8 +28,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingStart="10dp"
-            android:scrollHorizontally="true"
-            android:text="Russian" />
+            android:scrollHorizontally="true"/>
 
         <Button
             android:id="@+id/btnChangeLang"
@@ -53,8 +52,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingStart="10dp"
-            android:scrollHorizontally="true"
-            android:text="English" />
+            android:scrollHorizontally="true" />
 
     </LinearLayout>
 

@@ -25,6 +25,12 @@ public class FragmentHistory extends Fragment {
 
     private static final String LOG_TAG = "FragmentHistory";
 
+    public FragmentHistory(){}
+
+    public static Fragment newInstance() {
+        return new FragmentHistory();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,8 +57,9 @@ public class FragmentHistory extends Fragment {
 
         if (db.getAllRecords().isEmpty())
             ((Button) view.findViewById(R.id.btnClearHistory)).setVisibility(View.GONE);
-        if (((TextView)getActivity().findViewById(R.id.etText)).getText().toString().isEmpty())
-            ((Button)getActivity().findViewById(R.id.btnClearText)).setVisibility(View.GONE);
+
+        if (((TextView) getActivity().findViewById(R.id.etText)).getText().toString().isEmpty())
+            ((Button) getActivity().findViewById(R.id.btnClearText)).setVisibility(View.GONE);
     }
 
 }

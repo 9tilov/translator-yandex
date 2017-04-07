@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         State stateOff = new TranslationOff(this);
         translatorContext.setState(stateOff);
+        translatorContext.show(translator);
 
         etText.addTextChangedListener(new TextWatcher() {
 
@@ -64,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 resetTranslator();
                 translator.setText(cs.toString());
-                updateTranslator();
                 translatorContext.show(translator);
             }
 
@@ -136,12 +136,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createTranslator() {
-        translator = new Translator();
         String inputLanguage = LangSharedPreferences.loadInputLanguage(this);
         String outputLanguage = LangSharedPreferences.loadOutputLanguage(this);
+        translator = new Translator(null
+                , etText.getText().toString()
+                , ""
+                , inputLanguage
+                , outputLanguage
+                , false
+                , "");
 
-        translator.setInputLanguage(inputLanguage);
-        translator.setOutputLanguage(outputLanguage);
         translatorContext = new TranslatorContext(translator);
     }
 
@@ -155,16 +159,6 @@ public class MainActivity extends AppCompatActivity {
         translator.setIsFavorites(false);
         translator.setDetails("");
 
-        Fragment translatorFragment = getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
-        if (translatorFragment != null && translatorFragment.isVisible()) {
-            ((Button) translatorFragment.getView().findViewById(R.id.btnFavorites)).setBackgroundResource(R.drawable.ic_bookmark_border_black_24px);
-        }
-    }
-
-    private void updateTranslator() {
-        Translator updatedTranslator = db.findRecord(translator);
-        if (updatedTranslator != null)
-            translator = updatedTranslator;
     }
 
     public void onClickChangeLang(View view) {
@@ -279,5 +273,10 @@ public class MainActivity extends AppCompatActivity {
                 translatorContext.show(translator);
                 break;
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 }
