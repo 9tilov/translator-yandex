@@ -1,6 +1,5 @@
 package com.moggot.mytranslator;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
@@ -14,15 +13,11 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.moggot.mytranslator.adapter.AdapterFavorites;
-import com.moggot.mytranslator.observer.Display;
-import com.moggot.mytranslator.observer.TranslatorData;
-import com.moggot.mytranslator.observer.LanguageDisplay;
 import com.moggot.mytranslator.translator.Translator;
 
 import java.util.List;
@@ -36,8 +31,6 @@ public class MainActivity extends AppCompatActivity {
     private Translator translator;
     private TranslatorContext translatorContext;
 
-    private boolean isTranslationStarted = false;
-
     private DataBase db;
 
     @Override
@@ -49,10 +42,8 @@ public class MainActivity extends AppCompatActivity {
         createTranslator();
         initTabhost();
 
-
         State stateOff = new TranslationOff(this);
         translatorContext.setState(stateOff);
-        translatorContext.show(translator);
 
         etText.addTextChangedListener(new TextWatcher() {
 
@@ -60,14 +51,10 @@ public class MainActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence cs, int start,
                                       int lengthBefore,
                                       int lengthAfter) {
-//                if (lengthAfter == lengthBefore) {
-//                    etText.setSelection(etText.getText().length());
-//                    return;
-//                }
                 if (etText.getText().toString().isEmpty()) {
                     State stateOff = new TranslationOff(MainActivity.this);
                     translatorContext.setState(stateOff);
-                    isTranslationStarted = false;
+                    translatorContext.show(translator);
                     return;
                 }
 
@@ -75,13 +62,9 @@ public class MainActivity extends AppCompatActivity {
                     State stateOn = new TranslationOn(MainActivity.this);
                     translatorContext.setState(stateOn);
                 }
-//                if (!isTranslationStarted) {
-//                    State stateOn = new TranslationOn(MainActivity.this);
-//                    translatorContext.setState(stateOn);
-//                    isTranslationStarted = true;
-//                }
                 resetTranslator();
                 translator.setText(cs.toString());
+                updateTranslator();
                 translatorContext.show(translator);
             }
 
@@ -178,6 +161,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void updateTranslator() {
+        Translator updatedTranslator = db.findRecord(translator);
+        if (updatedTranslator != null)
+            translator = updatedTranslator;
+    }
+
     public void onClickChangeLang(View view) {
         resetTranslator();
         String inputLang = LangSharedPreferences.loadInputLanguage(this);
@@ -191,8 +180,6 @@ public class MainActivity extends AppCompatActivity {
         translator.setInputLanguage(inputLang);
         translator.setOutputLanguage(outputLang);
 
-        State stateOn = new TranslationOn(this);
-        translatorContext.setState(stateOn);
         translatorContext.show(translator);
 
     }
@@ -213,13 +200,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickClear(View view) {
         saveRecord();
-//        translator.setText("");
-        State stateOff = new TranslationOff(this);
-        translatorContext.setState(stateOff);
-        translatorContext.show(translator);
+        etText.setText("");
     }
 
-    public void onClickDeleteAll(View view) {
+    public void onClickClearHistory(View view) {
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle(getString(R.string.dialog_title_delete_history));
         alertDialogBuilder
@@ -227,8 +211,6 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         db.deleteAll();
-                        State stateOff = new TranslationOff(MainActivity.this);
-                        translatorContext.setState(stateOff);
                         translatorContext.show(translator);
                     }
                 })
@@ -260,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void onClickDeleteFavorites(View view) {
+    public void onClickClearFavorites(View view) {
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle(getString(R.string.dialog_title_delete_favorites));
         alertDialogBuilder
@@ -272,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
                         List<Translator> records = db.getFavoritesRecords();
                         AdapterFavorites adapter = new AdapterFavorites(MainActivity.this, records);
                         listView.setAdapter(adapter);
-                        ((Button) findViewById(R.id.btnDeleteAllFavorites)).setVisibility(View.GONE);
+                        ((Button) findViewById(R.id.btnClearFavorites)).setVisibility(View.GONE);
                     }
                 })
                 .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -282,13 +264,6 @@ public class MainActivity extends AppCompatActivity {
                 });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-    }
-
-    private void setLanguages() {
-        TranslatorData translatorData = new TranslatorData();
-        Display traslatorDisplay = new LanguageDisplay(this, translatorData);
-        translatorData.setTranslator(translator);
-        traslatorDisplay.display();
     }
 
     @Override
@@ -301,10 +276,7 @@ public class MainActivity extends AppCompatActivity {
                 translator.setInputLanguage(inputLang);
                 translator.setOutputLanguage(outputLang);
 
-                State stateOn = new TranslationOn(this);
-                translatorContext.setState(stateOn);
                 translatorContext.show(translator);
-
                 break;
         }
     }

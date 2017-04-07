@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.moggot.mytranslator.Conversation;
@@ -12,28 +11,29 @@ import com.moggot.mytranslator.LangSharedPreferences;
 import com.moggot.mytranslator.R;
 
 /**
- * Created by toor on 06.04.17.
+ * Created by toor on 07.04.17.
  */
 
-public class ActivityDisplay extends Display {
+public class TranslationDisplay extends Display {
 
-    private static final String LOG_TAG = "ActivityDisplay";
+    private static final String LOG_TAG = "TranslationDisplay";
 
-    public ActivityDisplay(Context context, TranslatorData translatorData) {
+    private View view;
+
+    public TranslationDisplay(Context context, View view, TranslatorData translatorData) {
         super(context);
+        this.view = view;
         translatorData.registerObserver(this);
     }
 
     @Override
     public void display() {
-        displayText();
         displayInputLang();
         displayOutputLang();
         displayClearButton();
-    }
-
-    private void displayText() {
-        ((TextView) ((Activity) context).findViewById(R.id.etText)).setText(translator.getText());
+        dislpayTranslation();
+        displayFavorites();
+        displayDetails();
     }
 
     private void displayInputLang() {
@@ -50,6 +50,21 @@ public class ActivityDisplay extends Display {
 
     private void displayClearButton() {
         ((Button) ((Activity) context).findViewById(R.id.btnClearText)).setVisibility(View.VISIBLE);
+    }
+
+    private void dislpayTranslation() {
+        ((TextView) view.findViewById(R.id.tvTranslation)).setText(translator.getTranslation());
+    }
+
+    private void displayFavorites() {
+        if (translator.getIsFavorites())
+            ((Button) view.findViewById(R.id.btnFavorites)).setBackgroundResource(R.drawable.ic_bookmark_24px);
+        else
+            ((Button) view.findViewById(R.id.btnFavorites)).setBackgroundResource(R.drawable.ic_bookmark_border_black_24px);
+    }
+
+    private void displayDetails() {
+        ((TextView) view.findViewById(R.id.tvDetails)).setText(translator.getDetails());
     }
 
 }

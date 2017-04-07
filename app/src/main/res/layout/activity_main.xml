@@ -134,6 +134,7 @@
                         android:id="@+id/frgmCont"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -145,12 +146,12 @@
 
 
                     <Button
-                        android:id="@+id/btnDeleteAllFavorites"
+                        android:id="@+id/btnClearFavorites"
                         android:layout_width="@dimen/trash_size"
                         android:layout_height="@dimen/trash_size"
                         android:layout_gravity="end"
                         android:background="@drawable/ic_delete_forever_black_24px"
-                        android:onClick="onClickDeleteFavorites" />
+                        android:onClick="onClickClearFavorites" />
 
                     <ListView
                         android:id="@+id/lvFavorites"

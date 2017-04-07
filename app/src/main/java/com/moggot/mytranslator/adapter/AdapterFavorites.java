@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TabHost;
 
 import com.daimajia.androidanimations.library.Techniques;
@@ -14,12 +15,8 @@ import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 import com.moggot.mytranslator.DataBase;
+import com.moggot.mytranslator.LangSharedPreferences;
 import com.moggot.mytranslator.R;
-import com.moggot.mytranslator.State;
-import com.moggot.mytranslator.TranslationOn;
-import com.moggot.mytranslator.TranslatorContext;
-import com.moggot.mytranslator.fragments.FragmentTranslator;
-import com.moggot.mytranslator.observer.ActivityDisplay;
 import com.moggot.mytranslator.observer.AdapterFavoritesDisplay;
 import com.moggot.mytranslator.observer.Display;
 import com.moggot.mytranslator.observer.TranslatorData;
@@ -86,10 +83,11 @@ public class AdapterFavorites extends BaseSwipeAdapter {
             @Override
             public void onClick(View view) {
                 Log.v(LOG_TAG, "click");
-                TranslatorData translatorData = new TranslatorData();
-                Display fragmentHistoryDisplay = new ActivityDisplay(context, translatorData);
-                translatorData.setTranslator(translatorAtPosition);
-                fragmentHistoryDisplay.display();
+                LangSharedPreferences.saveInputLanguage(context, translatorAtPosition.getInputLanguage());
+                LangSharedPreferences.saveOutputLanguage(context, translatorAtPosition.getOutputLanguage());
+                EditText etText = (EditText) ((Activity)context).findViewById(R.id.etText);
+                etText.setText(translatorAtPosition.getText());
+                etText.setSelection(etText.getText().length());
 
                 final TabHost tabHost = (TabHost) ((Activity)context).findViewById(R.id.tabhost);
                 tabHost.setCurrentTab(0);

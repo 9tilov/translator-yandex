@@ -1,15 +1,13 @@
 package com.moggot.mytranslator;
 
 import android.app.Activity;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
-import android.util.Log;
 
 import com.moggot.mytranslator.fragments.FragmentTranslator;
-import com.moggot.mytranslator.observer.ActivityDisplay;
 import com.moggot.mytranslator.observer.Display;
+import com.moggot.mytranslator.observer.TranslationDisplay;
 import com.moggot.mytranslator.observer.TranslatorData;
 import com.moggot.mytranslator.translator.Translator;
 
@@ -23,9 +21,8 @@ public class TranslationOn extends State {
 
     public TranslationOn(Context context) {
         super(context);
-
         Fragment fragment = new FragmentTranslator();
-        FragmentTransaction ft = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
+        FragmentTransaction ft = ((Activity) context).getFragmentManager().beginTransaction();
         ft.replace(R.id.frgmCont, fragment, Consts.TAG_FRAGMENT_TRANSLATOR);
         ft.commit();
         ((Activity) context).getFragmentManager().executePendingTransactions();
@@ -34,7 +31,8 @@ public class TranslationOn extends State {
     @Override
     public void show(Translator translator) {
         TranslatorData translatorData = new TranslatorData();
-        Display display = new ActivityDisplay(context, translatorData);
+        Fragment fragment = ((Activity) context).getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
+        Display display = new TranslationDisplay(context, fragment.getView(), translatorData);
 
         if (translator.getText().isEmpty())
             return;

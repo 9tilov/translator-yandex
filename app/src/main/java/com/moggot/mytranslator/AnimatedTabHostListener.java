@@ -65,9 +65,9 @@ public class AnimatedTabHostListener implements TabHost.OnTabChangeListener {
             listView.setAdapter(adapter);
 
             if (db.getFavoritesRecords().isEmpty())
-                ((Button) ((Activity) context).findViewById(R.id.btnDeleteAllFavorites)).setVisibility(View.GONE);
+                ((Button) ((Activity) context).findViewById(R.id.btnClearFavorites)).setVisibility(View.GONE);
             else
-                ((Button) ((Activity) context).findViewById(R.id.btnDeleteAllFavorites)).setVisibility(View.VISIBLE);
+                ((Button) ((Activity) context).findViewById(R.id.btnClearFavorites)).setVisibility(View.VISIBLE);
         } else {
             Log.v(LOG_TAG, "change2");
             previousView.setAnimation(outToRightAnimation());

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.RecoverySystem;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -62,7 +61,6 @@ public class TranslationTask extends AsyncTask<Translator, Void, String> {
         if (translatorFragment != null && translatorFragment.isVisible()) {
             TextView tvTranslator = (TextView) translatorFragment.getView().findViewById(R.id.tvTranslation);
             tvTranslator.setText(result);
-            Translator.getInstance().setTranslation(result);
             translator.setTranslation(result);
         }
     }
