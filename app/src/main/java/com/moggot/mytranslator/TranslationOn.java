@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.view.View;
 
 import com.moggot.mytranslator.fragments.FragmentTranslator;
 import com.moggot.mytranslator.observer.Display;
@@ -21,35 +22,39 @@ public class TranslationOn extends State {
 
     public TranslationOn(Context context) {
         super(context);
-        FragmentTransaction ft = ((Activity) context).getFragmentManager().beginTransaction();
-        ft.replace(R.id.frgmCont, FragmentTranslator.newInstance(), Consts.TAG_FRAGMENT_TRANSLATOR);
-        ft.commit();
+        Fragment fragment = ((Activity) context).getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
+        if (fragment == null) {
+            FragmentTransaction ft = ((Activity) context).getFragmentManager().beginTransaction();
+            ft.replace(R.id.frgmCont, FragmentTranslator.newInstance(), Consts.TAG_FRAGMENT_TRANSLATOR);
+            ft.commit();
 
-        ((Activity) context).getFragmentManager().executePendingTransactions();
+            ((Activity) context).getFragmentManager().executePendingTransactions();
+        }
     }
 
     public void show(Translator translator) {
         super.show(translator);
         TranslatorData translatorData = new TranslatorData();
         Fragment fragment = ((Activity) context).getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
-        if (fragment != null && fragment.isVisible()) {
-            Display display = new TranslationDisplay(context, fragment.getView(), translatorData);
-            if (translator.getText().isEmpty())
-                return;
-            DataBase db = new DataBase(context);
-            Translator foundRecord = db.findRecord(translator);
+        if (fragment == null)
+            return;
+        View view = fragment.getView();
+        if (view == null)
+            return;
+        Display display = new TranslationDisplay(context, view, translatorData);
+        DataBase db = new DataBase(context);
+        Translator foundRecord = db.findRecord(translator);
 
-            if (foundRecord == null) {
-                TranslationTask translationTask = new TranslationTask(context);
-                translationTask.execute(translator);
-                DictionaryTask dictionaryTask = new DictionaryTask(context);
-                dictionaryTask.execute(translator);
-            } else {
-                translator.setTranslator(foundRecord);
-            }
-
-            translatorData.setTranslator(translator);
-            display.display();
+        if (foundRecord == null) {
+            TranslationTask translationTask = new TranslationTask(context);
+            translationTask.execute(translator);
+            DictionaryTask dictionaryTask = new DictionaryTask(context);
+            dictionaryTask.execute(translator);
+        } else {
+            translator.setTranslator(foundRecord);
         }
+
+        translatorData.setTranslator(translator);
+        display.display();
     }
 }

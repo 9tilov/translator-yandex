@@ -25,16 +25,21 @@ public class FragmentHistory extends Fragment {
 
     private static final String LOG_TAG = "FragmentHistory";
 
-    public FragmentHistory(){}
+    public FragmentHistory() {
+    }
 
     public static Fragment newInstance() {
         return new FragmentHistory();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override

@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.moggot.mytranslator.observer.ActivityDisplay;
 import com.moggot.mytranslator.observer.Display;
-import com.moggot.mytranslator.observer.HistoryDisplay;
 import com.moggot.mytranslator.observer.TranslatorData;
 import com.moggot.mytranslator.translator.Translator;
 

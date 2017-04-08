@@ -18,6 +18,8 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.moggot.mytranslator.adapter.AdapterFavorites;
+import com.moggot.mytranslator.fragments.FragmentHistory;
+import com.moggot.mytranslator.fragments.FragmentTranslator;
 import com.moggot.mytranslator.translator.Translator;
 
 import java.util.List;
@@ -42,9 +44,21 @@ public class MainActivity extends AppCompatActivity {
         createTranslator();
         initTabhost();
 
-        State stateOff = new TranslationOff(this);
-        translatorContext.setState(stateOff);
-        translatorContext.show(translator);
+        if (savedInstanceState != null) {
+            Fragment fragment = getFragmentManager().getFragment(savedInstanceState, Consts.EXTRA_STATE);
+            State state;
+            if (fragment instanceof FragmentTranslator) {
+                state = new TranslationOn(this);
+            } else if (fragment instanceof FragmentHistory) {
+                state = new TranslationOff(this);
+            } else
+                return;
+            translatorContext.setState(state);
+        } else {
+            State stateOff = new TranslationOff(this);
+            translatorContext.setState(stateOff);
+            translatorContext.show(translator);
+        }
 
         etText.addTextChangedListener(new TextWatcher() {
 
@@ -278,5 +292,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        Fragment fragment = getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_HISTORY);
+        if (fragment != null && fragment.isVisible()) {
+            getFragmentManager().putFragment(outState, Consts.EXTRA_STATE, fragment);
+        }
+        fragment = getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
+        if (fragment != null && fragment.isVisible()) {
+            getFragmentManager().putFragment(outState, Consts.EXTRA_STATE, fragment);
+        }
     }
 }

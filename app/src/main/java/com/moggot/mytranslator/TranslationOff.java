@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
 
 import com.moggot.mytranslator.fragments.FragmentHistory;
 import com.moggot.mytranslator.observer.Display;
@@ -22,22 +23,27 @@ public class TranslationOff extends State {
 
     public TranslationOff(Context context) {
         super(context);
+        Fragment fragment = ((Activity) context).getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_HISTORY);
+        if (fragment == null) {
+            FragmentTransaction ft = ((Activity) context).getFragmentManager().beginTransaction();
+            ft.replace(R.id.frgmCont, FragmentHistory.newInstance(), Consts.TAG_FRAGMENT_HISTORY);
+            ft.commit();
 
-        FragmentTransaction ft = ((Activity) context).getFragmentManager().beginTransaction();
-        ft.replace(R.id.frgmCont, FragmentHistory.newInstance(), Consts.TAG_FRAGMENT_HISTORY);
-        ft.commit();
-
-        ((Activity) context).getFragmentManager().executePendingTransactions();
+            ((Activity) context).getFragmentManager().executePendingTransactions();
+        }
     }
 
     public void show(Translator translator) {
         super.show(translator);
         TranslatorData translatorData = new TranslatorData();
         Fragment fragment = ((Activity) context).getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_HISTORY);
-        if (fragment != null && fragment.isVisible()) {
-            Display display = new HistoryDisplay(context, fragment.getView(), translatorData);
-            translatorData.setTranslator(translator);
-            display.display();
-        }
+        if (fragment == null)
+            return;
+        View view = fragment.getView();
+        if (view == null)
+            return;
+        Display display = new HistoryDisplay(context, view, translatorData);
+        translatorData.setTranslator(translator);
+        display.display();
     }
 }
