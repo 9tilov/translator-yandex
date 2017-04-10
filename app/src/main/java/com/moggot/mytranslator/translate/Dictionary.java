@@ -21,13 +21,8 @@ public class Dictionary extends YandexTranslatorAPI {
 
     private static final String SERVICE_URL = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup?";
     private static final String apiKey = ApiKeys.YANDEX_DICTIONARY_API_KEY;
-    private Context context;
 
     private static final String LOG_TAG = "Dictionary";
-
-    public Dictionary(Context context) {
-        this.context = context;
-    }
 
     /**
      * Translates text from a given Lang to another given Lang using Yandex.

@@ -1,13 +1,13 @@
 package com.moggot.mytranslator;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
-import android.util.Log;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
-import com.moggot.mytranslator.fragments.FragmentHistory;
+import com.moggot.mytranslator.fragments.HistoryFragment;
 import com.moggot.mytranslator.observer.Display;
 import com.moggot.mytranslator.observer.HistoryDisplay;
 import com.moggot.mytranslator.observer.TranslatorData;
@@ -23,10 +23,11 @@ public class TranslationOff extends State {
 
     public TranslationOff(Context context) {
         super(context);
-        Fragment fragment = ((Activity) context).getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_HISTORY);
+        Fragment fragment = ((FragmentActivity) context).getSupportFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_HISTORY);
         if (fragment == null) {
-            FragmentTransaction ft = ((Activity) context).getFragmentManager().beginTransaction();
-            ft.replace(R.id.frgmCont, FragmentHistory.newInstance(), Consts.TAG_FRAGMENT_HISTORY);
+            FragmentTransaction ft = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.root_frame, HistoryFragment.newInstance(), Consts.TAG_FRAGMENT_HISTORY);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             ft.commit();
 
             ((Activity) context).getFragmentManager().executePendingTransactions();
@@ -36,7 +37,7 @@ public class TranslationOff extends State {
     public void show(Translator translator) {
         super.show(translator);
         TranslatorData translatorData = new TranslatorData();
-        Fragment fragment = ((Activity) context).getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_HISTORY);
+        Fragment fragment = ((FragmentActivity) context).getSupportFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_HISTORY);
         if (fragment == null)
             return;
         View view = fragment.getView();

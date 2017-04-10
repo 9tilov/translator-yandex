@@ -168,6 +168,7 @@ public class Consts {
 
     public static final String TAG_FRAGMENT_TRANSLATOR = "tag_fragment_translator";
     public static final String TAG_FRAGMENT_HISTORY = "tag_fragment_history";
+    public static final String TAG_FRAGMENT_FAVORITES = "tag_fragment_favorites";
 
     public static final int REQUEST_CODE_ACTIVITY_LANGUAGE = 0;
 }

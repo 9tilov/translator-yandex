@@ -1,12 +1,12 @@
 package com.moggot.mytranslator;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
-import com.moggot.mytranslator.fragments.FragmentTranslator;
+import com.moggot.mytranslator.fragments.TranslatorFragment;
 import com.moggot.mytranslator.observer.Display;
 import com.moggot.mytranslator.observer.TranslationDisplay;
 import com.moggot.mytranslator.observer.TranslatorData;
@@ -22,20 +22,21 @@ public class TranslationOn extends State {
 
     public TranslationOn(Context context) {
         super(context);
-        Fragment fragment = ((Activity) context).getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
+        Fragment fragment = ((FragmentActivity) context).getSupportFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
         if (fragment == null) {
-            FragmentTransaction ft = ((Activity) context).getFragmentManager().beginTransaction();
-            ft.replace(R.id.frgmCont, FragmentTranslator.newInstance(), Consts.TAG_FRAGMENT_TRANSLATOR);
+            FragmentTransaction ft = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.root_frame, TranslatorFragment.newInstance(), Consts.TAG_FRAGMENT_TRANSLATOR);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             ft.commit();
 
-            ((Activity) context).getFragmentManager().executePendingTransactions();
+            ((FragmentActivity) context).getSupportFragmentManager().executePendingTransactions();
         }
     }
 
     public void show(Translator translator) {
         super.show(translator);
         TranslatorData translatorData = new TranslatorData();
-        Fragment fragment = ((Activity) context).getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
+        Fragment fragment = ((FragmentActivity) context).getSupportFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
         if (fragment == null)
             return;
         View view = fragment.getView();

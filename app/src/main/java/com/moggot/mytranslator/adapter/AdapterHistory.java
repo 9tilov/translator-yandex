@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.daimajia.androidanimations.library.Techniques;
@@ -43,6 +44,11 @@ public class AdapterHistory extends BaseSwipeAdapter {
 
     private void update() {
         this.records = db.getAllRecords();
+
+        if (records.isEmpty())
+            ((Button) ((Activity)context).findViewById(R.id.btnClearHistory)).setVisibility(View.GONE);
+        else
+            ((Button) ((Activity)context).findViewById(R.id.btnClearHistory)).setVisibility(View.VISIBLE);
         notifyDataSetChanged();
     }
 

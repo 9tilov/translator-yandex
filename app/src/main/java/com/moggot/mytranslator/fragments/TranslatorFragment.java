@@ -1,7 +1,7 @@
 package com.moggot.mytranslator.fragments;
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +13,15 @@ import com.moggot.mytranslator.R;
  * Created by toor on 28.03.17.
  */
 
-public class FragmentTranslator extends Fragment {
+public class TranslatorFragment extends Fragment {
 
-    private static final String LOG_TAG = "FragmentTranslator";
+    private static final String LOG_TAG = "TranslatorFragment";
 
-    public FragmentTranslator(){}
+    public TranslatorFragment() {
+    }
 
     public static Fragment newInstance() {
-        return new FragmentTranslator();
+        return new TranslatorFragment();
     }
 
     @Override

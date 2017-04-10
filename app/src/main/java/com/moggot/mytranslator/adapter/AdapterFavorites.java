@@ -6,8 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TabHost;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -44,6 +44,11 @@ public class AdapterFavorites extends BaseSwipeAdapter {
 
     private void update() {
         records = db.getFavoritesRecords();
+        if (records.isEmpty())
+            ((Button) ((Activity)context).findViewById(R.id.btnClearFavorites)).setVisibility(View.GONE);
+        else
+            ((Button) ((Activity)context).findViewById(R.id.btnClearFavorites)).setVisibility(View.VISIBLE);
+
         notifyDatasetChanged();
     }
 
@@ -88,9 +93,6 @@ public class AdapterFavorites extends BaseSwipeAdapter {
                 EditText etText = (EditText) ((Activity)context).findViewById(R.id.etText);
                 etText.setText(translatorAtPosition.getText());
                 etText.setSelection(etText.getText().length());
-
-                final TabHost tabHost = (TabHost) ((Activity)context).findViewById(R.id.tabhost);
-                tabHost.setCurrentTab(0);
             }
 
         });

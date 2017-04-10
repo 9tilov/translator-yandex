@@ -16,7 +16,9 @@
         android:id="@+id/check"
         android:layout_width="@dimen/check_width"
         android:layout_height="@dimen/check_height"
+        android:background="@drawable/radiobutton"
         android:checked="false"
+        android:button="@null"
         android:clickable="false"
         android:focusable="false" />
 

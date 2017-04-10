@@ -1,7 +1,7 @@
 package com.moggot.mytranslator.fragments;
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,15 +21,15 @@ import java.util.List;
  * Created by toor on 28.03.17.
  */
 
-public class FragmentHistory extends Fragment {
+public class HistoryFragment extends Fragment {
 
-    private static final String LOG_TAG = "FragmentHistory";
+    private static final String LOG_TAG = "HistoryFragment";
 
-    public FragmentHistory() {
+    public HistoryFragment() {
     }
 
     public static Fragment newInstance() {
-        return new FragmentHistory();
+        return new HistoryFragment();
     }
 
     @Override

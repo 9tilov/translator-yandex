@@ -1,9 +1,9 @@
 package com.moggot.mytranslator;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -22,7 +22,7 @@ public class DictionaryTask extends AsyncTask<Translator, Void, String> {
     private Dictionary dictionary;
 
     public DictionaryTask(Context context) {
-        dictionary = new Dictionary(context);
+        dictionary = new Dictionary();
         this.context = context;
     }
 
@@ -56,7 +56,7 @@ public class DictionaryTask extends AsyncTask<Translator, Void, String> {
         Log.v(LOG_TAG, "result = " + result);
         if (result == null)
             return;
-        Fragment translatorFragment = ((Activity) context).getFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
+        Fragment translatorFragment = ((FragmentActivity) context).getSupportFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
         if (translatorFragment != null && translatorFragment.isVisible()) {
             TextView tvTranslator = (TextView) translatorFragment.getView().findViewById(R.id.tvDetails);
             tvTranslator.setText(result);
