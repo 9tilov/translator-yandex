@@ -1,12 +1,16 @@
 package com.moggot.mytranslator;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.github.ybq.android.spinkit.style.CubeGrid;
 import com.moggot.mytranslator.translate.Dictionary;
 import com.moggot.mytranslator.translator.Translator;
 
@@ -20,10 +24,16 @@ public class DictionaryTask extends AsyncTask<Translator, Void, String> {
     private Context context;
     private Translator translator;
     private Dictionary dictionary;
+    private ProgressBar progressBar;
 
     public DictionaryTask(Context context) {
         dictionary = new Dictionary();
         this.context = context;
+
+        progressBar = (ProgressBar) ((Activity) context).findViewById(R.id.spin_kit);
+        CubeGrid cubeGrid = new CubeGrid();
+        progressBar.setIndeterminateDrawable(cubeGrid);
+
     }
 
     @Override
@@ -62,5 +72,7 @@ public class DictionaryTask extends AsyncTask<Translator, Void, String> {
             tvTranslator.setText(result);
             translator.setDetails(result);
         }
+        progressBar.setVisibility(View.GONE);
+
     }
 }

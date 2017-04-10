@@ -32,15 +32,28 @@
             android:fillViewport="true"
             android:scrollbars="vertical">
 
-            <TextView
-                android:id="@+id/tvDetails"
-                style="@style/Dictionary"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/image"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="@dimen/image"
-                android:layout_marginStart="5dp" />
+                android:layout_height="wrap_content">
+
+                <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/spin_kit"
+                    style="@style/SpinKitView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    app:SpinKit_Color="@color/text" />
+
+                <TextView
+                    android:id="@+id/tvDetails"
+                    style="@style/Dictionary"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/image"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="@dimen/image"
+                    android:layout_marginStart="5dp" />
+            </FrameLayout>
         </ScrollView>
     </LinearLayout>
 
