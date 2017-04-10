@@ -56,9 +56,10 @@ public class Dictionary extends YandexTranslatorAPI {
                 strResult.append(partOfSpeech.getString("text"));
 
                 try {
+                    String tr = partOfSpeech.getString("ts");
                     strResult.append(" ");
                     strResult.append("[");
-                    strResult.append(partOfSpeech.getString("ts"));
+                    strResult.append(tr);
                     strResult.append("]");
                 } catch (Exception e) {
                 }
