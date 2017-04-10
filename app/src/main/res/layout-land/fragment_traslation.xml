@@ -22,7 +22,7 @@
             android:layout_marginRight="@dimen/image"
             android:layout_marginStart="5dp"
             android:layout_weight="2"
-            android:gravity="center_vertical"/>
+            android:gravity="center_vertical" />
 
         <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/scrollCreateAlarmActivity"
@@ -32,15 +32,29 @@
             android:fillViewport="true"
             android:scrollbars="vertical">
 
-            <TextView
-                android:id="@+id/tvDetails"
-                style="@style/Dictionary"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/image"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="@dimen/image"
-                android:layout_marginStart="5dp" />
+                android:layout_height="wrap_content">
+
+                <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/spin_kit"
+                    style="@style/SpinKitView.CubeGrid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:visibility="invisible"
+                    app:SpinKit_Color="@color/text" />
+
+                <TextView
+                    android:id="@+id/tvDetails"
+                    style="@style/Dictionary"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/image"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="@dimen/image"
+                    android:layout_marginStart="5dp" />
+            </FrameLayout>
         </ScrollView>
     </LinearLayout>
 

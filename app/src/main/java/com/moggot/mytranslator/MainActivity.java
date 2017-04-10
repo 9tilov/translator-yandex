@@ -3,6 +3,8 @@ package com.moggot.mytranslator;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,7 +13,10 @@ import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -73,8 +78,7 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     }
                 } else {
-
-                    fragment = (FavoritesFragment) pager.getAdapter().instantiateItem(pager, 1);
+                    fragment = (FavoritesFragment) pager.getAdapter().instantiateItem(pager, pager.getCurrentItem());
                     Log.v(LOG_TAG, "view = " + fragment.getView());
                     if (fragment != null && fragment.getView() != null) {
                         Display display = new FavoritesDisplay(MainActivity.this, fragment.getView(), translatorData);
@@ -365,10 +369,31 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            if (position == 0)
-                return getString(R.string.translation);
-            else
-                return getString(R.string.favorites);
+
+            SpannableStringBuilder sb = new SpannableStringBuilder(" ");
+            Drawable drawable;
+            if (position == 0) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    drawable = getResources().getDrawable(R.drawable.ic_translate_selected_24px, getTheme());
+                } else {
+                    drawable = getResources().getDrawable(R.drawable.ic_translate_selected_24px);
+                }
+                drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                ImageSpan span = new ImageSpan(drawable, ImageSpan.ALIGN_BOTTOM);
+                sb.setSpan(span, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                return sb;
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    drawable = getResources().getDrawable(R.drawable.ic_bookmark_24px, getTheme());
+                } else {
+                    drawable = getResources().getDrawable(R.drawable.ic_bookmark_24px);
+                }
+                drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                ImageSpan span = new ImageSpan(drawable, ImageSpan.ALIGN_BOTTOM);
+                sb.setSpan(span, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                return sb;
+            }
         }
     }
 

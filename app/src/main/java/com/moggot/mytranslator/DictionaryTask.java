@@ -33,7 +33,7 @@ public class DictionaryTask extends AsyncTask<Translator, Void, String> {
         progressBar = (ProgressBar) ((Activity) context).findViewById(R.id.spin_kit);
         CubeGrid cubeGrid = new CubeGrid();
         progressBar.setIndeterminateDrawable(cubeGrid);
-
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -43,6 +43,7 @@ public class DictionaryTask extends AsyncTask<Translator, Void, String> {
 
     @Override
     protected String doInBackground(Translator... params) {
+
         try {
             translator = params[0];
             return dictionary.execute(params[0].getText()
