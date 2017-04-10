@@ -148,10 +148,7 @@ public class MainActivity extends AppCompatActivity {
         etText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                    if (etText.getText().toString().isEmpty()) {
-                        return false;
-                    }
-                    saveRecord();
+                    saveOrEditRecord();
                 }
                 return false;
             }
@@ -160,9 +157,7 @@ public class MainActivity extends AppCompatActivity {
         etText.setBackPressedListener(new BackAwareEditText.BackPressedListener() {
             @Override
             public void onImeBack(BackAwareEditText editText) {
-                if (etText.getText().toString().isEmpty())
-                    return;
-                saveRecord();
+                saveOrEditRecord();
             }
         });
 
@@ -176,10 +171,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void saveRecord() {
-        if (translator.getText().isEmpty())
+    private void saveOrEditRecord() {
+        if (translator.getText().isEmpty() || translator.getTranslation().isEmpty())
             return;
-        db.addRecord(translator);
+        if (db.findRecord(translator) != null)
+            db.editRecord(translator);
+        else
+            db.addRecord(translator);
     }
 
     private void createTranslator() {
@@ -229,18 +227,18 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LanguageActivity.class);
         intent.putExtra(Consts.EXTRA_LANG, Consts.LANG_TYPE.INPUT.getType());
         startActivityForResult(intent, Consts.REQUEST_CODE_ACTIVITY_LANGUAGE);
-        saveRecord();
+        saveOrEditRecord();
     }
 
     public void onClickOutputLang(View view) {
         Intent intent = new Intent(this, LanguageActivity.class);
         intent.putExtra(Consts.EXTRA_LANG, Consts.LANG_TYPE.OUTPUT.getType());
         startActivityForResult(intent, Consts.REQUEST_CODE_ACTIVITY_LANGUAGE);
-        saveRecord();
+        saveOrEditRecord();
     }
 
     public void onClickClear(View view) {
-        saveRecord();
+        saveOrEditRecord();
         etText.setText("");
     }
 
@@ -275,11 +273,7 @@ public class MainActivity extends AppCompatActivity {
                 translator.setIsFavorites(true);
                 btnFavorites.setBackgroundResource(R.drawable.ic_bookmark_24px);
             }
-
-            if (db.findRecord(translator) != null)
-                db.editRecord(translator);
-            else
-                db.addRecord(translator);
+            saveOrEditRecord();
         }
     }
 

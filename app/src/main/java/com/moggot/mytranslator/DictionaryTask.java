@@ -65,8 +65,10 @@ public class DictionaryTask extends AsyncTask<Translator, Void, String> {
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
         Log.v(LOG_TAG, "result = " + result);
-        if (result == null)
+        if (result == null) {
+            progressBar.setVisibility(View.GONE);
             return;
+        }
         Fragment translatorFragment = ((FragmentActivity) context).getSupportFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
         if (translatorFragment != null && translatorFragment.isVisible()) {
             TextView tvTranslator = (TextView) translatorFragment.getView().findViewById(R.id.tvDetails);
@@ -74,6 +76,5 @@ public class DictionaryTask extends AsyncTask<Translator, Void, String> {
             translator.setDetails(result);
         }
         progressBar.setVisibility(View.GONE);
-
     }
 }

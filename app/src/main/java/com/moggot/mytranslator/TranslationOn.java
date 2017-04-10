@@ -1,10 +1,15 @@
 package com.moggot.mytranslator;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.moggot.mytranslator.fragments.TranslatorFragment;
 import com.moggot.mytranslator.observer.Display;
@@ -42,6 +47,14 @@ public class TranslationOn extends State {
         View view = fragment.getView();
         if (view == null)
             return;
+        if (!isNetworkAvailable()) {
+            TextView tvTranslator = (TextView) fragment.getView().findViewById(R.id.tvDetails);
+            tvTranslator.setText(context.getString(R.string.connection_error));
+            tvTranslator.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+            tvTranslator.setGravity(Gravity.CENTER);
+            return;
+        }
+
         Display display = new TranslationDisplay(context, view, translatorData);
         DataBase db = new DataBase(context);
         Translator foundRecord = db.findRecord(translator);
@@ -57,5 +70,11 @@ public class TranslationOn extends State {
 
         translatorData.setTranslator(translator);
         display.display();
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return (activeNetworkInfo != null && activeNetworkInfo.isConnected());
     }
 }
