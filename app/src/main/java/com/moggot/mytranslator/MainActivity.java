@@ -20,6 +20,8 @@ import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.TextView;
@@ -120,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                 if (etText.getText().toString().isEmpty()) {
                     State stateOff = new TranslationOff(MainActivity.this);
                     translatorContext.setState(stateOff);
-                    translatorContext.show(translator);
+                    translatorContext.show();
                     header.setVisibility(View.VISIBLE);
                     return;
                 }
@@ -132,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 resetTranslator();
                 translator.setText(cs.toString());
-                translatorContext.show(translator);
+                translatorContext.show();
             }
 
             @Override
@@ -191,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
                 , false
                 , "");
 
-        translatorContext = new TranslatorContext(translator);
+        translatorContext = new TranslatorContext(this, translator);
     }
 
     private void resetTranslator() {
@@ -207,6 +209,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickChangeLang(View view) {
+        Animation bounce = AnimationUtils.loadAnimation(translatorContext.getContext(), R.anim.change_lang);
+        view.startAnimation(bounce);
+
         resetTranslator();
         String inputLang = LangSharedPreferences.loadInputLanguage(this);
         String outputLang = LangSharedPreferences.loadOutputLanguage(this);
@@ -218,9 +223,7 @@ public class MainActivity extends AppCompatActivity {
 
         translator.setInputLanguage(inputLang);
         translator.setOutputLanguage(outputLang);
-
-        translatorContext.show(translator);
-
+        translatorContext.show();
     }
 
     public void onClickInputLang(View view) {
@@ -250,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         db.deleteAll();
-                        translatorContext.show(translator);
+                        translatorContext.show();
                     }
                 })
                 .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -314,7 +317,7 @@ public class MainActivity extends AppCompatActivity {
                 translator.setInputLanguage(inputLang);
                 translator.setOutputLanguage(outputLang);
 
-                translatorContext.show(translator);
+                translatorContext.show();
                 break;
         }
     }
@@ -349,7 +352,7 @@ public class MainActivity extends AppCompatActivity {
             if (position == 0) {
                 State stateOff = new TranslationOff(MainActivity.this);
                 translatorContext.setState(stateOff);
-                translatorContext.show(translator);
+                translatorContext.show();
                 return RootFragment.newInstance();
             } else {
                 return FavoritesFragment.newInstance();
