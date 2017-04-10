@@ -17,6 +17,8 @@ import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 import com.moggot.mytranslator.DataBase;
 import com.moggot.mytranslator.LangSharedPreferences;
 import com.moggot.mytranslator.R;
+import com.moggot.mytranslator.animation.AnimationBounce;
+import com.moggot.mytranslator.animation.EmptyAnimationBounce;
 import com.moggot.mytranslator.observer.AdapterHistoryDisplay;
 import com.moggot.mytranslator.observer.Display;
 import com.moggot.mytranslator.observer.TranslatorData;
@@ -100,6 +102,8 @@ public class AdapterHistory extends BaseSwipeAdapter {
         convertView.findViewById(R.id.adapterIwFavorites).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AnimationBounce animationBounce = new EmptyAnimationBounce(context);
+                animationBounce.animate(view);
                 Log.v(LOG_TAG, "position = " + position);
                 if (translatorAtPosition.getIsFavorites())
                     translatorAtPosition.setIsFavorites(false);

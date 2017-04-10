@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.moggot.mytranslator.adapter.AdapterLanguage;
+import com.moggot.mytranslator.animation.AnimationBounce;
+import com.moggot.mytranslator.animation.BackButtonAnimationBounce;
 
 public class LanguageActivity extends AppCompatActivity {
 
@@ -24,6 +26,7 @@ public class LanguageActivity extends AppCompatActivity {
     }
 
     public void onClickBack(View view) {
-        finish();
+        AnimationBounce animationBounce = new BackButtonAnimationBounce(this);
+        animationBounce.animate(view);
     }
 }

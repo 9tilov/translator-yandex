@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.github.ybq.android.spinkit.style.CubeGrid;
+import com.github.ybq.android.spinkit.style.ThreeBounce;
 import com.moggot.mytranslator.translate.Dictionary;
 import com.moggot.mytranslator.translator.Translator;
 
@@ -31,8 +31,8 @@ public class DictionaryTask extends AsyncTask<Translator, Void, String> {
         this.context = context;
 
         progressBar = (ProgressBar) ((Activity) context).findViewById(R.id.spin_kit);
-        CubeGrid cubeGrid = new CubeGrid();
-        progressBar.setIndeterminateDrawable(cubeGrid);
+        ThreeBounce threeBounce = new ThreeBounce();
+        progressBar.setIndeterminateDrawable(threeBounce);
         progressBar.setVisibility(View.VISIBLE);
     }
 

@@ -1,18 +1,17 @@
 package com.moggot.mytranslator.animation;
 
+import android.content.Context;
 import android.view.View;
 import android.view.animation.Animation;
-
-import com.moggot.mytranslator.TranslatorContext;
 
 /**
  * Created by toor on 10.04.17.
  */
 
-public class ClickButtonAnimationBounce extends AnimationBounce {
+public class EmptyAnimationBounce extends AnimationBounce {
 
-    public ClickButtonAnimationBounce(TranslatorContext translatorContext) {
-        super(translatorContext);
+    public EmptyAnimationBounce(Context context) {
+        super(context);
     }
 
     @Override
@@ -29,7 +28,6 @@ public class ClickButtonAnimationBounce extends AnimationBounce {
 
             @Override
             public void onAnimationEnd(Animation arg0) {
-
             }
         });
     }

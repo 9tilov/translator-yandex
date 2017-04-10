@@ -1,6 +1,5 @@
 package com.moggot.mytranslator.translate;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.moggot.mytranslator.ApiKeys;

@@ -26,6 +26,9 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.moggot.mytranslator.animation.AnimationBounce;
+import com.moggot.mytranslator.animation.ClearButtonAnimationBounce;
+import com.moggot.mytranslator.animation.EmptyAnimationBounce;
 import com.moggot.mytranslator.fragments.FavoritesFragment;
 import com.moggot.mytranslator.fragments.HistoryFragment;
 import com.moggot.mytranslator.fragments.RootFragment;
@@ -242,10 +245,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickClear(View view) {
         saveOrEditRecord();
-        etText.setText("");
+        AnimationBounce animation = new ClearButtonAnimationBounce(this);
+        animation.animate(view);
     }
 
     public void onClickClearHistory(View view) {
+        AnimationBounce animationBounce = new EmptyAnimationBounce(this);
+        animationBounce.animate(view);
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle(getString(R.string.dialog_title_delete_history));
         alertDialogBuilder
@@ -266,6 +272,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickAddFavorites(View view) {
+        AnimationBounce animationBounce = new EmptyAnimationBounce(this);
+        animationBounce.animate(view);
         Fragment translatorFragment = getSupportFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
         if (translatorFragment != null && translatorFragment.isVisible()) {
             Button btnFavorites = (Button) translatorFragment.getView().findViewById(R.id.btnFavorites);
@@ -281,6 +289,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickClearFavorites(View view) {
+        AnimationBounce animationBounce = new EmptyAnimationBounce(this);
+        animationBounce.animate(view);
+
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle(getString(R.string.dialog_title_delete_favorites));
         alertDialogBuilder

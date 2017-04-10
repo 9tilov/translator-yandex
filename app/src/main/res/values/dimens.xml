@@ -21,6 +21,7 @@
     <dimen name="edittext_border_width">2dp</dimen>
 
     <dimen name="tab_height">40dp</dimen>
+    <dimen name="progress_bar_size">100dp</dimen>
 
     <dimen name="check_width">30dp</dimen>
     <dimen name="check_height">30dp</dimen>
