@@ -72,7 +72,7 @@ public class TranslatorFragment extends Fragment {
                              Bundle savedInstanceState) {
         Log.v(LOG_TAG, "onCreateView");
 
-        return inflater.inflate(R.layout.fragment_traslation, container, false);
+        return inflater.inflate(R.layout.fragment_translator, container, false);
     }
 
     @Override

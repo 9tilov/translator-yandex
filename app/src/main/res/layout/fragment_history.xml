@@ -11,14 +11,14 @@
         android:id="@+id/btnClearHistory"
         android:layout_width="@dimen/trash_size"
         android:layout_height="@dimen/trash_size"
-        android:layout_gravity="end"
         android:background="@drawable/ic_delete_forever_black_24px"
-        android:onClick="onClickClearHistory" />
+        android:onClick="onClickClearHistory"
+        android:layout_gravity="end"/>
 
     <ListView
         android:id="@+id/lvHistory"
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="9" />
+        android:layout_weight="9"/>
 
 </LinearLayout>

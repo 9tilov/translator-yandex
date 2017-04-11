@@ -28,6 +28,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        if (savedInstanceState != null) {
+//            Fragment fragment = getSupportFragmentManager().getFragment(savedInstanceState, Consts.EXTRA_STATE);
+//            State state;
+//            if (fragment instanceof TranslatorFragment) {
+//                state = new TranslationOn(this);
+//            } else if (fragment instanceof HistoryFragment) {
+//                state = new TranslationOff(this);
+//            } else
+//                return;
+//            translatorContext.setState(state);
+//        }
+
+
         pager = (ViewPager) findViewById(R.id.pager);
         final SlidePagerAdapter pagerAdapter = new SlidePagerAdapter(getSupportFragmentManager());
         pager.setAdapter(pagerAdapter);
@@ -41,11 +54,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_HISTORY);
+        Fragment fragment = (RootFragment)pager.getAdapter().instantiateItem(pager, 0);
         if (fragment != null && fragment.isVisible()) {
             getSupportFragmentManager().putFragment(outState, Consts.EXTRA_STATE, fragment);
         }
-        fragment = getSupportFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
+        fragment = (FavoritesFragment)pager.getAdapter().instantiateItem(pager, 1);
         if (fragment != null && fragment.isVisible()) {
             getSupportFragmentManager().putFragment(outState, Consts.EXTRA_STATE, fragment);
         }
