@@ -56,7 +56,8 @@ public class FavoritesFragment extends Fragment {
         super.onAttach(context);
         try {
             ViewPager pager = ((MainActivity) context).getViewPager();
-            favoritesEventListener = (FavoritesEventListener) pager.getAdapter().instantiateItem(pager, 0);
+            if (pager != null)
+                favoritesEventListener = (FavoritesEventListener) pager.getAdapter().instantiateItem(pager, 0);
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString() + " must implement FavoritesEventListener");
         }
@@ -64,6 +65,7 @@ public class FavoritesFragment extends Fragment {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         db = new DataBase(getContext());
         translatorData = new TranslatorData();
     }

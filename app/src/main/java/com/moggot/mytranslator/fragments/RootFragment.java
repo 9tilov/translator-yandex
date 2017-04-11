@@ -65,6 +65,7 @@ public class RootFragment extends Fragment implements HistoryFragment.HistoryEve
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         db = new DataBase(getContext());
     }
 
@@ -255,6 +256,8 @@ public class RootFragment extends Fragment implements HistoryFragment.HistoryEve
                 if (fragmentManager == null)
                     return;
                 Fragment fragment = fragmentManager.findFragmentByTag(Consts.TAG_FRAGMENT_HISTORY);
+                if (fragment == null)
+                    return;
                 TranslatorData translatorData = new TranslatorData();
                 Display display = new HistoryDisplay(fragment, translatorData);
                 translatorData.setTranslator(translator);

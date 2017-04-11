@@ -60,6 +60,7 @@ public class HistoryFragment extends Fragment {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         db = new DataBase(getContext());
         translatorData = new TranslatorData();
     }
