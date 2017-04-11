@@ -4,10 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
 import com.moggot.mytranslator.fragments.HistoryFragment;
-import com.moggot.mytranslator.observer.Display;
-import com.moggot.mytranslator.observer.HistoryDisplay;
-import com.moggot.mytranslator.observer.RootFragmentDisplay;
-import com.moggot.mytranslator.observer.TranslatorData;
 import com.moggot.mytranslator.translator.Translator;
 
 /**
@@ -21,7 +17,7 @@ public class TranslationOff extends State {
     private Fragment parentFragment;
 
     public TranslationOff(Fragment parentFragment) {
-        super(parentFragment.getContext());
+        super(parentFragment);
         this.parentFragment = parentFragment;
         Fragment fragment = parentFragment.getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_HISTORY);
         if (fragment == null) {
@@ -35,13 +31,7 @@ public class TranslationOff extends State {
     }
 
     public void show(Translator translator) {
-        TranslatorData translatorData = new TranslatorData();
-        Display display = new RootFragmentDisplay(parentFragment, translatorData);
-        translatorData.setTranslator(translator);
-        display.display();
+        super.show(translator);
 
-        Fragment fragment = parentFragment.getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_HISTORY);
-        display = new HistoryDisplay(fragment, translatorData);
-        display.display();
     }
 }

@@ -26,7 +26,7 @@ public class RootFragmentDisplay extends Display {
 
     @Override
     public void display() {
-        if (parentFragment.getView() == null)
+        if (parentFragment == null || parentFragment.getView() == null)
             return;
         displayInputLang();
         displayOutputLang();

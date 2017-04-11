@@ -2,6 +2,7 @@ package com.moggot.mytranslator.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
@@ -247,7 +248,6 @@ public class RootFragment extends Fragment implements HistoryFragment.HistoryEve
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        Log.v(LOG_TAG, "setUserVisibleHint = " + isVisibleToUser);
 
         try {
             if (isVisibleToUser) {
@@ -255,12 +255,10 @@ public class RootFragment extends Fragment implements HistoryFragment.HistoryEve
                 if (fragmentManager == null)
                     return;
                 Fragment fragment = fragmentManager.findFragmentByTag(Consts.TAG_FRAGMENT_HISTORY);
-                if (fragment != null && fragment.getView() != null) {
-                    TranslatorData translatorData = new TranslatorData();
-                    Display display = new HistoryDisplay(fragment, translatorData);
-                    translatorData.setTranslator(translator);
-                    display.display();
-                }
+                TranslatorData translatorData = new TranslatorData();
+                Display display = new HistoryDisplay(fragment, translatorData);
+                translatorData.setTranslator(translator);
+                display.display();
             }
         } catch (IllegalStateException e) {
         }
@@ -284,12 +282,25 @@ public class RootFragment extends Fragment implements HistoryFragment.HistoryEve
         translator.setIsFavorites(isFavorites);
         TranslatorData translatorData = new TranslatorData();
         Fragment fragment = getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
-        if (fragment != null && fragment.getView() != null) {
-            Display display = new TranslationDisplay(fragment, translatorData);
-            translatorData.setTranslator(translator);
-            display.display();
-        }
+        Display display = new TranslationDisplay(fragment, translatorData);
+        translatorData.setTranslator(translator);
+        display.display();
         saveOrEditRecord();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case Consts.REQUEST_CODE_ACTIVITY_LANGUAGE:
+                resetTranslator();
+                String inputLang = LangSharedPreferences.loadInputLanguage(getContext());
+                String outputLang = LangSharedPreferences.loadOutputLanguage(getContext());
+                translator.setInputLanguage(inputLang);
+                translator.setOutputLanguage(outputLang);
+
+                translatorContext.show();
+                break;
+        }
+    }
 }

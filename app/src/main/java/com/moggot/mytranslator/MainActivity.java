@@ -1,12 +1,12 @@
 package com.moggot.mytranslator;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableStringBuilder;
@@ -21,22 +21,12 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "MainActivity";
 
-    //    private BackAwareEditText etText;
-//
-//    private Translator translator;
-//    private TranslatorContext translatorContext;
-//
-//    private DataBase db;
-
-    ViewPager pager;
+    private ViewPager pager;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        etText = (BackAwareEditText) findViewById(R.id.etText);
-//        db = new DataBase(this);
-//        createTranslator();
 
         pager = (ViewPager) findViewById(R.id.pager);
         final SlidePagerAdapter pagerAdapter = new SlidePagerAdapter(getSupportFragmentManager());
@@ -47,280 +37,6 @@ public class MainActivity extends AppCompatActivity {
     public ViewPager getViewPager() {
         return pager;
     }
-
-//        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//
-//            // This method will be invoked when a new page becomes selected.
-//            @Override
-//            public void onPageSelected(int position) {
-//                Log.v(LOG_TAG, "onPageSelected");
-//                Fragment fragment;
-//                TranslatorData translatorData = new TranslatorData();
-//                if (position == 0) {
-//                    fragment = getSupportFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_HISTORY);
-//                    if (fragment != null && fragment.getView() != null) {
-//                        Display display = new HistoryDisplay(MainActivity.this, fragment.getView(), translatorData);
-////                        translatorData.setTranslator(translator);
-//                        display.display();
-//                        return;
-//                    }
-//                } else {
-//                    fragment = (FavoritesFragment) pager.getAdapter().instantiateItem(pager, pager.getCurrentItem());
-//                    Log.v(LOG_TAG, "view = " + fragment.getView());
-//                    if (fragment != null && fragment.getView() != null) {
-//                        Display display = new FavoritesDisplay(MainActivity.this, fragment.getView(), translatorData);
-////                        translatorData.setTranslator(translator);
-//                        display.display();
-//                    }
-//                }
-//            }
-//
-//            // This method will be invoked when the current page is scrolled
-//            @Override
-//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//            }
-//
-//            @Override
-//            public void onPageScrollStateChanged(int state) {
-//            }
-//        });
-//    }
-
-    //        if (savedInstanceState != null) {
-//            Fragment fragment = getSupportFragmentManager().getFragment(savedInstanceState, Consts.EXTRA_STATE);
-//            State state;
-//            if (fragment instanceof TranslatorFragment) {
-//                state = new TranslationOn(this);
-//            } else if (fragment instanceof HistoryFragment) {
-//                state = new TranslationOff(this);
-//            } else
-//                return;
-//            translatorContext.setState(state);
-//        }
-//
-//        etText.addTextChangedListener(new TextWatcher() {
-//
-//            @Override
-//            public void onTextChanged(CharSequence cs, int start,
-//                                      int lengthBefore,
-//                                      int lengthAfter) {
-//                pager.setCurrentItem(0);
-//                if (etText.getText().toString().isEmpty()) {
-//                    State stateOff = new TranslationOff(MainActivity.this);
-//                    translatorContext.setState(stateOff);
-//                    translatorContext.show();
-//                    header.setVisibility(View.VISIBLE);
-//                    return;
-//                }
-//
-//                if (translatorContext.getState() instanceof TranslationOff) {
-//                    State stateOn = new TranslationOn(MainActivity.this);
-//                    translatorContext.setState(stateOn);
-//                    header.setVisibility(View.GONE);
-//                }
-//                resetTranslator();
-//                translator.setText(cs.toString());
-//                translatorContext.show();
-//            }
-//
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start,
-//                                          int count, int after) {
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable str) {
-//            }
-//        });
-//
-//        etText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-//                    saveOrEditRecord();
-//                }
-//                return false;
-//            }
-//        });
-//
-//        etText.setBackPressedListener(new BackAwareEditText.BackPressedListener() {
-//            @Override
-//            public void onImeBack(BackAwareEditText editText) {
-//                saveOrEditRecord();
-//            }
-//        });
-//
-//        etText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if (hasFocus) {
-//                    etText.setSelection(etText.getText().length());
-//                }
-//            }
-//        });
-//    }
-//
-//    private void saveOrEditRecord() {
-//        if (translator.getText().isEmpty() || translator.getTranslation().isEmpty())
-//            return;
-//        if (db.findRecord(translator) != null)
-//            db.editRecord(translator);
-//        else
-//            db.addRecord(translator);
-//    }
-//
-//    private void createTranslator() {
-//        String inputLanguage = LangSharedPreferences.loadInputLanguage(this);
-//        String outputLanguage = LangSharedPreferences.loadOutputLanguage(this);
-//        translator = new Translator(null
-//                , ""
-//                , ""
-//                , inputLanguage
-//                , outputLanguage
-//                , false
-//                , "");
-//        translatorContext = new TranslatorContext(this, translator);
-//    }
-//
-//    public Translator getTranslator() {
-//        return this.translator;
-//    }
-
-//
-//    }
-//
-//    private void resetTranslator() {
-//        translator.setId(null);
-//
-//        translator.setText(etText.getText().toString());
-//        translator.setTranslation("");
-//        translator.setInputLanguage(LangSharedPreferences.loadInputLanguage(this));
-//        translator.setOutputLanguage(LangSharedPreferences.loadOutputLanguage(this));
-//        translator.setIsFavorites(false);
-//        translator.setDetails("");
-//
-//    }
-//
-//    public void onClickChangeLang(View view) {
-//        Animation bounce = AnimationUtils.loadAnimation(translatorContext.getContext(), R.anim.change_lang);
-//        view.startAnimation(bounce);
-//
-//        resetTranslator();
-//        String inputLang = LangSharedPreferences.loadInputLanguage(this);
-//        String outputLang = LangSharedPreferences.loadOutputLanguage(this);
-//        LangSharedPreferences.saveInputLanguage(this, outputLang);
-//        LangSharedPreferences.saveOutputLanguage(this, inputLang);
-//
-//        inputLang = LangSharedPreferences.loadInputLanguage(this);
-//        outputLang = LangSharedPreferences.loadOutputLanguage(this);
-//
-//        translator.setInputLanguage(inputLang);
-//        translator.setOutputLanguage(outputLang);
-//        translatorContext.show();
-//    }
-//
-//    public void onClickInputLang(View view) {
-//        Intent intent = new Intent(this, LanguageActivity.class);
-//        intent.putExtra(Consts.EXTRA_LANG, Consts.LANG_TYPE.INPUT.getType());
-//        startActivityForResult(intent, Consts.REQUEST_CODE_ACTIVITY_LANGUAGE);
-//        saveOrEditRecord();
-//    }
-//
-//    public void onClickOutputLang(View view) {
-//        Intent intent = new Intent(this, LanguageActivity.class);
-//        intent.putExtra(Consts.EXTRA_LANG, Consts.LANG_TYPE.OUTPUT.getType());
-//        startActivityForResult(intent, Consts.REQUEST_CODE_ACTIVITY_LANGUAGE);
-//        saveOrEditRecord();
-//    }
-//
-//    public void onClickClear(View view) {
-//        saveOrEditRecord();
-//        AnimationBounce animation = new ClearButtonAnimationBounce(this);
-//        animation.animate(view);
-//    }
-
-//    public void onClickClearHistory(View view) {
-//        AnimationBounce animationBounce = new EmptyAnimationBounce(this);
-//        animationBounce.animate(view);
-//        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-//        alertDialogBuilder.setTitle(getString(R.string.dialog_title_delete_history));
-//        alertDialogBuilder
-//                .setCancelable(false)
-//                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        db.deleteAll();
-//                        translatorContext.show();
-//                    }
-//                })
-//                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        dialog.cancel();
-//                    }
-//                });
-//        AlertDialog alertDialog = alertDialogBuilder.create();
-//        alertDialog.show();
-//    }
-
-//    public void onClickAddFavorites(View view) {
-//        AnimationBounce animationBounce = new EmptyAnimationBounce(this);
-//        animationBounce.animate(view);
-//        Fragment translatorFragment = getSupportFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
-//        if (translatorFragment != null && translatorFragment.isVisible()) {
-//            Button btnFavorites = (Button) translatorFragment.getView().findViewById(R.id.btnAddFavorites);
-//            if (translator.getIsFavorites()) {
-//                translator.setIsFavorites(false);
-//                btnFavorites.setBackgroundResource(R.drawable.ic_bookmark_border_black_24px);
-//            } else {
-//                translator.setIsFavorites(true);
-//                btnFavorites.setBackgroundResource(R.drawable.ic_bookmark_24px);
-//            }
-//            saveOrEditRecord();
-//        }
-//    }
-
-//    public void onClickClearFavorites(View view) {
-//        AnimationBounce animationBounce = new EmptyAnimationBounce(this);
-//        animationBounce.animate(view);
-//
-//        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-//        alertDialogBuilder.setTitle(getString(R.string.dialog_title_delete_favorites));
-//        alertDialogBuilder
-//                .setCancelable(false)
-//                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        db.deleteAllFavorites();
-//                        Fragment fragment = (FavoritesFragment) pager.getAdapter().instantiateItem(pager, pager.getCurrentItem());
-//                        Log.v(LOG_TAG, "view = " + fragment.getView());
-//                        if (fragment != null && fragment.getView() != null) {
-//                            TranslatorData translatorData = new TranslatorData();
-//                            Display display = new FavoritesDisplay(MainActivity.this, fragment.getView(), translatorData);
-//                            translatorData.setTranslator(translator);
-//                            display.display();
-//                        }
-//                    }
-//                })
-//                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        dialog.cancel();
-//                    }
-//                });
-//        AlertDialog alertDialog = alertDialogBuilder.create();
-//        alertDialog.show();
-//    }
-
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        switch (requestCode) {
-//            case Consts.REQUEST_CODE_ACTIVITY_LANGUAGE:
-//                resetTranslator();
-//                String inputLang = LangSharedPreferences.loadInputLanguage(this);
-//                String outputLang = LangSharedPreferences.loadOutputLanguage(this);
-//                translator.setInputLanguage(inputLang);
-//                translator.setOutputLanguage(outputLang);
-//
-//                translatorContext.show();
-//                break;
-//        }
-//    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -345,18 +61,11 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            /*
-             * IMPORTANT: This is the point. We create a RootFragment acting as
-			 * a container for other fragments
-			 */
-            if (position == 0) {
-//                State stateOff = new TranslationOff(MainActivity.this);
-//                translatorContext.setState(stateOff);
-//                translatorContext.show();
+
+            if (position == 0)
                 return RootFragment.newInstance();
-            } else {
+            else
                 return FavoritesFragment.newInstance();
-            }
         }
 
         @Override

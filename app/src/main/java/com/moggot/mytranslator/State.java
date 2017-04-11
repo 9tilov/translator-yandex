@@ -1,20 +1,28 @@
 package com.moggot.mytranslator;
 
-import android.content.Context;
+import android.support.v4.app.Fragment;
 
+import com.moggot.mytranslator.observer.Display;
+import com.moggot.mytranslator.observer.RootFragmentDisplay;
+import com.moggot.mytranslator.observer.TranslatorData;
 import com.moggot.mytranslator.translator.Translator;
 
 /**
  * Created by toor on 02.04.17.
  */
 
-public abstract class State {
+public class State {
 
-    protected Context context;
+    protected Fragment parentFragment;
 
-    public State(Context context) {
-        this.context = context;
+    public State(Fragment parentFragment) {
+        this.parentFragment = parentFragment;
     }
 
-    abstract void show(Translator translator);
+    void show(Translator translator){
+        TranslatorData translatorData = new TranslatorData();
+        Display display = new RootFragmentDisplay(parentFragment, translatorData);
+        translatorData.setTranslator(translator);
+        display.display();
+    }
 }

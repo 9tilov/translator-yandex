@@ -1,5 +1,6 @@
 package com.moggot.mytranslator.observer;
 
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
@@ -21,23 +22,24 @@ public class FavoritesDisplay extends Display {
     private static final String LOG_TAG = "FavoritesDisplay";
 
     private Fragment fragment;
+    private DataBase db;
 
     public FavoritesDisplay(Fragment fragment, TranslatorData translatorData) {
         super(fragment.getContext());
         this.fragment = fragment;
+        db = new DataBase(context);
         translatorData.registerObserver(this);
     }
 
     @Override
     public void display() {
-        if (fragment.getView() == null)
+        if (fragment == null || fragment.getView() == null)
             return;
         displayClearFavoritesButton();
         displayFavoritesList();
     }
 
     private void displayClearFavoritesButton() {
-        DataBase db = new DataBase(context);
         if (db.getFavoritesRecords().isEmpty())
             ((Button) fragment.getView().findViewById(R.id.btnClearFavorites)).setVisibility(View.GONE);
         else
@@ -46,7 +48,6 @@ public class FavoritesDisplay extends Display {
 
     private void displayFavoritesList() {
         ListView listView = (ListView) fragment.getView().findViewById(R.id.lvFavorites);
-        DataBase db = new DataBase(context);
         List<Translator> records = db.getFavoritesRecords();
         AdapterFavorites adapter = new AdapterFavorites(fragment, records);
         listView.setAdapter(adapter);

@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.moggot.mytranslator.fragments.TranslatorFragment;
 import com.moggot.mytranslator.observer.Display;
-import com.moggot.mytranslator.observer.RootFragmentDisplay;
 import com.moggot.mytranslator.observer.TranslationDisplay;
 import com.moggot.mytranslator.observer.TranslatorData;
 import com.moggot.mytranslator.translator.Translator;
@@ -27,7 +26,7 @@ public class TranslationOn extends State {
     private Fragment parentFragment;
 
     public TranslationOn(Fragment parentFragment, boolean isFavorites) {
-        super(parentFragment.getContext());
+        super(parentFragment);
         this.parentFragment = parentFragment;
         Fragment fragment = parentFragment.getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
         if (fragment == null) {
@@ -42,23 +41,20 @@ public class TranslationOn extends State {
     }
 
     public void show(Translator translator) {
-        TranslatorData translatorData = new TranslatorData();
-        Display display = new RootFragmentDisplay(parentFragment, translatorData);
-        translatorData.setTranslator(translator);
-        display.display();
+        super.show(translator);
 
         Fragment fragment = parentFragment.getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
         if (fragment == null || fragment.getView() == null)
             return;
         if (!isNetworkAvailable()) {
             TextView tvTranslator = (TextView) fragment.getView().findViewById(R.id.tvDetails);
-            tvTranslator.setText(context.getString(R.string.connection_error));
+            tvTranslator.setText(parentFragment.getContext().getString(R.string.connection_error));
             tvTranslator.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
             tvTranslator.setGravity(Gravity.CENTER);
             return;
         }
 
-        DataBase db = new DataBase(context);
+        DataBase db = new DataBase(parentFragment.getContext());
         Translator foundRecord = db.findRecord(translator);
 
         if (foundRecord == null) {
@@ -70,13 +66,14 @@ public class TranslationOn extends State {
             translator.setTranslator(foundRecord);
         }
 
-        display = new TranslationDisplay(fragment, translatorData);
+        TranslatorData translatorData = new TranslatorData();
+        Display display = new TranslationDisplay(fragment, translatorData);
         translatorData.setTranslator(translator);
         display.display();
     }
 
     private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) parentFragment.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return (activeNetworkInfo != null && activeNetworkInfo.isConnected());
     }
