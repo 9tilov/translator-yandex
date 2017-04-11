@@ -60,7 +60,7 @@
 
 
     <Button
-        android:id="@+id/btnFavorites"
+        android:id="@+id/btnAddFavorites"
         android:layout_width="@dimen/image"
         android:layout_height="@dimen/image"
         android:layout_alignParentEnd="true"

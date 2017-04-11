@@ -1,6 +1,6 @@
 package com.moggot.mytranslator.observer;
 
-import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -19,35 +19,35 @@ import java.util.List;
 public class HistoryDisplay extends Display {
 
     private static final String LOG_TAG = "HistoryDisplay";
+    private Fragment fragment;
+    private DataBase db;
 
-    private View view;
-
-    public HistoryDisplay(Context context, View view, TranslatorData translatorData) {
-        super(context);
-        this.view = view;
+    public HistoryDisplay(Fragment fragment, TranslatorData translatorData) {
+        super(fragment.getContext());
+        this.fragment = fragment;
+        db = new DataBase(context);
         translatorData.registerObserver(this);
     }
 
     @Override
     public void display() {
+        if ((fragment == null) || (fragment.getView() == null))
+            return;
         displayClearHistoryButton();
         displayHistoryList();
     }
 
     private void displayClearHistoryButton() {
-        DataBase db = new DataBase(context);
         if (db.getAllRecords().isEmpty())
-            ((Button) view.findViewById(R.id.btnClearHistory)).setVisibility(View.GONE);
+            ((Button) fragment.getView().findViewById(R.id.btnClearHistory)).setVisibility(View.GONE);
         else
-            ((Button) view.findViewById(R.id.btnClearHistory)).setVisibility(View.VISIBLE);
+            ((Button) fragment.getView().findViewById(R.id.btnClearHistory)).setVisibility(View.VISIBLE);
     }
 
     private void displayHistoryList() {
-        ListView listView = (ListView) view.findViewById(R.id.lvHistory);
-        DataBase db = new DataBase(context);
+        ListView listView = (ListView) fragment.getView().findViewById(R.id.lvHistory);
         List<Translator> records = db.getAllRecords();
-        AdapterHistory adapter = new AdapterHistory(context, records);
+        AdapterHistory adapter = new AdapterHistory(fragment, records);
         listView.setAdapter(adapter);
     }
-
 }

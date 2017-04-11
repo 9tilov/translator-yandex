@@ -1,13 +1,11 @@
 package com.moggot.mytranslator.adapter;
 
-import android.app.Activity;
-import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -19,6 +17,7 @@ import com.moggot.mytranslator.LangSharedPreferences;
 import com.moggot.mytranslator.R;
 import com.moggot.mytranslator.animation.AnimationBounce;
 import com.moggot.mytranslator.animation.EmptyAnimationBounce;
+import com.moggot.mytranslator.fragments.HistoryFragment;
 import com.moggot.mytranslator.observer.AdapterHistoryDisplay;
 import com.moggot.mytranslator.observer.Display;
 import com.moggot.mytranslator.observer.TranslatorData;
@@ -32,25 +31,25 @@ import java.util.List;
 
 public class AdapterHistory extends BaseSwipeAdapter {
 
-    private Context context;
     private List<Translator> records;
     private DataBase db;
+    private Fragment fragment;
 
     private static final String LOG_TAG = "AdapterHistory";
 
-    public AdapterHistory(Context context, List<Translator> records) {
-        this.context = context;
+    public AdapterHistory(Fragment fragment, List<Translator> records) {
         this.records = records;
-        this.db = new DataBase(context);
+        this.fragment = fragment;
+        this.db = new DataBase(fragment.getContext());
     }
 
     private void update() {
         this.records = db.getAllRecords();
 
         if (records.isEmpty())
-            ((Button) ((Activity)context).findViewById(R.id.btnClearHistory)).setVisibility(View.GONE);
+            ((Button) fragment.getView().findViewById(R.id.btnClearHistory)).setVisibility(View.GONE);
         else
-            ((Button) ((Activity)context).findViewById(R.id.btnClearHistory)).setVisibility(View.VISIBLE);
+            ((Button) fragment.getView().findViewById(R.id.btnClearHistory)).setVisibility(View.VISIBLE);
         notifyDataSetChanged();
     }
 
@@ -61,7 +60,9 @@ public class AdapterHistory extends BaseSwipeAdapter {
 
     @Override
     public View generateView(final int position, ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.history_item, null);
+        View view = LayoutInflater.from(fragment.getContext()).inflate(R.layout.history_item, null);
+        Log.v(LOG_TAG, "view = " + view);
+        return LayoutInflater.from(fragment.getContext()).inflate(R.layout.history_item, null);
     }
 
     @Override
@@ -80,11 +81,13 @@ public class AdapterHistory extends BaseSwipeAdapter {
             @Override
             public void onClick(View view) {
                 Log.v(LOG_TAG, "click");
-                LangSharedPreferences.saveInputLanguage(context, translatorAtPosition.getInputLanguage());
-                LangSharedPreferences.saveOutputLanguage(context, translatorAtPosition.getOutputLanguage());
-                EditText etText = (EditText) ((Activity)context).findViewById(R.id.etText);
-                etText.setText(translatorAtPosition.getText());
-                etText.setSelection(etText.getText().length());
+                LangSharedPreferences.saveInputLanguage(fragment.getContext(), translatorAtPosition.getInputLanguage());
+                LangSharedPreferences.saveOutputLanguage(fragment.getContext(), translatorAtPosition.getOutputLanguage());
+
+                HistoryFragment.HistoryEventListener historyEventListener = ((HistoryFragment) fragment).getHistoryEventListener();
+                if (historyEventListener != null) {
+                    historyEventListener.loadHistoryTranslator(translatorAtPosition);
+                }
 
             }
 
@@ -102,7 +105,7 @@ public class AdapterHistory extends BaseSwipeAdapter {
         convertView.findViewById(R.id.adapterIwFavorites).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AnimationBounce animationBounce = new EmptyAnimationBounce(context);
+                AnimationBounce animationBounce = new EmptyAnimationBounce(fragment.getContext());
                 animationBounce.animate(view);
                 Log.v(LOG_TAG, "position = " + position);
                 if (translatorAtPosition.getIsFavorites())
@@ -115,7 +118,7 @@ public class AdapterHistory extends BaseSwipeAdapter {
         });
 
         TranslatorData translatorData = new TranslatorData();
-        Display adapterDisplay = new AdapterHistoryDisplay(context, convertView, translatorData);
+        Display adapterDisplay = new AdapterHistoryDisplay(fragment.getContext(), convertView, translatorData);
         translatorData.setTranslator(translatorAtPosition);
         adapterDisplay.display();
     }

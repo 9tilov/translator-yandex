@@ -1,9 +1,7 @@
 package com.moggot.mytranslator;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -17,13 +15,15 @@ import com.moggot.mytranslator.translator.Translator;
 public class TranslationTask extends AsyncTask<Translator, Void, String> {
 
     private static final String LOG_TAG = "TranslationTask";
-    private Context context;
     private Translator translator;
     private Translate translate;
+    private Fragment parentFragment;
 
-    public TranslationTask(Context context) {
+    public TranslationTask(Fragment parentFragment) {
+        if (parentFragment == null)
+            return;
+        this.parentFragment = parentFragment;
         translate = new Translate();
-        this.context = context;
     }
 
     @Override
@@ -57,11 +57,11 @@ public class TranslationTask extends AsyncTask<Translator, Void, String> {
         Log.v(LOG_TAG, "result = " + result);
         if (result == null)
             return;
-        Fragment translatorFragment = ((FragmentActivity) context).getSupportFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
-        if (translatorFragment != null && translatorFragment.isVisible()) {
+        translator.setTranslation(result);
+        Fragment translatorFragment = parentFragment.getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
+        if (translatorFragment != null && translatorFragment.getView() != null) {
             TextView tvTranslator = (TextView) translatorFragment.getView().findViewById(R.id.tvTranslation);
             tvTranslator.setText(result);
-            translator.setTranslation(result);
         }
     }
 }

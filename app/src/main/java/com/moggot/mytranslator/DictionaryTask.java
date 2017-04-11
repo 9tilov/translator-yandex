@@ -1,10 +1,7 @@
 package com.moggot.mytranslator;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -21,16 +18,18 @@ import com.moggot.mytranslator.translator.Translator;
 public class DictionaryTask extends AsyncTask<Translator, Void, String> {
 
     private static final String LOG_TAG = "DictionaryTask";
-    private Context context;
     private Translator translator;
     private Dictionary dictionary;
     private ProgressBar progressBar;
+    private Fragment parentFragment;
 
-    public DictionaryTask(Context context) {
+    public DictionaryTask(Fragment parentFragment) {
+        if (parentFragment == null)
+            return;
+        this.parentFragment = parentFragment;
         dictionary = new Dictionary();
-        this.context = context;
 
-        progressBar = (ProgressBar) ((Activity) context).findViewById(R.id.spin_kit);
+        progressBar = (ProgressBar) parentFragment.getView().findViewById(R.id.spin_kit);
         ThreeBounce threeBounce = new ThreeBounce();
         progressBar.setIndeterminateDrawable(threeBounce);
         progressBar.setVisibility(View.VISIBLE);
@@ -69,11 +68,11 @@ public class DictionaryTask extends AsyncTask<Translator, Void, String> {
             progressBar.setVisibility(View.GONE);
             return;
         }
-        Fragment translatorFragment = ((FragmentActivity) context).getSupportFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
-        if (translatorFragment != null && translatorFragment.isVisible()) {
-            TextView tvTranslator = (TextView) translatorFragment.getView().findViewById(R.id.tvDetails);
-            tvTranslator.setText(result);
-            translator.setDetails(result);
+        translator.setDetails(result);
+        Fragment translatorFragment = parentFragment.getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
+        if (translatorFragment != null && translatorFragment.getView() != null) {
+            TextView tvDetails = (TextView) translatorFragment.getView().findViewById(R.id.tvDetails);
+            tvDetails.setText(result);
         }
         progressBar.setVisibility(View.GONE);
     }

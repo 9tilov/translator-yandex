@@ -1,19 +1,26 @@
 package com.moggot.mytranslator.fragments;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.Button;
 
 import com.moggot.mytranslator.DataBase;
+import com.moggot.mytranslator.MainActivity;
 import com.moggot.mytranslator.R;
-import com.moggot.mytranslator.adapter.AdapterFavorites;
+import com.moggot.mytranslator.animation.AnimationBounce;
+import com.moggot.mytranslator.animation.EmptyAnimationBounce;
+import com.moggot.mytranslator.observer.Display;
+import com.moggot.mytranslator.observer.FavoritesDisplay;
+import com.moggot.mytranslator.observer.TranslatorData;
 import com.moggot.mytranslator.translator.Translator;
-
-import java.util.List;
 
 /**
  * Created by toor on 10.04.17.
@@ -21,13 +28,44 @@ import java.util.List;
 
 public class FavoritesFragment extends Fragment {
 
+    public interface FavoritesEventListener {
+        void loadFavoriteTranslator(Translator translator);
+    }
+
     private static final String LOG_TAG = "FavoritesFragment";
 
+    private DataBase db;
+    private TranslatorData translatorData;
+    private Display display;
+    private FavoritesEventListener favoritesEventListener;
+
+    public FavoritesEventListener getFavoritesEventListener() {
+        return favoritesEventListener;
+    }
+
     public FavoritesFragment() {
+
     }
 
     public static Fragment newInstance() {
         return new FavoritesFragment();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            ViewPager pager = ((MainActivity) context).getViewPager();
+            favoritesEventListener = (FavoritesEventListener) pager.getAdapter().instantiateItem(pager, 0);
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString() + " must implement FavoritesEventListener");
+        }
+    }
+
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        db = new DataBase(getContext());
+        translatorData = new TranslatorData();
     }
 
     @Override
@@ -43,21 +81,57 @@ public class FavoritesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
         return inflater.inflate(R.layout.fragment_favorites, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.v(LOG_TAG, "onViewCreated");
 
-        ListView listView = (ListView) getActivity().findViewById(R.id.lvFavorites);
-        DataBase db = new DataBase(getActivity());
-        List<Translator> records = db.getFavoritesRecords();
-        AdapterFavorites adapter = new AdapterFavorites(getActivity(), records);
-        listView.setAdapter(adapter);
+        display = new FavoritesDisplay(this, translatorData);
+        display.display();
+
+        Button btnClearFavotites = (Button) view.findViewById(R.id.btnClearFavorites);
+        btnClearFavotites.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                AnimationBounce animationBounce = new EmptyAnimationBounce(getContext());
+                animationBounce.animate(v);
+
+                final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+                alertDialogBuilder.setTitle(getString(R.string.dialog_title_delete_favorites));
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                db.deleteAllFavorites();
+                                display.display();
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+            }
+        });
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        Log.v(LOG_TAG, "setUserVisibleHint = " + isVisibleToUser);
+        if (isVisibleToUser) {
+            display.display();
+        }
+    }
+
+    public void onDestroyView() {
+        super.onDestroyView();
+        favoritesEventListener = null;
+    }
 }

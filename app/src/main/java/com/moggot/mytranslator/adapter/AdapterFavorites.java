@@ -1,13 +1,11 @@
 package com.moggot.mytranslator.adapter;
 
-import android.app.Activity;
-import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -17,6 +15,7 @@ import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 import com.moggot.mytranslator.DataBase;
 import com.moggot.mytranslator.LangSharedPreferences;
 import com.moggot.mytranslator.R;
+import com.moggot.mytranslator.fragments.FavoritesFragment;
 import com.moggot.mytranslator.observer.AdapterFavoritesDisplay;
 import com.moggot.mytranslator.observer.Display;
 import com.moggot.mytranslator.observer.TranslatorData;
@@ -30,24 +29,26 @@ import java.util.List;
 
 public class AdapterFavorites extends BaseSwipeAdapter {
 
-    private Context context;
     private List<Translator> records;
     private DataBase db;
+    private Fragment fragment;
 
     private static final String LOG_TAG = "AdapterFavorites";
 
-    public AdapterFavorites(Context context, List<Translator> records) {
-        this.context = context;
+    public AdapterFavorites(Fragment fragment, List<Translator> records) {
         this.records = records;
-        this.db = new DataBase(context);
+        this.fragment = fragment;
+        this.db = new DataBase(fragment.getContext());
     }
 
     private void update() {
         records = db.getFavoritesRecords();
+        if (fragment.getView() == null)
+            return;
         if (records.isEmpty())
-            ((Button) ((Activity)context).findViewById(R.id.btnClearFavorites)).setVisibility(View.GONE);
+            ((Button) fragment.getView().findViewById(R.id.btnClearFavorites)).setVisibility(View.GONE);
         else
-            ((Button) ((Activity)context).findViewById(R.id.btnClearFavorites)).setVisibility(View.VISIBLE);
+            ((Button) fragment.getView().findViewById(R.id.btnClearFavorites)).setVisibility(View.VISIBLE);
 
         notifyDatasetChanged();
     }
@@ -59,7 +60,7 @@ public class AdapterFavorites extends BaseSwipeAdapter {
 
     @Override
     public View generateView(final int position, ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.history_item, null);
+        return LayoutInflater.from(fragment.getContext()).inflate(R.layout.history_item, null);
     }
 
     @Override
@@ -87,18 +88,22 @@ public class AdapterFavorites extends BaseSwipeAdapter {
         swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.v(LOG_TAG, "click");
-                LangSharedPreferences.saveInputLanguage(context, translatorAtPosition.getInputLanguage());
-                LangSharedPreferences.saveOutputLanguage(context, translatorAtPosition.getOutputLanguage());
-                EditText etText = (EditText) ((Activity)context).findViewById(R.id.etText);
-                etText.setText(translatorAtPosition.getText());
-                etText.setSelection(etText.getText().length());
+
+                LangSharedPreferences.saveInputLanguage(fragment.getContext(), translatorAtPosition.getInputLanguage());
+                LangSharedPreferences.saveOutputLanguage(fragment.getContext(), translatorAtPosition.getOutputLanguage());
+
+                FavoritesFragment.FavoritesEventListener favoritesEventListener = ((FavoritesFragment) fragment).getFavoritesEventListener();
+                Log.v(LOG_TAG, "favoritesEventListener = " + favoritesEventListener);
+                if (favoritesEventListener != null) {
+                    favoritesEventListener.loadFavoriteTranslator(translatorAtPosition);
+                }
+
             }
 
         });
 
         TranslatorData translatorData = new TranslatorData();
-        Display adapterDisplay = new AdapterFavoritesDisplay(context, convertView, translatorData);
+        Display adapterDisplay = new AdapterFavoritesDisplay(fragment.getContext(), convertView, translatorData);
         translatorData.setTranslator(translatorAtPosition);
         adapterDisplay.display();
     }

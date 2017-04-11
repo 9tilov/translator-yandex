@@ -1,6 +1,6 @@
 package com.moggot.mytranslator.observer;
 
-import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -20,16 +20,18 @@ public class FavoritesDisplay extends Display {
 
     private static final String LOG_TAG = "FavoritesDisplay";
 
-    private View view;
+    private Fragment fragment;
 
-    public FavoritesDisplay(Context context, View view, TranslatorData translatorData) {
-        super(context);
-        this.view = view;
+    public FavoritesDisplay(Fragment fragment, TranslatorData translatorData) {
+        super(fragment.getContext());
+        this.fragment = fragment;
         translatorData.registerObserver(this);
     }
 
     @Override
     public void display() {
+        if (fragment.getView() == null)
+            return;
         displayClearFavoritesButton();
         displayFavoritesList();
     }
@@ -37,16 +39,16 @@ public class FavoritesDisplay extends Display {
     private void displayClearFavoritesButton() {
         DataBase db = new DataBase(context);
         if (db.getFavoritesRecords().isEmpty())
-            ((Button) view.findViewById(R.id.btnClearFavorites)).setVisibility(View.GONE);
+            ((Button) fragment.getView().findViewById(R.id.btnClearFavorites)).setVisibility(View.GONE);
         else
-            ((Button) view.findViewById(R.id.btnClearFavorites)).setVisibility(View.VISIBLE);
+            ((Button) fragment.getView().findViewById(R.id.btnClearFavorites)).setVisibility(View.VISIBLE);
     }
 
     private void displayFavoritesList() {
-        ListView listView = (ListView) view.findViewById(R.id.lvFavorites);
+        ListView listView = (ListView) fragment.getView().findViewById(R.id.lvFavorites);
         DataBase db = new DataBase(context);
         List<Translator> records = db.getFavoritesRecords();
-        AdapterFavorites adapter = new AdapterFavorites(context, records);
+        AdapterFavorites adapter = new AdapterFavorites(fragment, records);
         listView.setAdapter(adapter);
     }
 }
