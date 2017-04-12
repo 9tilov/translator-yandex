@@ -32,6 +32,5 @@ public class TranslationOff extends State {
 
     public void show(Translator translator) {
         super.show(translator);
-
     }
 }

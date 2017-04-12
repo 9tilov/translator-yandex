@@ -19,7 +19,6 @@ public class TranslatorData implements Observable {
         observers = new LinkedList<>();
     }
 
-
     @Override
     public void registerObserver(Observer observer) {
         observers.add(observer);

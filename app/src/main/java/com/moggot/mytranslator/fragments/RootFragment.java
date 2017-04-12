@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -64,15 +65,29 @@ public class RootFragment extends Fragment implements HistoryFragment.HistoryEve
     }
 
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        super.onCreate(savedInstanceState);
         db = new DataBase(getContext());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.fragment_root, container, false);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Fragment fragment = getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_HISTORY);
+        if (fragment != null && fragment.isVisible()) {
+            getChildFragmentManager().putFragment(outState, Consts.EXTRA_STATE, fragment);
+        }
+        fragment = getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
+        if (fragment != null && fragment.isVisible()) {
+            getChildFragmentManager().putFragment(outState, Consts.EXTRA_STATE, fragment);
+        }
     }
 
     @Override
@@ -82,8 +97,21 @@ public class RootFragment extends Fragment implements HistoryFragment.HistoryEve
 
         createTranslator();
 
-        State stateOff = new TranslationOff(this);
-        translatorContext.setState(stateOff);
+        if (savedInstanceState != null) {
+            Fragment fragment = getChildFragmentManager().getFragment(savedInstanceState, Consts.EXTRA_STATE);
+            State state;
+            if (fragment instanceof TranslatorFragment) {
+                state = new TranslationOn(this, translator.getIsFavorites());
+            } else if (fragment instanceof HistoryFragment) {
+                state = new TranslationOff(this);
+            } else
+                return;
+            translatorContext.setState(state);
+        } else {
+
+            State stateOff = new TranslationOff(this);
+            translatorContext.setState(stateOff);
+        }
         translatorContext.show();
 
         etText = (BackAwareEditText) view.findViewById(R.id.etText);
@@ -94,6 +122,7 @@ public class RootFragment extends Fragment implements HistoryFragment.HistoryEve
                                       int lengthBefore,
                                       int lengthAfter) {
                 if (etText.getText().toString().isEmpty()) {
+                    resetTranslator();
                     State stateOff = new TranslationOff(RootFragment.this);
                     translatorContext.setState(stateOff);
                     translatorContext.show();
@@ -169,6 +198,7 @@ public class RootFragment extends Fragment implements HistoryFragment.HistoryEve
 
                 translator.setInputLanguage(inputLang);
                 translator.setOutputLanguage(outputLang);
+                translator.setText(etText.getText().toString());
                 translatorContext.show();
             }
         });
@@ -234,7 +264,7 @@ public class RootFragment extends Fragment implements HistoryFragment.HistoryEve
 
     private void resetTranslator() {
         translator.setId(null);
-        translator.setText(etText.getText().toString());
+        translator.setText("");
         translator.setTranslation("");
         translator.setInputLanguage(LangSharedPreferences.loadInputLanguage(getContext()));
         translator.setOutputLanguage(LangSharedPreferences.loadOutputLanguage(getContext()));
@@ -256,12 +286,19 @@ public class RootFragment extends Fragment implements HistoryFragment.HistoryEve
                 if (fragmentManager == null)
                     return;
                 Fragment fragment = fragmentManager.findFragmentByTag(Consts.TAG_FRAGMENT_HISTORY);
-                if (fragment == null)
-                    return;
                 TranslatorData translatorData = new TranslatorData();
-                Display display = new HistoryDisplay(fragment, translatorData);
                 translatorData.setTranslator(translator);
-                display.display();
+                Display display;
+                if (fragment != null) {
+                    display = new HistoryDisplay(fragment, translatorData);
+                    display.display();
+                }
+                fragment = fragmentManager.findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
+                translatorData.setTranslator(translator);
+                if (fragment != null) {
+                    display = new TranslationDisplay(fragment, translatorData);
+                    display.display();
+                }
             }
         } catch (IllegalStateException e) {
         }
@@ -281,10 +318,20 @@ public class RootFragment extends Fragment implements HistoryFragment.HistoryEve
         ((MainActivity) getActivity()).getViewPager().setCurrentItem(0);
     }
 
+    public void deletFavoritesFlag(Translator loadedTranslator) {
+        if (translator.getText().equals(loadedTranslator.getText())
+                && translator.getInputLanguage().equals(loadedTranslator.getInputLanguage())
+                && translator.getOutputLanguage().equals(loadedTranslator.getOutputLanguage())) {
+            translator.setTranslator(loadedTranslator);
+        }
+    }
+
     public void setFavorites(boolean isFavorites) {
         translator.setIsFavorites(isFavorites);
         TranslatorData translatorData = new TranslatorData();
         Fragment fragment = getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
+        if (fragment == null)
+            return;
         Display display = new TranslationDisplay(fragment, translatorData);
         translatorData.setTranslator(translator);
         display.display();
@@ -301,7 +348,7 @@ public class RootFragment extends Fragment implements HistoryFragment.HistoryEve
                 String outputLang = LangSharedPreferences.loadOutputLanguage(getContext());
                 translator.setInputLanguage(inputLang);
                 translator.setOutputLanguage(outputLang);
-
+                translator.setText(etText.getText().toString());
                 translatorContext.show();
                 break;
         }

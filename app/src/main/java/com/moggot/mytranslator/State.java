@@ -21,8 +21,10 @@ public class State {
 
     void show(Translator translator){
         TranslatorData translatorData = new TranslatorData();
-        Display display = new RootFragmentDisplay(parentFragment, translatorData);
-        translatorData.setTranslator(translator);
-        display.display();
+        if (parentFragment != null) {
+            Display display = new RootFragmentDisplay(parentFragment, translatorData);
+            translatorData.setTranslator(translator);
+            display.display();
+        }
     }
 }

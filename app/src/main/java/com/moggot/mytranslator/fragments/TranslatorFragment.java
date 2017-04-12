@@ -52,7 +52,6 @@ public class TranslatorFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
         if (getArguments() != null) {
             isFavorites = getArguments().getBoolean(ARG_IS_FAVORITES);
         }

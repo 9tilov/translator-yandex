@@ -30,6 +30,7 @@ public class FavoritesFragment extends Fragment {
 
     public interface FavoritesEventListener {
         void loadFavoriteTranslator(Translator translator);
+        void deletFavoritesFlag(Translator translator);
     }
 
     private static final String LOG_TAG = "FavoritesFragment";
@@ -44,7 +45,6 @@ public class FavoritesFragment extends Fragment {
     }
 
     public FavoritesFragment() {
-
     }
 
     public static Fragment newInstance() {
@@ -54,10 +54,15 @@ public class FavoritesFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        if (getTargetFragment() == null) {
+            ViewPager pager = ((MainActivity) getActivity()).getViewPager();
+            Fragment fragment = (RootFragment) pager.getAdapter().instantiateItem(pager, 0);
+            setTargetFragment(fragment, 0);
+        }
         try {
-            ViewPager pager = ((MainActivity) context).getViewPager();
-            if (pager != null)
-                favoritesEventListener = (FavoritesEventListener) pager.getAdapter().instantiateItem(pager, 0);
+            Fragment fragment = getTargetFragment();
+            if (fragment != null)
+                favoritesEventListener = (FavoritesEventListener) fragment;
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString() + " must implement FavoritesEventListener");
         }
@@ -83,6 +88,8 @@ public class FavoritesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         return inflater.inflate(R.layout.fragment_favorites, container, false);
     }
 

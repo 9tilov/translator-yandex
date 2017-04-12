@@ -20,7 +20,6 @@ public abstract class Display implements Observer {
     @Override
     public void update(Translator record) {
         this.translator = record;
-        display();
     }
 
     abstract public void display();

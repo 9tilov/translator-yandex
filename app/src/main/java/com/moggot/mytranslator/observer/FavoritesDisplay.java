@@ -33,7 +33,7 @@ public class FavoritesDisplay extends Display {
 
     @Override
     public void display() {
-        if (fragment == null || fragment.getView() == null)
+        if (fragment.getView() == null)
             return;
         displayClearFavoritesButton();
         displayFavoritesList();

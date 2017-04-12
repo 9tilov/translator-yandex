@@ -1,6 +1,5 @@
 package com.moggot.mytranslator;
 
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,19 +26,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-//        if (savedInstanceState != null) {
-//            Fragment fragment = getSupportFragmentManager().getFragment(savedInstanceState, Consts.EXTRA_STATE);
-//            State state;
-//            if (fragment instanceof TranslatorFragment) {
-//                state = new TranslationOn(this);
-//            } else if (fragment instanceof HistoryFragment) {
-//                state = new TranslationOff(this);
-//            } else
-//                return;
-//            translatorContext.setState(state);
-//        }
-
 
         pager = (ViewPager) findViewById(R.id.pager);
         final SlidePagerAdapter pagerAdapter = new SlidePagerAdapter(getSupportFragmentManager());
