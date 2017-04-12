@@ -3,6 +3,7 @@ package com.moggot.mytranslator.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -101,7 +102,7 @@ public class RootFragment extends Fragment implements HistoryFragment.HistoryEve
             Fragment fragment = getChildFragmentManager().getFragment(savedInstanceState, Consts.EXTRA_STATE);
             State state;
             if (fragment instanceof TranslatorFragment) {
-                state = new TranslationOn(this, translator.getIsFavorites());
+                state = new TranslationOn(this, translator.getId());
             } else if (fragment instanceof HistoryFragment) {
                 state = new TranslationOff(this);
             } else
@@ -112,6 +113,8 @@ public class RootFragment extends Fragment implements HistoryFragment.HistoryEve
             State stateOff = new TranslationOff(this);
             translatorContext.setState(stateOff);
         }
+
+        translatorContext.show();
 
         etText = (BackAwareEditText) view.findViewById(R.id.etText);
         etText.addTextChangedListener(new TextWatcher() {
@@ -129,7 +132,7 @@ public class RootFragment extends Fragment implements HistoryFragment.HistoryEve
                 }
 
                 if (translatorContext.getState() instanceof TranslationOff) {
-                    State stateOn = new TranslationOn(RootFragment.this, translator.getIsFavorites());
+                    State stateOn = new TranslationOn(RootFragment.this, translator.getId());
                     translatorContext.setState(stateOn);
                 }
                 resetTranslator();
@@ -313,12 +316,22 @@ public class RootFragment extends Fragment implements HistoryFragment.HistoryEve
         }
     }
 
-    public void setFavorites(boolean isFavorites) {
-        translator.setIsFavorites(isFavorites);
+    public void setTranslatorID(Long translatorID) {
+        DataBase db = new DataBase(getContext());
+        translator = db.getTranslator(translatorID);
         TranslatorData translatorData = new TranslatorData();
         Fragment fragment = getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
         if (fragment == null)
             return;
+        Display display = new TranslationDisplay(fragment, translatorData);
+        translatorData.setTranslator(translator);
+        display.display();
+    }
+
+    public void setFavorite(boolean isFavorite) {
+        translator.setIsFavorites(isFavorite);
+        TranslatorData translatorData = new TranslatorData();
+        Fragment fragment = getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
         Display display = new TranslationDisplay(fragment, translatorData);
         translatorData.setTranslator(translator);
         display.display();

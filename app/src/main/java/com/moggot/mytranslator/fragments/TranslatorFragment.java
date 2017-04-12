@@ -9,9 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.moggot.mytranslator.DataBase;
 import com.moggot.mytranslator.R;
 import com.moggot.mytranslator.animation.AnimationBounce;
 import com.moggot.mytranslator.animation.EmptyAnimationBounce;
+import com.moggot.mytranslator.translator.Translator;
 
 /**
  * Created by toor on 28.03.17.
@@ -20,22 +22,27 @@ import com.moggot.mytranslator.animation.EmptyAnimationBounce;
 public class TranslatorFragment extends Fragment {
 
     public interface TranslatorEventListener {
-        void setFavorites(boolean isFavorites);
+        void setTranslatorID(Long translatorID);
+        void setFavorite(boolean isFavorite);
     }
 
     private static final String LOG_TAG = "TranslatorFragment";
-    private static final String ARG_IS_FAVORITES = "is_favorites";
+    private static final String ARG_TRANSLATOR_ID = "translator_id";
     private TranslatorEventListener translatorEventListener;
-    private boolean isFavorites = false;
+    private Long translatorID;
+    private boolean isFavorite;
+    private DataBase db;
 
     public TranslatorFragment() {
     }
 
-    public static Fragment newInstance(boolean isFavotites) {
+    public static Fragment newInstance(Long translatorID) {
         Bundle arguments = new Bundle();
-        arguments.putBoolean(ARG_IS_FAVORITES, isFavotites);
         Fragment fragment = new TranslatorFragment();
-        fragment.setArguments(arguments);
+        if (translatorID != null) {
+            arguments.putLong(ARG_TRANSLATOR_ID, translatorID);
+            fragment.setArguments(arguments);
+        }
         return fragment;
     }
 
@@ -52,9 +59,11 @@ public class TranslatorFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            isFavorites = getArguments().getBoolean(ARG_IS_FAVORITES);
-        }
+        db = new DataBase(getContext());
+        if (getArguments() != null)
+            translatorID = getArguments().getLong(ARG_TRANSLATOR_ID);
+        else
+            isFavorite = false;
     }
 
     @Override
@@ -85,12 +94,22 @@ public class TranslatorFragment extends Fragment {
             public void onClick(View view) {
                 AnimationBounce animationBounce = new EmptyAnimationBounce(getContext());
                 animationBounce.animate(view);
-                if (!isFavorites)
-                    isFavorites = true;
-                else
-                    isFavorites = false;
-                translatorEventListener.setFavorites(isFavorites);
+                if (translatorID != null) {
+                    Translator translator = db.getTranslator(translatorID);
+                    if (translator.getIsFavorites())
+                        translator.setIsFavorites(false);
+                    else
+                        translator.setIsFavorites(true);
+                    db.editRecord(translator);
+                    translatorEventListener.setTranslatorID(translatorID);
 
+                } else {
+                    if (isFavorite)
+                        isFavorite = false;
+                    else
+                        isFavorite = true;
+                    translatorEventListener.setFavorite(isFavorite);
+                }
             }
         });
     }

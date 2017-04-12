@@ -74,7 +74,7 @@ public class DataBase {
         }
     }
 
-    public Translator getTranslator(long id) {
+    public Translator getTranslator(Long id) {
         return translatorDao.load(id);
     }
 
