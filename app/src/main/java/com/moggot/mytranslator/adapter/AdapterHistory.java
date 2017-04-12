@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -18,7 +17,7 @@ import com.moggot.mytranslator.LangSharedPreferences;
 import com.moggot.mytranslator.R;
 import com.moggot.mytranslator.animation.AnimationBounce;
 import com.moggot.mytranslator.animation.EmptyAnimationBounce;
-import com.moggot.mytranslator.fragments.HistoryFragment;
+import com.moggot.mytranslator.fragments.HistoryListFragment;
 import com.moggot.mytranslator.observer.AdapterHistoryDisplay;
 import com.moggot.mytranslator.observer.Display;
 import com.moggot.mytranslator.observer.TranslatorData;
@@ -47,14 +46,11 @@ public class AdapterHistory extends BaseSwipeAdapter {
     private void update() {
         this.records = db.getAllRecords();
 
-        if (records.isEmpty()) {
+        if (records.isEmpty())
             ((Button) fragment.getView().findViewById(R.id.btnClearHistory)).setVisibility(View.GONE);
-            ((TextView) fragment.getView().findViewById(R.id.tvEmptyHistory)).setVisibility(View.VISIBLE);
-        } else {
+        else
             ((Button) fragment.getView().findViewById(R.id.btnClearHistory)).setVisibility(View.VISIBLE);
-            ((TextView) fragment.getView().findViewById(R.id.tvEmptyHistory)).setVisibility(View.GONE);
 
-        }
         notifyDataSetChanged();
     }
 
@@ -89,11 +85,10 @@ public class AdapterHistory extends BaseSwipeAdapter {
                 LangSharedPreferences.saveInputLanguage(fragment.getContext(), translatorAtPosition.getInputLanguage());
                 LangSharedPreferences.saveOutputLanguage(fragment.getContext(), translatorAtPosition.getOutputLanguage());
 
-                HistoryFragment.HistoryEventListener historyEventListener = ((HistoryFragment) fragment).getHistoryEventListener();
-                if (historyEventListener != null) {
-                    historyEventListener.loadHistoryTranslator(translatorAtPosition);
+                HistoryListFragment.HistoryListEventListener historyListEventListener = ((HistoryListFragment) fragment).getHistoryListEventListener();
+                if (historyListEventListener != null) {
+                    historyListEventListener.loadHistoryItem(translatorAtPosition);
                 }
-
             }
 
         });

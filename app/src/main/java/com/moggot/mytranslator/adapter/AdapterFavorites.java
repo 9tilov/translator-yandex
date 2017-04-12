@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -16,7 +15,7 @@ import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 import com.moggot.mytranslator.DataBase;
 import com.moggot.mytranslator.LangSharedPreferences;
 import com.moggot.mytranslator.R;
-import com.moggot.mytranslator.fragments.FavoritesFragment;
+import com.moggot.mytranslator.fragments.FavoritesListFragment;
 import com.moggot.mytranslator.observer.AdapterFavoritesDisplay;
 import com.moggot.mytranslator.observer.Display;
 import com.moggot.mytranslator.observer.TranslatorData;
@@ -46,13 +45,10 @@ public class AdapterFavorites extends BaseSwipeAdapter {
         records = db.getFavoritesRecords();
         if (fragment.getView() == null)
             return;
-        if (records.isEmpty()) {
+        if (records.isEmpty())
             ((Button) fragment.getView().findViewById(R.id.btnClearFavorites)).setVisibility(View.GONE);
-            ((TextView) fragment.getView().findViewById(R.id.tvEmptyFavorites)).setVisibility(View.VISIBLE);
-        } else {
+        else
             ((Button) fragment.getView().findViewById(R.id.btnClearFavorites)).setVisibility(View.VISIBLE);
-            ((TextView) fragment.getView().findViewById(R.id.tvEmptyFavorites)).setVisibility(View.VISIBLE);
-        }
 
         notifyDatasetChanged();
     }
@@ -84,10 +80,10 @@ public class AdapterFavorites extends BaseSwipeAdapter {
             public void onClick(View view) {
                 translatorAtPosition.setIsFavorites(false);
                 db.editRecord(translatorAtPosition);
-                FavoritesFragment.FavoritesEventListener favoritesEventListener = ((FavoritesFragment) fragment).getFavoritesEventListener();
-                Log.v(LOG_TAG, "favoritesEventListener = " + favoritesEventListener);
-                if (favoritesEventListener != null) {
-                    favoritesEventListener.deletFavoritesFlag(translatorAtPosition);
+                FavoritesListFragment.FavoritesListEventListener favoritesListEventListener = ((FavoritesListFragment) fragment).getFavoritesListEventListener();
+                Log.v(LOG_TAG, "favoritesListEventListener = " + favoritesListEventListener);
+                if (favoritesListEventListener != null) {
+                    favoritesListEventListener.deleteFavoritesFlag(translatorAtPosition);
                 }
                 closeItem(position);
                 update();
@@ -101,10 +97,10 @@ public class AdapterFavorites extends BaseSwipeAdapter {
                 LangSharedPreferences.saveInputLanguage(fragment.getContext(), translatorAtPosition.getInputLanguage());
                 LangSharedPreferences.saveOutputLanguage(fragment.getContext(), translatorAtPosition.getOutputLanguage());
 
-                FavoritesFragment.FavoritesEventListener favoritesEventListener = ((FavoritesFragment) fragment).getFavoritesEventListener();
-                Log.v(LOG_TAG, "favoritesEventListener = " + favoritesEventListener);
-                if (favoritesEventListener != null) {
-                    favoritesEventListener.loadFavoriteTranslator(translatorAtPosition);
+                FavoritesListFragment.FavoritesListEventListener favoritesListEventListener = ((FavoritesListFragment) fragment).getFavoritesListEventListener();
+                Log.v(LOG_TAG, "favoritesListEventListener = " + favoritesListEventListener);
+                if (favoritesListEventListener != null) {
+                    favoritesListEventListener.loadFavoriteItem(translatorAtPosition);
                 }
 
             }

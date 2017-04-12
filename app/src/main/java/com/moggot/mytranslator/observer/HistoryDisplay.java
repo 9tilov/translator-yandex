@@ -3,12 +3,11 @@ package com.moggot.mytranslator.observer;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.moggot.mytranslator.DataBase;
 import com.moggot.mytranslator.R;
 import com.moggot.mytranslator.adapter.AdapterHistory;
+import com.moggot.mytranslator.fragments.HistoryListFragment;
 import com.moggot.mytranslator.translator.Translator;
 
 import java.util.List;
@@ -36,7 +35,6 @@ public class HistoryDisplay extends Display {
             return;
         displayClearHistoryButton();
         displayHistoryList();
-        displayEmptyHistory();
     }
 
     private void displayClearHistoryButton() {
@@ -47,16 +45,9 @@ public class HistoryDisplay extends Display {
     }
 
     private void displayHistoryList() {
-        ListView listView = (ListView) fragment.getView().findViewById(R.id.lvHistory);
         List<Translator> records = db.getAllRecords();
         AdapterHistory adapter = new AdapterHistory(fragment, records);
-        listView.setAdapter(adapter);
+        ((HistoryListFragment) fragment).getListView().setAdapter(adapter);
     }
 
-    private void displayEmptyHistory() {
-        if (db.getAllRecords().isEmpty())
-            ((TextView) fragment.getView().findViewById(R.id.tvEmptyHistory)).setVisibility(View.VISIBLE);
-        else
-            ((TextView) fragment.getView().findViewById(R.id.tvEmptyHistory)).setVisibility(View.GONE);
-    }
 }

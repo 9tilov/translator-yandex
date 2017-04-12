@@ -11,9 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
-import android.util.Log;
 
-import com.moggot.mytranslator.fragments.FavoritesFragment;
+import com.moggot.mytranslator.fragments.FavoritesListFragment;
 import com.moggot.mytranslator.fragments.RootFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         if (fragment != null && fragment.isVisible()) {
             getSupportFragmentManager().putFragment(outState, Consts.EXTRA_STATE, fragment);
         }
-        fragment = (FavoritesFragment)pager.getAdapter().instantiateItem(pager, 1);
+        fragment = (FavoritesListFragment)pager.getAdapter().instantiateItem(pager, 1);
         if (fragment != null && fragment.isVisible()) {
             getSupportFragmentManager().putFragment(outState, Consts.EXTRA_STATE, fragment);
         }
@@ -64,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
             if (position == 0)
                 return RootFragment.newInstance();
             else
-                return FavoritesFragment.newInstance();
+                return FavoritesListFragment.newInstance();
         }
 
         @Override

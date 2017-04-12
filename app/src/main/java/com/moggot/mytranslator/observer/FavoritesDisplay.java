@@ -3,12 +3,11 @@ package com.moggot.mytranslator.observer;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.moggot.mytranslator.DataBase;
 import com.moggot.mytranslator.R;
 import com.moggot.mytranslator.adapter.AdapterFavorites;
+import com.moggot.mytranslator.fragments.FavoritesListFragment;
 import com.moggot.mytranslator.translator.Translator;
 
 import java.util.List;
@@ -37,7 +36,6 @@ public class FavoritesDisplay extends Display {
             return;
         displayClearFavoritesButton();
         displayFavoritesList();
-        displayEmptyFavorites();
     }
 
     private void displayClearFavoritesButton() {
@@ -48,16 +46,9 @@ public class FavoritesDisplay extends Display {
     }
 
     private void displayFavoritesList() {
-        ListView listView = (ListView) fragment.getView().findViewById(R.id.lvFavorites);
         List<Translator> records = db.getFavoritesRecords();
         AdapterFavorites adapter = new AdapterFavorites(fragment, records);
-        listView.setAdapter(adapter);
+        ((FavoritesListFragment) fragment).getListView().setAdapter(adapter);
     }
 
-    private void displayEmptyFavorites() {
-        if (db.getFavoritesRecords().isEmpty())
-            ((TextView) fragment.getView().findViewById(R.id.tvEmptyFavorites)).setVisibility(View.VISIBLE);
-        else
-            ((TextView) fragment.getView().findViewById(R.id.tvEmptyFavorites)).setVisibility(View.GONE);
-    }
 }

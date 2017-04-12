@@ -37,9 +37,9 @@ import com.moggot.mytranslator.translator.Translator;
 /**
  * Created by toor on 10.04.17.
  */
-public class RootFragment extends Fragment implements HistoryFragment.HistoryEventListener
+public class RootFragment extends Fragment implements HistoryListFragment.HistoryListEventListener
         , TranslatorFragment.TranslatorEventListener
-        , FavoritesFragment.FavoritesEventListener {
+        , FavoritesListFragment.FavoritesListEventListener {
 
     private static final String LOG_TAG = "RootFragment";
 
@@ -98,7 +98,7 @@ public class RootFragment extends Fragment implements HistoryFragment.HistoryEve
             State state;
             if (fragment instanceof TranslatorFragment) {
                 state = new TranslationOn(this, translator.getId());
-            } else if (fragment instanceof HistoryFragment) {
+            } else if (fragment instanceof HistoryListFragment) {
                 state = new TranslationOff(this);
             } else
                 return;
@@ -289,13 +289,13 @@ public class RootFragment extends Fragment implements HistoryFragment.HistoryEve
         }
     }
 
-    public void loadHistoryTranslator(Translator loadedTranslator) {
+    public void loadHistoryItem(Translator loadedTranslator) {
         translator.setTranslator(loadedTranslator);
         etText.setText(translator.getText());
         etText.setSelection(etText.getText().length());
     }
 
-    public void loadFavoriteTranslator(Translator loadedTranslator) {
+    public void loadFavoriteItem(Translator loadedTranslator) {
         translator.setTranslator(loadedTranslator);
         etText.setText(translator.getText());
         etText.setSelection(etText.getText().length());
@@ -303,7 +303,7 @@ public class RootFragment extends Fragment implements HistoryFragment.HistoryEve
         ((MainActivity) getActivity()).getViewPager().setCurrentItem(0);
     }
 
-    public void deletFavoritesFlag(Translator loadedTranslator) {
+    public void deleteFavoritesFlag(Translator loadedTranslator) {
         if (translator.getText().equals(loadedTranslator.getText())
                 && translator.getInputLanguage().equals(loadedTranslator.getInputLanguage())
                 && translator.getOutputLanguage().equals(loadedTranslator.getOutputLanguage())) {

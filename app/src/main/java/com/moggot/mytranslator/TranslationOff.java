@@ -3,10 +3,9 @@ package com.moggot.mytranslator;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
-import com.moggot.mytranslator.fragments.HistoryFragment;
+import com.moggot.mytranslator.fragments.HistoryListFragment;
 import com.moggot.mytranslator.observer.Display;
 import com.moggot.mytranslator.observer.HistoryDisplay;
-import com.moggot.mytranslator.observer.TranslationDisplay;
 import com.moggot.mytranslator.observer.TranslatorData;
 import com.moggot.mytranslator.translator.Translator;
 
@@ -26,7 +25,7 @@ public class TranslationOff extends State {
         Fragment fragment = parentFragment.getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_HISTORY);
         if (fragment == null) {
             FragmentTransaction ft = parentFragment.getChildFragmentManager().beginTransaction();
-            ft.replace(R.id.root_frame, HistoryFragment.newInstance(), Consts.TAG_FRAGMENT_HISTORY);
+            ft.replace(R.id.root_frame, HistoryListFragment.newInstance(), Consts.TAG_FRAGMENT_HISTORY);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             ft.commit();
 
