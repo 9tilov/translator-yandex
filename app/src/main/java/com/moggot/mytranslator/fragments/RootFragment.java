@@ -112,7 +112,6 @@ public class RootFragment extends Fragment implements HistoryFragment.HistoryEve
             State stateOff = new TranslationOff(this);
             translatorContext.setState(stateOff);
         }
-        translatorContext.show();
 
         etText = (BackAwareEditText) view.findViewById(R.id.etText);
         etText.addTextChangedListener(new TextWatcher() {
@@ -282,22 +281,10 @@ public class RootFragment extends Fragment implements HistoryFragment.HistoryEve
 
         try {
             if (isVisibleToUser) {
-                FragmentManager fragmentManager = getChildFragmentManager();
-                if (fragmentManager == null)
-                    return;
-                Fragment fragment = fragmentManager.findFragmentByTag(Consts.TAG_FRAGMENT_HISTORY);
-                TranslatorData translatorData = new TranslatorData();
-                translatorData.setTranslator(translator);
-                Display display;
-                if (fragment != null) {
-                    display = new HistoryDisplay(fragment, translatorData);
-                    display.display();
-                }
-                fragment = fragmentManager.findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
-                translatorData.setTranslator(translator);
-                if (fragment != null) {
-                    display = new TranslationDisplay(fragment, translatorData);
-                    display.display();
+
+                if (translatorContext != null) {
+                    translatorContext.setTranslator(translator);
+                    translatorContext.show();
                 }
             }
         } catch (IllegalStateException e) {
@@ -352,5 +339,10 @@ public class RootFragment extends Fragment implements HistoryFragment.HistoryEve
                 translatorContext.show();
                 break;
         }
+    }
+
+    public void onDestroyView() {
+        super.onDestroyView();
+        etText = null;
     }
 }

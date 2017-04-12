@@ -36,7 +36,6 @@ public class FavoritesFragment extends Fragment {
     private static final String LOG_TAG = "FavoritesFragment";
 
     private DataBase db;
-    private TranslatorData translatorData;
     private Display display;
     private FavoritesEventListener favoritesEventListener;
 
@@ -72,7 +71,7 @@ public class FavoritesFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         db = new DataBase(getContext());
-        translatorData = new TranslatorData();
+
     }
 
     @Override
@@ -97,7 +96,7 @@ public class FavoritesFragment extends Fragment {
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.v(LOG_TAG, "onViewCreated");
-
+        TranslatorData translatorData = new TranslatorData();
         display = new FavoritesDisplay(this, translatorData);
         display.display();
 

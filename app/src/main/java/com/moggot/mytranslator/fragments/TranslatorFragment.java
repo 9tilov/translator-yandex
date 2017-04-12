@@ -26,7 +26,7 @@ public class TranslatorFragment extends Fragment {
     private static final String LOG_TAG = "TranslatorFragment";
     private static final String ARG_IS_FAVORITES = "is_favorites";
     private TranslatorEventListener translatorEventListener;
-    private boolean isFavorites;
+    private boolean isFavorites = false;
 
     public TranslatorFragment() {
     }

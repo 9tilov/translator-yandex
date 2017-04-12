@@ -33,8 +33,6 @@ public class HistoryFragment extends Fragment {
     private static final String LOG_TAG = "HistoryFragment";
 
     private DataBase db;
-    private TranslatorData translatorData;
-    private Display display;
     private HistoryEventListener historyEventListener;
 
     public HistoryEventListener getHistoryEventListener() {
@@ -61,7 +59,7 @@ public class HistoryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         db = new DataBase(getContext());
-        translatorData = new TranslatorData();
+
     }
 
     @Override
@@ -84,7 +82,8 @@ public class HistoryFragment extends Fragment {
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        display = new HistoryDisplay(this, translatorData);
+        TranslatorData translatorData = new TranslatorData();
+        final Display display = new HistoryDisplay(this, translatorData);
         display.display();
 
         Button btnClearHistory = (Button) view.findViewById(R.id.btnClearHistory);
