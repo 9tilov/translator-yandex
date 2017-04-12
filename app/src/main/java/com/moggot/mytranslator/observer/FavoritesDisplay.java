@@ -1,10 +1,10 @@
 package com.moggot.mytranslator.observer;
 
-import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.moggot.mytranslator.DataBase;
 import com.moggot.mytranslator.R;
@@ -37,6 +37,7 @@ public class FavoritesDisplay extends Display {
             return;
         displayClearFavoritesButton();
         displayFavoritesList();
+        displayEmptyFavorites();
     }
 
     private void displayClearFavoritesButton() {
@@ -51,5 +52,12 @@ public class FavoritesDisplay extends Display {
         List<Translator> records = db.getFavoritesRecords();
         AdapterFavorites adapter = new AdapterFavorites(fragment, records);
         listView.setAdapter(adapter);
+    }
+
+    private void displayEmptyFavorites() {
+        if (db.getFavoritesRecords().isEmpty())
+            ((TextView) fragment.getView().findViewById(R.id.tvEmptyFavorites)).setVisibility(View.VISIBLE);
+        else
+            ((TextView) fragment.getView().findViewById(R.id.tvEmptyFavorites)).setVisibility(View.GONE);
     }
 }

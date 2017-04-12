@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.moggot.mytranslator.DataBase;
 import com.moggot.mytranslator.R;
@@ -35,6 +36,7 @@ public class HistoryDisplay extends Display {
             return;
         displayClearHistoryButton();
         displayHistoryList();
+        displayEmptyHistory();
     }
 
     private void displayClearHistoryButton() {
@@ -49,5 +51,12 @@ public class HistoryDisplay extends Display {
         List<Translator> records = db.getAllRecords();
         AdapterHistory adapter = new AdapterHistory(fragment, records);
         listView.setAdapter(adapter);
+    }
+
+    private void displayEmptyHistory() {
+        if (db.getAllRecords().isEmpty())
+            ((TextView) fragment.getView().findViewById(R.id.tvEmptyHistory)).setVisibility(View.VISIBLE);
+        else
+            ((TextView) fragment.getView().findViewById(R.id.tvEmptyHistory)).setVisibility(View.GONE);
     }
 }

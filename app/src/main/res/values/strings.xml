@@ -17,6 +17,9 @@
 
     <string name="connection_error">Connection error\nCheck your internet connection\nand try again</string>
 
+    <string name="empty_history">Translation history is empty</string>
+    <string name="empty_favorites">No translations in favorites</string>
+
     <string name="sq">Albanian</string>
     <string name="am">Amharic</string>
     <string name="en">English</string>

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -45,10 +46,13 @@ public class AdapterFavorites extends BaseSwipeAdapter {
         records = db.getFavoritesRecords();
         if (fragment.getView() == null)
             return;
-        if (records.isEmpty())
+        if (records.isEmpty()) {
             ((Button) fragment.getView().findViewById(R.id.btnClearFavorites)).setVisibility(View.GONE);
-        else
+            ((TextView) fragment.getView().findViewById(R.id.tvEmptyFavorites)).setVisibility(View.VISIBLE);
+        } else {
             ((Button) fragment.getView().findViewById(R.id.btnClearFavorites)).setVisibility(View.VISIBLE);
+            ((TextView) fragment.getView().findViewById(R.id.tvEmptyFavorites)).setVisibility(View.VISIBLE);
+        }
 
         notifyDatasetChanged();
     }

@@ -15,10 +15,27 @@
         android:onClick="onClickClearHistory"
         android:layout_gravity="end"/>
 
-    <ListView
-        android:id="@+id/lvHistory"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="9"/>
+        android:layout_weight="9">
+
+        <TextView
+            android:id="@+id/tvEmptyHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="invisible"
+            android:text="@string/empty_history"/>
+
+        <ListView
+            android:id="@+id/lvHistory"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="9"/>
+
+    </FrameLayout>
+
+
 
 </LinearLayout>
