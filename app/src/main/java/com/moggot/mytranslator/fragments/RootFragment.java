@@ -305,7 +305,6 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
         super.onSaveInstanceState(outState);
         if (!etText.getText().toString().isEmpty()) {
             outState.putString(Consts.EXTRA_TEXT, etText.getText().toString());
-            saveOrEditRecord();
         }
     }
 
