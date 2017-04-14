@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.moggot.mytranslator.Consts;
 import com.moggot.mytranslator.DataBase;
 import com.moggot.mytranslator.R;
 import com.moggot.mytranslator.animation.AnimationBounce;
@@ -23,16 +22,14 @@ import com.moggot.mytranslator.translator.Translator;
 public class TranslatorFragment extends Fragment {
 
     public interface TranslatorEventListener {
-        void setTranslatorID(Long translatorID);
-
-        void setFavorite(boolean isFavorite);
+        void setFavorites(boolean isFavorite);
     }
 
     private static final String LOG_TAG = "TranslatorFragment";
     private static final String ARG_TRANSLATOR_ID = "translator_id";
     private TranslatorEventListener translatorEventListener;
     private Long translatorID;
-    private boolean isFavorite;
+    private boolean isFavorites;
     private DataBase db;
 
     public TranslatorFragment() {
@@ -72,7 +69,7 @@ public class TranslatorFragment extends Fragment {
             if (translatorID == 0)
                 translatorID = null;
         } else
-            isFavorite = false;
+            isFavorites = false;
     }
 
     @Override
@@ -100,15 +97,15 @@ public class TranslatorFragment extends Fragment {
                     else
                         translator.setIsFavorites(true);
                     db.editRecord(translator);
-                    translatorEventListener.setTranslatorID(translatorID);
+                    isFavorites = translator.getIsFavorites();
 
                 } else {
-                    if (isFavorite)
-                        isFavorite = false;
+                    if (isFavorites)
+                        isFavorites = false;
                     else
-                        isFavorite = true;
-                    translatorEventListener.setFavorite(isFavorite);
+                        isFavorites = true;
                 }
+                translatorEventListener.setFavorites(isFavorites);
             }
         });
     }
@@ -116,6 +113,9 @@ public class TranslatorFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         translatorEventListener = null;
+        db = null;
+        translatorID = null;
+
     }
 
 }

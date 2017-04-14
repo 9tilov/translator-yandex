@@ -31,6 +31,7 @@ public class FavoritesListFragment extends ListFragment {
 
     public interface FavoritesListEventListener {
         void loadFavoriteItem(Translator translator);
+
         void deleteFavoritesFlag(Translator translator);
     }
 
@@ -136,6 +137,8 @@ public class FavoritesListFragment extends ListFragment {
     public void onDestroyView() {
         super.onDestroyView();
         favoritesListEventListener = null;
+        display = null;
+        db = null;
     }
 
 }

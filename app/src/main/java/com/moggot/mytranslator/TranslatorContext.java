@@ -32,15 +32,11 @@ public class TranslatorContext {
         this.state = state;
     }
 
-    public void setTranslator(Translator translator) {
-        this.translator = translator;
-    }
-
     public State getState() {
         return this.state;
     }
 
-    public void show() {
+    public void show(Translator translator) {
         this.state.show(translator);
     }
 }

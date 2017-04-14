@@ -112,8 +112,7 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
             translatorContext.setState(stateOff);
         }
 
-        translatorContext.setTranslator(translator);
-        translatorContext.show();
+        translatorContext.show(translator);
 
         etText = (BackAwareEditText) view.findViewById(R.id.etText);
         etText.addTextChangedListener(new TextWatcher() {
@@ -126,8 +125,7 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
                     resetTranslator();
                     State stateOff = new TranslationOff(RootFragment.this);
                     translatorContext.setState(stateOff);
-                    translatorContext.setTranslator(translator);
-                    translatorContext.show();
+                    translatorContext.show(translator);
                     return;
                 }
 
@@ -137,8 +135,7 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
                 }
                 resetTranslator();
                 translator.setText(cs.toString());
-                translatorContext.setTranslator(translator);
-                translatorContext.show();
+                translatorContext.show(translator);
             }
 
             @Override
@@ -208,8 +205,7 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
                     State stateOn = new TranslationOn(RootFragment.this, translator.getId());
                     translatorContext.setState(stateOn);
                 }
-                translatorContext.setTranslator(translator);
-                translatorContext.show();
+                translatorContext.show(translator);
             }
         });
 
@@ -295,8 +291,7 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
             if (isVisibleToUser) {
 
                 if (translatorContext != null) {
-                    translatorContext.setTranslator(translator);
-                    translatorContext.show();
+                    translatorContext.show(translator);
                 }
             }
         } catch (IllegalStateException e) {
@@ -306,11 +301,13 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
     public void loadHistoryItem(Translator loadedTranslator) {
         translator.setTranslator(loadedTranslator);
         etText.setText(translator.getText());
+        etText.clearFocus();
     }
 
     public void loadFavoriteItem(Translator loadedTranslator) {
         translator.setTranslator(loadedTranslator);
         etText.setText(translator.getText());
+        etText.clearFocus();
 
         ((MainActivity) getActivity()).getViewPager().setCurrentItem(0);
     }
@@ -323,22 +320,12 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
         }
     }
 
-    public void setTranslatorID(Long translatorID) {
-        DataBase db = new DataBase(getContext());
-        translator = db.getTranslator(translatorID);
+    public void setFavorites(boolean isFavorite) {
+        translator.setIsFavorites(isFavorite);
         TranslatorData translatorData = new TranslatorData();
         Fragment fragment = getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
         if (fragment == null)
             return;
-        Display display = new TranslationDisplay(fragment, translatorData);
-        translatorData.setTranslator(translator);
-        display.display();
-    }
-
-    public void setFavorite(boolean isFavorite) {
-        translator.setIsFavorites(isFavorite);
-        TranslatorData translatorData = new TranslatorData();
-        Fragment fragment = getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
         Display display = new TranslationDisplay(fragment, translatorData);
         translatorData.setTranslator(translator);
         display.display();
@@ -359,9 +346,8 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
                 if (!etText.getText().toString().isEmpty()) {
                     State stateOn = new TranslationOn(this, translator.getId());
                     translatorContext.setState(stateOn);
-                    translatorContext.setTranslator(translator);
                 }
-                translatorContext.show();
+                translatorContext.show(translator);
                 break;
         }
     }
