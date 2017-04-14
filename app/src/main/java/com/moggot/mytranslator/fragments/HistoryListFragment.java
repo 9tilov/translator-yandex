@@ -75,8 +75,6 @@ public class HistoryListFragment extends ListFragment {
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-
         Button btnClearHistory = (Button) view.findViewById(R.id.btnClearHistory);
         btnClearHistory.setOnClickListener(new View.OnClickListener() {
 

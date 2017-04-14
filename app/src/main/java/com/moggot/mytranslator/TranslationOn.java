@@ -25,15 +25,18 @@ public class TranslationOn extends State {
 
     private Fragment parentFragment;
 
-    public TranslationOn(Fragment parentFragment, Long translatorID) {
+    public TranslationOn(Fragment parentFragment) {
         super(parentFragment);
         this.parentFragment = parentFragment;
-        FragmentTransaction ft = parentFragment.getChildFragmentManager().beginTransaction();
-        ft.replace(R.id.root_frame, TranslatorFragment.newInstance(translatorID), Consts.TAG_FRAGMENT_TRANSLATOR);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        ft.commitAllowingStateLoss();
+        Fragment fragment = parentFragment.getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
+        if (fragment == null) {
+            FragmentTransaction ft = parentFragment.getChildFragmentManager().beginTransaction();
+            ft.replace(R.id.root_frame, TranslatorFragment.newInstance(), Consts.TAG_FRAGMENT_TRANSLATOR);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            ft.commit();
 
-        parentFragment.getChildFragmentManager().executePendingTransactions();
+            parentFragment.getChildFragmentManager().executePendingTransactions();
+        }
 
     }
 

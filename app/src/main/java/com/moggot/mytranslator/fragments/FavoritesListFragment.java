@@ -31,8 +31,6 @@ public class FavoritesListFragment extends ListFragment {
 
     public interface FavoritesListEventListener {
         void loadFavoriteItem(Translator translator);
-
-        void deleteFavoritesFlag(Translator translator);
     }
 
     private static final String LOG_TAG = "FavoritesFragment";
@@ -73,7 +71,6 @@ public class FavoritesListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         db = new DataBase(getContext());
-
     }
 
     @Override
@@ -86,8 +83,6 @@ public class FavoritesListFragment extends ListFragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
         return inflater.inflate(R.layout.fragment_favorites, container, false);
     }
 

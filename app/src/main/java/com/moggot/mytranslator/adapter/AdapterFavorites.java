@@ -80,11 +80,6 @@ public class AdapterFavorites extends BaseSwipeAdapter {
             public void onClick(View view) {
                 translatorAtPosition.setIsFavorites(false);
                 db.editRecord(translatorAtPosition);
-                FavoritesListFragment.FavoritesListEventListener favoritesListEventListener = ((FavoritesListFragment) fragment).getFavoritesListEventListener();
-                Log.v(LOG_TAG, "favoritesListEventListener = " + favoritesListEventListener);
-                if (favoritesListEventListener != null) {
-                    favoritesListEventListener.deleteFavoritesFlag(translatorAtPosition);
-                }
                 closeItem(position);
                 update();
             }

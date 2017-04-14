@@ -36,19 +36,6 @@ public class MainActivity extends AppCompatActivity {
         return pager;
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Fragment fragment = (RootFragment)pager.getAdapter().instantiateItem(pager, 0);
-        if (fragment != null && fragment.isVisible()) {
-            getSupportFragmentManager().putFragment(outState, Consts.EXTRA_STATE, fragment);
-        }
-        fragment = (FavoritesListFragment)pager.getAdapter().instantiateItem(pager, 1);
-        if (fragment != null && fragment.isVisible()) {
-            getSupportFragmentManager().putFragment(outState, Consts.EXTRA_STATE, fragment);
-        }
-    }
-
     public class SlidePagerAdapter extends FragmentPagerAdapter {
 
         static final int NUM_ITEMS = 2;
@@ -82,22 +69,17 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     drawable = getResources().getDrawable(R.drawable.ic_translate_selected_24px);
                 }
-                drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-                ImageSpan span = new ImageSpan(drawable, ImageSpan.ALIGN_BOTTOM);
-                sb.setSpan(span, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-                return sb;
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     drawable = getResources().getDrawable(R.drawable.ic_bookmark_24px, getTheme());
                 } else {
                     drawable = getResources().getDrawable(R.drawable.ic_bookmark_24px);
                 }
-                drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-                ImageSpan span = new ImageSpan(drawable, ImageSpan.ALIGN_BOTTOM);
-                sb.setSpan(span, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                return sb;
             }
+            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+            ImageSpan span = new ImageSpan(drawable, ImageSpan.ALIGN_BOTTOM);
+            sb.setSpan(span, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            return sb;
         }
     }
 

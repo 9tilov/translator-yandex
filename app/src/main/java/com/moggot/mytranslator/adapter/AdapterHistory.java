@@ -61,8 +61,6 @@ public class AdapterHistory extends BaseSwipeAdapter {
 
     @Override
     public View generateView(final int position, ViewGroup parent) {
-        View view = LayoutInflater.from(fragment.getContext()).inflate(R.layout.history_item, null);
-        Log.v(LOG_TAG, "view = " + view);
         return LayoutInflater.from(fragment.getContext()).inflate(R.layout.history_item, null);
     }
 
