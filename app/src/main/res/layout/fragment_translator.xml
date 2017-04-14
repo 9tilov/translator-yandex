@@ -68,4 +68,14 @@
         android:background="@drawable/ic_bookmark_border_black_24px"
         android:onClick="onClickAddFavorites" />
 
+    <Button
+        android:id="@+id/btnCopy"
+        android:layout_width="@dimen/image"
+        android:layout_height="@dimen/image"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/btnAddFavorites"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/ic_content_copy_black_24px" />
+
 </RelativeLayout>

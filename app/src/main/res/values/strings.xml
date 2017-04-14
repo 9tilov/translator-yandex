@@ -20,6 +20,8 @@
     <string name="empty_history">No translations in history</string>
     <string name="empty_favorites">No translations in favorites</string>
 
+    <string name="translation_copied">Translation copied</string>
+
     <string name="az">Azerbaijani</string>
     <string name="sq">Albanian</string>
     <string name="am">Amharic</string>
