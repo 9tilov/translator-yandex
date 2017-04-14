@@ -1,10 +1,12 @@
 <resources>
     <string name="app_name">MyTranslator</string>
+
     <string name="az">Азербайджанский</string>
     <string name="sq">Албанский</string>
     <string name="am">Амхарский</string>
     <string name="en">Английский</string>
     <string name="ar">Арабский</string>
+    <string name="hy">Армянский</string>
     <string name="af">Африкаанс</string>
     <string name="eu">Баскский</string>
     <string name="ba">Башкирский</string>
@@ -49,6 +51,7 @@
     <string name="mi">Маори</string>
     <string name="mr">Маратхи</string>
     <string name="mhr">Марийский</string>
+    <string name="mn">Монгольский</string>
     <string name="de">Немецкий</string>
     <string name="ne">Непальский</string>
     <string name="no">Норвежский</string>
@@ -89,10 +92,4 @@
     <string name="jv">Яванский</string>
     <string name="ja">Японский</string>
 
-    <string-array name="languages">
-        <item>English</item>
-        <item>Russian</item>
-        <item>Scythes</item>
-        <item>German</item>
-    </string-array>
 </resources>

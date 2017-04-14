@@ -20,12 +20,13 @@
     <string name="empty_history">No translations in history</string>
     <string name="empty_favorites">No translations in favorites</string>
 
+    <string name="az">Azerbaijani</string>
     <string name="sq">Albanian</string>
     <string name="am">Amharic</string>
     <string name="en">English</string>
     <string name="ar">Arabic</string>
+    <string name="hy">Armenian</string>
     <string name="af">Africaans</string>
-    <string name="az">Azerbaijani</string>
     <string name="eu">Basque</string>
     <string name="ba">Bashkir</string>
     <string name="be">Belarusian</string>
@@ -69,6 +70,7 @@
     <string name="mi">Maori</string>
     <string name="mr">Marathi</string>
     <string name="mhr">Mari</string>
+    <string name="mn">Mongolian</string>
     <string name="de">German</string>
     <string name="ne">Nepali</string>
     <string name="no">Norwegian</string>
@@ -114,6 +116,7 @@
     <string name="am_short" translatable="false">am</string>
     <string name="en_short" translatable="false">en</string>
     <string name="ar_short" translatable="false">ar</string>
+    <string name="hy_short" translatable="false">hy</string>
     <string name="af_short" translatable="false">af</string>
     <string name="eu_short" translatable="false">eu</string>
     <string name="ba_short" translatable="false">ba</string>
@@ -158,6 +161,7 @@
     <string name="mi_short" translatable="false">mi</string>
     <string name="mr_short" translatable="false">mr</string>
     <string name="mhr_short" translatable="false">mhr</string>
+    <string name="mn_short" translatable="false">mn</string>
     <string name="de_short" translatable="false">de</string>
     <string name="ne_short" translatable="false">ne</string>
     <string name="no_short" translatable="false">no</string>
@@ -198,13 +202,4 @@
     <string name="jv_short" translatable="false">jv</string>
     <string name="ja_short" translatable="false">ja</string>
 
-    <string-array name="languages">
-        <item>English</item>
-        <item>Russian</item>
-        <item>Scythes</item>
-        <item>German</item>
-    </string-array>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

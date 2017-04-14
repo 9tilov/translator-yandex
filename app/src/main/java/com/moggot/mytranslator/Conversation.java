@@ -15,17 +15,16 @@ public class Conversation {
     private static final String LOG_TAG = "Conversation";
 
     private Map<String, String> shortToLong = new HashMap<>();
-    private Context context;
 
     public Conversation(Context context) {
-        this.context = context;
 
+        shortToLong.put(context.getString(R.string.az_short), context.getString(R.string.az));
         shortToLong.put(context.getString(R.string.sq_short), context.getString(R.string.sq));
         shortToLong.put(context.getString(R.string.am_short), context.getString(R.string.am));
         shortToLong.put(context.getString(R.string.en_short), context.getString(R.string.en));
         shortToLong.put(context.getString(R.string.ar_short), context.getString(R.string.ar));
+        shortToLong.put(context.getString(R.string.hy_short), context.getString(R.string.hy));
         shortToLong.put(context.getString(R.string.af_short), context.getString(R.string.af));
-        shortToLong.put(context.getString(R.string.az_short), context.getString(R.string.az));
         shortToLong.put(context.getString(R.string.eu_short), context.getString(R.string.eu));
         shortToLong.put(context.getString(R.string.ba_short), context.getString(R.string.ba));
         shortToLong.put(context.getString(R.string.be_short), context.getString(R.string.be));
@@ -43,7 +42,7 @@ public class Conversation {
         shortToLong.put(context.getString(R.string.ka_short), context.getString(R.string.ka));
         shortToLong.put(context.getString(R.string.gu_short), context.getString(R.string.gu));
         shortToLong.put(context.getString(R.string.da_short), context.getString(R.string.da));
-        shortToLong.put(context.getString(R.string.bn_short), context.getString(R.string.he));
+        shortToLong.put(context.getString(R.string.he_short), context.getString(R.string.he));
         shortToLong.put(context.getString(R.string.yi_short), context.getString(R.string.yi));
         shortToLong.put(context.getString(R.string.id_short), context.getString(R.string.id));
         shortToLong.put(context.getString(R.string.ga_short), context.getString(R.string.ga));
@@ -69,6 +68,7 @@ public class Conversation {
         shortToLong.put(context.getString(R.string.mi_short), context.getString(R.string.mi));
         shortToLong.put(context.getString(R.string.mr_short), context.getString(R.string.mr));
         shortToLong.put(context.getString(R.string.mhr_short), context.getString(R.string.mhr));
+        shortToLong.put(context.getString(R.string.mn_short), context.getString(R.string.mn));
         shortToLong.put(context.getString(R.string.de_short), context.getString(R.string.de));
         shortToLong.put(context.getString(R.string.ne_short), context.getString(R.string.ne));
         shortToLong.put(context.getString(R.string.no_short), context.getString(R.string.no));
