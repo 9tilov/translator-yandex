@@ -29,6 +29,7 @@ public class TranslatorDao extends AbstractDao<Translator, Long> {
         public final static Property OutputLanguage = new Property(4, String.class, "outputLanguage", false, "OUTPUT_LANGUAGE");
         public final static Property IsFavorites = new Property(5, boolean.class, "isFavorites", false, "IS_FAVORITES");
         public final static Property Details = new Property(6, String.class, "details", false, "DETAILS");
+        public final static Property Date = new Property(7, java.util.Date.class, "date", false, "DATE");
     }
 
 
@@ -50,7 +51,8 @@ public class TranslatorDao extends AbstractDao<Translator, Long> {
                 "\"INPUT_LANGUAGE\" TEXT NOT NULL ," + // 3: inputLanguage
                 "\"OUTPUT_LANGUAGE\" TEXT NOT NULL ," + // 4: outputLanguage
                 "\"IS_FAVORITES\" INTEGER NOT NULL ," + // 5: isFavorites
-                "\"DETAILS\" TEXT);"); // 6: details
+                "\"DETAILS\" TEXT," + // 6: details
+                "\"DATE\" INTEGER NOT NULL );"); // 7: date
     }
 
     /** Drops the underlying database table. */
@@ -77,6 +79,7 @@ public class TranslatorDao extends AbstractDao<Translator, Long> {
         if (details != null) {
             stmt.bindString(7, details);
         }
+        stmt.bindLong(8, entity.getDate().getTime());
     }
 
     @Override
@@ -97,6 +100,7 @@ public class TranslatorDao extends AbstractDao<Translator, Long> {
         if (details != null) {
             stmt.bindString(7, details);
         }
+        stmt.bindLong(8, entity.getDate().getTime());
     }
 
     @Override
@@ -113,7 +117,8 @@ public class TranslatorDao extends AbstractDao<Translator, Long> {
             cursor.getString(offset + 3), // inputLanguage
             cursor.getString(offset + 4), // outputLanguage
             cursor.getShort(offset + 5) != 0, // isFavorites
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6) // details
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // details
+            new java.util.Date(cursor.getLong(offset + 7)) // date
         );
         return entity;
     }
@@ -127,6 +132,7 @@ public class TranslatorDao extends AbstractDao<Translator, Long> {
         entity.setOutputLanguage(cursor.getString(offset + 4));
         entity.setIsFavorites(cursor.getShort(offset + 5) != 0);
         entity.setDetails(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setDate(new java.util.Date(cursor.getLong(offset + 7)));
      }
     
     @Override

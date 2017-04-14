@@ -34,6 +34,9 @@ import com.moggot.mytranslator.observer.TranslationDisplay;
 import com.moggot.mytranslator.observer.TranslatorData;
 import com.moggot.mytranslator.translator.Translator;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * Created by toor on 10.04.17.
  */
@@ -249,13 +252,16 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
     private void createTranslator() {
         String inputLanguage = LangSharedPreferences.loadInputLanguage(getContext());
         String outputLanguage = LangSharedPreferences.loadOutputLanguage(getContext());
+        Calendar calendar = Calendar.getInstance();
+        Date date = new Date(calendar.getTimeInMillis());
         translator = new Translator(null
                 , ""
                 , ""
                 , inputLanguage
                 , outputLanguage
                 , false
-                , "");
+                , ""
+                , date);
 
         translatorContext = new TranslatorContext(getActivity(), translator);
     }
@@ -277,10 +283,9 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
         translator.setOutputLanguage(LangSharedPreferences.loadOutputLanguage(getContext()));
         translator.setIsFavorites(false);
         translator.setDetails("");
-    }
-
-    public Translator getTranslator() {
-        return translator;
+        Calendar calendar = Calendar.getInstance();
+        Date date = new Date(calendar.getTimeInMillis());
+        translator.setDate(date);
     }
 
     @Override

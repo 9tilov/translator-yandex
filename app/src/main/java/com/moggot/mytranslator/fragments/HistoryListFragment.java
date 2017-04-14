@@ -108,7 +108,5 @@ public class HistoryListFragment extends ListFragment {
     public void onDestroyView() {
         super.onDestroyView();
         historyListEventListener = null;
-        db = null;
-        display = null;
     }
 }

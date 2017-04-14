@@ -113,9 +113,6 @@ public class TranslatorFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         translatorEventListener = null;
-        db = null;
-        translatorID = null;
-
     }
 
 }

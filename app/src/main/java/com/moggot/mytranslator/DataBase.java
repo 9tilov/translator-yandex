@@ -79,11 +79,11 @@ public class DataBase {
     }
 
     public List<Translator> getAllRecords() {
-        return translatorDao.loadAll();
+        return translatorDao.queryBuilder().orderDesc(TranslatorDao.Properties.Date).list();
     }
 
     public List<Translator> getFavoritesRecords() {
-        return translatorDao.queryBuilder().where(TranslatorDao.Properties.IsFavorites.eq(true)).list();
+        return translatorDao.queryBuilder().where(TranslatorDao.Properties.IsFavorites.eq(true)).orderDesc(TranslatorDao.Properties.Date).list();
     }
 
     private TranslatorDao setupDb() {

@@ -36,6 +36,7 @@ public class MyGenerator {
         translateData.addStringProperty("outputLanguage").notNull();
         translateData.addBooleanProperty("isFavorites").notNull();
         translateData.addStringProperty("details");
+        translateData.addDateProperty("date").notNull();
 
         return translateData;
     }

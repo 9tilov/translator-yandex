@@ -137,8 +137,6 @@ public class FavoritesListFragment extends ListFragment {
     public void onDestroyView() {
         super.onDestroyView();
         favoritesListEventListener = null;
-        display = null;
-        db = null;
     }
 
 }
