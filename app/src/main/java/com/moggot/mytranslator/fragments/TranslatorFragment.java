@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.moggot.mytranslator.Consts;
 import com.moggot.mytranslator.DataBase;
 import com.moggot.mytranslator.R;
 import com.moggot.mytranslator.animation.AnimationBounce;
@@ -23,6 +24,7 @@ public class TranslatorFragment extends Fragment {
 
     public interface TranslatorEventListener {
         void setTranslatorID(Long translatorID);
+
         void setFavorite(boolean isFavorite);
     }
 
@@ -48,7 +50,7 @@ public class TranslatorFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        //   super.onSaveInstanceState(outState);
+     //      super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -65,9 +67,11 @@ public class TranslatorFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         db = new DataBase(getContext());
-        if (getArguments() != null)
+        if (getArguments() != null) {
             translatorID = getArguments().getLong(ARG_TRANSLATOR_ID);
-        else
+            if (translatorID == 0)
+                translatorID = null;
+        } else
             isFavorite = false;
     }
 

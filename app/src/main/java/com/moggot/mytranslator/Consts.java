@@ -165,6 +165,7 @@ public class Consts {
     public static final String EXTRA_FRAGMENT_FAVORITES = "extra_fragment_favorites";
 
     public static final String EXTRA_STATE = "extra_state";
+    public static final String EXTRA_TRANSLATOR_ID = "translator_id";
 
     public static final String TAG_FRAGMENT_TRANSLATOR = "tag_fragment_translator";
     public static final String TAG_FRAGMENT_HISTORY = "tag_fragment_history";
