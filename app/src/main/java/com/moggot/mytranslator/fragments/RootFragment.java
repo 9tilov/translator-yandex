@@ -185,6 +185,7 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
                 view.startAnimation(bounce);
 
                 resetTranslator();
+
                 String inputLang = LangSharedPreferences.loadInputLanguage(getContext());
                 String outputLang = LangSharedPreferences.loadOutputLanguage(getContext());
                 LangSharedPreferences.saveInputLanguage(getContext(), outputLang);
@@ -196,6 +197,12 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
                 translator.setInputLanguage(inputLang);
                 translator.setOutputLanguage(outputLang);
                 translator.setText(etText.getText().toString());
+
+                if (!etText.getText().toString().isEmpty()) {
+                    State stateOn = new TranslationOn(RootFragment.this, translator.getId());
+                    translatorContext.setState(stateOn);
+                }
+                translatorContext.setTranslator(translator);
                 translatorContext.show();
             }
         });
@@ -344,6 +351,8 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
                 translator.setInputLanguage(inputLang);
                 translator.setOutputLanguage(outputLang);
                 translator.setText(etText.getText().toString());
+                State stateOn = new TranslationOn(this, translator.getId());
+                translatorContext.setState(stateOn);
                 translatorContext.show();
                 break;
         }

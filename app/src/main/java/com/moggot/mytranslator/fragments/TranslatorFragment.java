@@ -47,6 +47,11 @@ public class TranslatorFragment extends Fragment {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        //   super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
@@ -64,16 +69,6 @@ public class TranslatorFragment extends Fragment {
             translatorID = getArguments().getLong(ARG_TRANSLATOR_ID);
         else
             isFavorite = false;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
     }
 
     @Override

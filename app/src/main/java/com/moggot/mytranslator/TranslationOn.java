@@ -46,18 +46,19 @@ public class TranslationOn extends State {
         Fragment fragment = parentFragment.getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
         if (fragment == null || fragment.getView() == null)
             return;
-        if (!isNetworkAvailable()) {
-            TextView tvTranslator = (TextView) fragment.getView().findViewById(R.id.tvDetails);
-            tvTranslator.setText(parentFragment.getContext().getString(R.string.connection_error));
-            tvTranslator.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
-            tvTranslator.setGravity(Gravity.CENTER);
-            return;
-        }
 
         DataBase db = new DataBase(parentFragment.getContext());
         Translator foundRecord = db.findRecord(translator);
 
         if (foundRecord == null) {
+            if (!isNetworkAvailable()) {
+                TextView tvTranslator = (TextView) fragment.getView().findViewById(R.id.tvDetails);
+                tvTranslator.setText(parentFragment.getContext().getString(R.string.connection_error));
+                tvTranslator.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+                tvTranslator.setGravity(Gravity.CENTER);
+                return;
+            }
+
             TranslationTask translationTask = new TranslationTask(parentFragment);
             translationTask.execute(translator);
             DictionaryTask dictionaryTask = new DictionaryTask(parentFragment);
