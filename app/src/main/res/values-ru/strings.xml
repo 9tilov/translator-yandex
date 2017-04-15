@@ -1,6 +1,24 @@
 <resources>
     <string name="app_name">MyTranslator</string>
 
+    <string name="edittext_hint">Введите текст&#8230;</string>
+
+    <string name="dialog_title_delete_history">Удалить историю?</string>
+    <string name="dialog_title_delete_favorites">Удалить избранное?</string>
+
+    <string name="yes">Да</string>
+    <string name="cancel">Отмена</string>
+
+    <string name="connection_error"><b>Ошибка соединения</b></string>
+    <string name="no_internet">Проверьте подключение к Интернету\nи повторите попыткуn</string>
+
+    <string name="empty_history">Нет переводов в истории</string>
+    <string name="empty_favorites">Нет переводов в избранном</string>
+
+    <string name="translation_copied">Перевод скопирован</string>
+
+    <string name="yandex_translator">Переведено сервисом\n<a href="http://www.translate.yandex.ru">«Яндекс.Переводчик»</a></string>
+
     <string name="az">Азербайджанский</string>
     <string name="sq">Албанский</string>
     <string name="am">Амхарский</string>

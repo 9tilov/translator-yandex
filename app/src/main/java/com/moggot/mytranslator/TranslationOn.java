@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -52,10 +53,10 @@ public class TranslationOn extends State {
 
         if (foundRecord == null) {
             if (!isNetworkAvailable()) {
-                TextView tvTranslator = (TextView) fragment.getView().findViewById(R.id.tvDetails);
-                tvTranslator.setText(parentFragment.getContext().getString(R.string.connection_error));
-                tvTranslator.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
-                tvTranslator.setGravity(Gravity.CENTER);
+                TextView tvError = (TextView) fragment.getView().findViewById(R.id.tvErrorConnection);
+                tvError.setVisibility(View.VISIBLE);
+                TextView tvNoInternet = (TextView) fragment.getView().findViewById(R.id.tvNoInternet);
+                tvNoInternet.setVisibility(View.VISIBLE);
                 return;
             }
 

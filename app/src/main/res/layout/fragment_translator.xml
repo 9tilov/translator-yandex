@@ -17,9 +17,9 @@
             style="@style/Translation"
             android:layout_width="match_parent"
             android:layout_height="0dip"
-            android:layout_marginEnd="@dimen/image"
+            android:layout_marginEnd="@dimen/image_size"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="@dimen/image"
+            android:layout_marginRight="@dimen/image_size"
             android:layout_marginStart="5dp"
             android:layout_weight="3"
             android:gravity="center_vertical" />
@@ -28,6 +28,10 @@
             android:id="@+id/scrollCreateAlarmActivity"
             android:layout_width="match_parent"
             android:layout_height="0dip"
+            android:layout_marginEnd="@dimen/image_size"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="@dimen/image_size"
+            android:layout_marginStart="5dp"
             android:layout_weight="14"
             android:fillViewport="true"
             android:scrollbars="vertical">
@@ -45,15 +49,50 @@
                     android:visibility="invisible"
                     app:SpinKit_Color="@color/text" />
 
-                <TextView
-                    android:id="@+id/tvDetails"
-                    style="@style/Dictionary"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="@dimen/image"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="@dimen/image"
-                    android:layout_marginStart="5dp" />
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:weightSum="5">
+
+                        <TextView
+                            android:id="@+id/tvErrorConnection"
+                            style="@style/Error"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dip"
+                            android:layout_weight="2"
+                            android:gravity="center"
+                            android:text="@string/connection_error"
+                            android:visibility="gone"/>
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dip"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/tvNoInternet"
+                            style="@style/Dictionary"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dip"
+                            android:layout_weight="2"
+                            android:gravity="center"
+                            android:text="@string/no_internet"
+                            android:visibility="gone"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvDetails"
+                        style="@style/Dictionary"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </FrameLayout>
             </FrameLayout>
         </ScrollView>
 
@@ -70,8 +109,8 @@
 
     <Button
         android:id="@+id/btnAddFavorites"
-        android:layout_width="@dimen/image"
-        android:layout_height="@dimen/image"
+        android:layout_width="@dimen/image_size"
+        android:layout_height="@dimen/image_size"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
@@ -80,8 +119,8 @@
 
     <Button
         android:id="@+id/btnCopy"
-        android:layout_width="@dimen/image"
-        android:layout_height="@dimen/image"
+        android:layout_width="@dimen/image_size"
+        android:layout_height="@dimen/image_size"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/btnAddFavorites"

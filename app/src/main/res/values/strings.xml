@@ -1,9 +1,6 @@
 <resources>
     <string name="app_name">MyTranslator</string>
 
-    <string name="tag_translator" translatable="false">tag_translator</string>
-    <string name="tag_favorites" translatable="false">tag_favorites</string>
-
     <string name="edittext_hint">Enter text&#8230;</string>
 
     <string name="dialog_title_delete_history">Delete history?</string>
@@ -12,10 +9,8 @@
     <string name="yes">Yes</string>
     <string name="cancel">Cancel</string>
 
-    <string name="translation">Translation</string>
-    <string name="favorites">Favorites</string>
-
-    <string name="connection_error">Connection error\nCheck your internet connection\nand try again</string>
+    <string name="connection_error"><b>Connection error</b></string>
+    <string name="no_internet">Check your internet connection\nand try again</string>
 
     <string name="empty_history">No translations in history</string>
     <string name="empty_favorites">No translations in favorites</string>

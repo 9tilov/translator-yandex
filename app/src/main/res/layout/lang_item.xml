@@ -17,8 +17,8 @@
 
     <RadioButton
         android:id="@+id/check"
-        android:layout_width="@dimen/check_width"
-        android:layout_height="@dimen/check_height"
+        android:layout_width="@dimen/image_size"
+        android:layout_height="@dimen/image_size"
         android:background="@drawable/radiobutton"
         android:button="@null"
         android:checked="false"

@@ -16,6 +16,10 @@
         <item name="android:textSize">@dimen/text_size_dictionary</item>
     </style>
 
+    <style name="Error">
+        <item name="android:textSize">@dimen/text_size_error</item>
+    </style>
+
     <style name="TextHistory">
         <item name="android:textSize">@dimen/text_size_history</item>
         <item name="android:textColor">@color/text</item>
