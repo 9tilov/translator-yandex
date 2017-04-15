@@ -22,6 +22,8 @@
 
     <string name="translation_copied">Translation copied</string>
 
+    <string name="yandex_translator">Translated with service\n<a href="http://www.translate.yandex.ru">"Yandex.Translator"</a></string>
+
     <string name="az">Azerbaijani</string>
     <string name="sq">Albanian</string>
     <string name="am">Amharic</string>
