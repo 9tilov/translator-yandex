@@ -100,7 +100,7 @@ public class AdapterHistory extends BaseSwipeAdapter {
             }
         });
 
-        convertView.findViewById(R.id.adapterIwFavorites).setOnClickListener(new View.OnClickListener() {
+        convertView.findViewById(R.id.rlFavorites).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AnimationBounce animationBounce = new EmptyAnimationBounce(fragment.getContext());
