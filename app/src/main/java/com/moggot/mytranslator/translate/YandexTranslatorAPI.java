@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.moggot.mytranslator;
+package com.moggot.mytranslator.translate;
 
 import android.util.Log;
 
@@ -28,13 +28,15 @@ import javax.net.ssl.HttpsURLConnection;
  * Makes the generic Yandex API calls. Different service classes can then
  * extend this to make the specific service calls.
  */
-public abstract class YandexTranslatorAPI {
-    //Encoding type
-    protected static final String ENCODING = "UTF-8";
+abstract class YandexTranslatorAPI {
+
+    static final String ENCODING = "UTF-8";
+
+    private static final int MAX_TEXT_LENGTH = 10000;
 
     private static final String LOG_TAG = "YandexTranslatorAPI";
 
-    protected static final String PARAM_API_KEY = "key=",
+    static final String PARAM_API_KEY = "key=",
             PARAM_LANG_PAIR = "&lang=",
             PARAM_TEXT = "&text=";
 
@@ -47,12 +49,29 @@ public abstract class YandexTranslatorAPI {
      */
     private static String retrieveResponse(final URL url) throws Exception {
         final HttpsURLConnection uc = (HttpsURLConnection) url.openConnection();
-
+        Log.v(LOG_TAG, "start");
         try {
             final int responseCode = uc.getResponseCode();
+            Log.v(LOG_TAG, "responseCode = " + responseCode);
             final String result = inputStreamToString(uc.getInputStream());
+            Log.v(LOG_TAG, "result = " + result);
             if (responseCode != 200) {
-                throw new Exception("Error from Yandex API: " + result);
+                switch (responseCode) {
+                    case 401:
+                        throw new Exception("Wrong API key: " + result);
+                    case 402:
+                        throw new Exception("API key is locked: " + result);
+                    case 404:
+                        throw new Exception("Daily text limit exceeded: " + result);
+                    case 413:
+                        throw new Exception("Maximum text size exceeded: " + result);
+                    case 422:
+                        throw new Exception("Text can not be translated: " + result);
+                    case 501:
+                        throw new Exception("This translation direction is not supported: " + result);
+                    default:
+                        throw new Exception("Unknown error: " + result);
+                }
             }
             return result;
         } finally {
@@ -66,13 +85,11 @@ public abstract class YandexTranslatorAPI {
      * Forms a request, sends it using the GET method and returns the contents of the array of strings
      * with the given label, with multiple strings concatenated.
      */
-    protected String retrievePropArrString(final URL url) throws Exception {
+    String retrievePropArrString(final URL url) throws Exception {
         final String response = retrieveResponse(url);
-        Log.v(LOG_TAG, "text = " + response);
         return parse(response);
     }
 
-    // Helper method to parse a JSONObject containing an array of Strings with the given label.
     protected abstract String parse(final String inputString) throws Exception;
 
     /**
@@ -103,9 +120,9 @@ public abstract class YandexTranslatorAPI {
         return outputBuilder.toString();
     }
 
-    protected void validateServiceState(final String text, final String apiKey) throws Exception {
+    void validateServiceState(final String text, final String apiKey) throws Exception {
         final int byteLength = text.getBytes(ENCODING).length;
-        if (byteLength > 10240) { // TODO What is the maximum text length allowable for Yandex?
+        if (byteLength > MAX_TEXT_LENGTH) { // TODO What is the maximum text length allowable for Yandex?
             throw new RuntimeException("TEXT_TOO_LARGE");
         }
         validateKeyState(apiKey);

@@ -19,7 +19,6 @@ import android.util.Log;
 
 import com.moggot.mytranslator.ApiKeys;
 import com.moggot.mytranslator.Consts;
-import com.moggot.mytranslator.YandexTranslatorAPI;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

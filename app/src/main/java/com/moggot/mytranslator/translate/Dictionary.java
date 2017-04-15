@@ -4,9 +4,9 @@ import android.util.Log;
 
 import com.moggot.mytranslator.ApiKeys;
 import com.moggot.mytranslator.Consts;
-import com.moggot.mytranslator.YandexTranslatorAPI;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URL;
@@ -45,7 +45,6 @@ public class Dictionary extends YandexTranslatorAPI {
 
     @Override
     protected String parse(final String inputString) throws Exception {
-        Log.v(LOG_TAG, "inputString = " + inputString);
         JSONObject jsonObject = new JSONObject(inputString);
         StringBuilder strResult = new StringBuilder();
         JSONArray mainArray = jsonObject.getJSONArray("def");
@@ -60,9 +59,9 @@ public class Dictionary extends YandexTranslatorAPI {
                     strResult.append("[");
                     strResult.append(tr);
                     strResult.append("]");
-                } catch (Exception e) {
+                } catch (JSONException ex) {
+                    ex.printStackTrace();
                 }
-
 
                 strResult.append("\n");
             }
@@ -84,13 +83,15 @@ public class Dictionary extends YandexTranslatorAPI {
 
                         try {
                             synBuffer.append(synObj.getString("gen"));
-                        } catch (Exception e) {
+                        } catch (JSONException ex) {
+                            ex.printStackTrace();
                         }
                         if (i_syn < synArray.length() - 1)
                             synBuffer.append(", ");
 
                     }
-                } catch (Exception e) {
+                } catch (JSONException ex) {
+                    ex.printStackTrace();
                 }
 
                 StringBuilder meanBuffer = new StringBuilder();
@@ -110,7 +111,8 @@ public class Dictionary extends YandexTranslatorAPI {
                             meanBuffer.append(")");
 
                     }
-                } catch (Exception e) {
+                } catch (JSONException ex) {
+                    ex.printStackTrace();
                 }
 
                 StringBuilder exTextBuffer = new StringBuilder();
@@ -134,7 +136,8 @@ public class Dictionary extends YandexTranslatorAPI {
                         }
 
                     }
-                } catch (Exception e) {
+                } catch (JSONException ex) {
+                    ex.printStackTrace();
                 }
 
                 StringBuilder strWord = new StringBuilder();
@@ -142,10 +145,13 @@ public class Dictionary extends YandexTranslatorAPI {
                 strWord.append(" ");
                 strWord.append(word.getString("text"));
                 String strGen = "";
+
                 try {
                     strGen = word.getString("gen");
-                } catch (Exception e) {
+                } catch (JSONException ex) {
+                    ex.printStackTrace();
                 }
+
                 strResult.append("  ");
                 strResult.append(strWord.toString());
                 if (!strGen.isEmpty()) {
@@ -171,7 +177,6 @@ public class Dictionary extends YandexTranslatorAPI {
 
             }
         }
-        Log.v(LOG_TAG, strResult.toString());
         return strResult.toString();
     }
 }
