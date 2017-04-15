@@ -142,6 +142,7 @@ public class Translator {
         this.outputLanguage = translator.getOutputLanguage();
         this.isFavorites = translator.getIsFavorites();
         this.details = translator.getDetails();
+        this.date = translator.getDate();
     }
     // KEEP METHODS END
 
