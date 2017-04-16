@@ -1,14 +1,17 @@
 package com.moggot.mytranslator.fragments;
 
 import android.content.ClipData;
+import android.support.test.espresso.Espresso;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -27,6 +30,7 @@ import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.pressImeActionButton;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
@@ -50,12 +54,13 @@ public class RootFragmentTest {
     @Test
     public void onViewCreated() throws Exception {
         clearDB();
-        clickInputLang();
-        clickOutputLang();
-        clickChangeLang();
-        checkTranslation();
-        clickClearText();
-        checkAddedItemsCount();
+//        clickInputLang();
+//        clickOutputLang();
+//        clickChangeLang();
+//        checkTranslation();
+//        clickClearText();
+//        checkAddedItemsCount();
+        clickBackButtonToSave();
     }
 
     private void clearDB() {
@@ -122,6 +127,17 @@ public class RootFragmentTest {
                 .atPosition(3)
                 .check(matches(isDisplayed()));
 
+    }
+
+    private void clickBackButtonToSave() {
+        clearDB();
+        onView(withId(R.id.etText)).perform(typeText("Hello"), pressImeActionButton());
+        onView(withId(R.id.etText)).perform(typeText(" World"));
+        onView(withId(R.id.etText)).perform(ViewActions.pressKey(KeyEvent.KEYCODE_BACK));
+        onData(instanceOf(Translator.class))
+                .inAdapterView(allOf(withId(android.R.id.list), isDisplayed()))
+                .atPosition(1)
+                .check(matches(isDisplayed()));
     }
 
     private String getText(final Matcher<View> matcher) {
