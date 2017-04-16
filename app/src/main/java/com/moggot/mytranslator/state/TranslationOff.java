@@ -1,8 +1,10 @@
-package com.moggot.mytranslator;
+package com.moggot.mytranslator.state;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
+import com.moggot.mytranslator.Consts;
+import com.moggot.mytranslator.R;
 import com.moggot.mytranslator.fragments.HistoryListFragment;
 import com.moggot.mytranslator.observer.Display;
 import com.moggot.mytranslator.observer.HistoryDisplay;

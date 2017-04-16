@@ -1,38 +1,31 @@
-package com.moggot.mytranslator;
+package com.moggot.mytranslator.translate;
 
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.github.ybq.android.spinkit.style.ThreeBounce;
-import com.moggot.mytranslator.translate.Dictionary;
+import com.moggot.mytranslator.Consts;
+import com.moggot.mytranslator.R;
+import com.moggot.mytranslator.translate.Translate;
 import com.moggot.mytranslator.translator.Translator;
 
 /**
- * Created by toor on 03.04.17.
+ * Created by toor on 02.04.17.
  */
 
-public class DictionaryTask extends AsyncTask<Translator, Void, String> {
+public class TranslationTask extends AsyncTask<Translator, Void, String> {
 
-    private static final String LOG_TAG = "DictionaryTask";
+    private static final String LOG_TAG = "TranslationTask";
     private Translator translator;
-    private Dictionary dictionary;
-    private ProgressBar progressBar;
+    private Translate translate;
     private Fragment parentFragment;
 
-    public DictionaryTask(Fragment parentFragment) {
+    public TranslationTask(Fragment parentFragment) {
         if (parentFragment == null)
             return;
         this.parentFragment = parentFragment;
-        dictionary = new Dictionary();
-
-        progressBar = (ProgressBar) parentFragment.getView().findViewById(R.id.spin_kit);
-        ThreeBounce threeBounce = new ThreeBounce();
-        progressBar.setIndeterminateDrawable(threeBounce);
-        progressBar.setVisibility(View.VISIBLE);
+        translate = new Translate();
     }
 
     @Override
@@ -42,14 +35,13 @@ public class DictionaryTask extends AsyncTask<Translator, Void, String> {
 
     @Override
     protected String doInBackground(Translator... params) {
-
         try {
             translator = params[0];
-            return dictionary.execute(params[0].getText()
+
+            return translate.execute(params[0].getText()
                     , Consts.Lang.fromString(params[0].getInputLanguage())
                     , Consts.Lang.fromString(params[0].getOutputLanguage()));
         } catch (Exception e) {
-
             e.printStackTrace();
         }
         return null;
@@ -64,16 +56,13 @@ public class DictionaryTask extends AsyncTask<Translator, Void, String> {
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
         Log.v(LOG_TAG, "result = " + result);
-        if (result == null) {
-            progressBar.setVisibility(View.GONE);
+        if (result == null)
             return;
-        }
-        translator.setDetails(result);
+        translator.setTranslation(result);
         Fragment translatorFragment = parentFragment.getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
         if (translatorFragment != null && translatorFragment.getView() != null) {
-            TextView tvDetails = (TextView) translatorFragment.getView().findViewById(R.id.tvDetails);
-            tvDetails.setText(result);
+            TextView tvTranslator = (TextView) translatorFragment.getView().findViewById(R.id.tvTranslation);
+            tvTranslator.setText(result);
         }
-        progressBar.setVisibility(View.GONE);
     }
 }

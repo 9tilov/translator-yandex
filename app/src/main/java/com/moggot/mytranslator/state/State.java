@@ -1,4 +1,4 @@
-package com.moggot.mytranslator;
+package com.moggot.mytranslator.state;
 
 import android.support.v4.app.Fragment;
 

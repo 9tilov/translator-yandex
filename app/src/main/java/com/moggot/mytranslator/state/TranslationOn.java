@@ -1,15 +1,18 @@
-package com.moggot.mytranslator;
+package com.moggot.mytranslator.state;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.moggot.mytranslator.Consts;
+import com.moggot.mytranslator.DataBase;
+import com.moggot.mytranslator.translate.DictionaryTask;
+import com.moggot.mytranslator.R;
+import com.moggot.mytranslator.translate.TranslationTask;
 import com.moggot.mytranslator.fragments.TranslatorFragment;
 import com.moggot.mytranslator.observer.Display;
 import com.moggot.mytranslator.observer.TranslationDisplay;

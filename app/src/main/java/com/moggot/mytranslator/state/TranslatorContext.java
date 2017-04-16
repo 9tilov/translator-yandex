@@ -1,7 +1,8 @@
-package com.moggot.mytranslator;
+package com.moggot.mytranslator.state;
 
 import android.content.Context;
 
+import com.moggot.mytranslator.state.State;
 import com.moggot.mytranslator.translator.Translator;
 
 /**
