@@ -78,10 +78,8 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
 
         createTranslator();
 
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null)
             etText.setText(savedInstanceState.getString(Consts.EXTRA_TEXT));
-        }
-
         State stateOff = new TranslationOff(this);
         translatorContext.setState(stateOff);
         translatorContext.show(translator);
@@ -172,10 +170,6 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
                 translator.setOutputLanguage(outputLang);
                 translator.setText(etText.getText().toString());
 
-                if (!etText.getText().toString().isEmpty()) {
-                    State stateOn = new TranslationOn(RootFragment.this);
-                    translatorContext.setState(stateOn);
-                }
                 translatorContext.show(translator);
             }
         });
@@ -291,12 +285,11 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
 
         try {
             if (isVisibleToUser) {
-
-                if (translatorContext != null) {
+                if (translatorContext != null)
                     translatorContext.show(translator);
-                }
             }
         } catch (IllegalStateException e) {
+            e.printStackTrace();
         }
     }
 
@@ -319,10 +312,6 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
                 translator.setInputLanguage(inputLang);
                 translator.setOutputLanguage(outputLang);
                 translator.setText(etText.getText().toString());
-                if (!etText.getText().toString().isEmpty()) {
-                    State stateOn = new TranslationOn(this);
-                    translatorContext.setState(stateOn);
-                }
                 translatorContext.show(translator);
                 break;
         }

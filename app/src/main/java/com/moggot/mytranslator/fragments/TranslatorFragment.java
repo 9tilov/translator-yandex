@@ -71,7 +71,7 @@ public class TranslatorFragment extends Fragment {
         });
 
         final TextView tvTranslation = (TextView) view.findViewById(R.id.tvTranslation);
-        Button btnCopyTranslation = (Button) view.findViewById(R.id.btnCopy);
+        Button btnCopyTranslation = (Button) view.findViewById(R.id.btnCopyTranslation);
         btnCopyTranslation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

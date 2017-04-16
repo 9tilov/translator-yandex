@@ -49,12 +49,9 @@ abstract class YandexTranslatorAPI {
      */
     private static String retrieveResponse(final URL url) throws Exception {
         final HttpsURLConnection uc = (HttpsURLConnection) url.openConnection();
-        Log.v(LOG_TAG, "start");
         try {
             final int responseCode = uc.getResponseCode();
-            Log.v(LOG_TAG, "responseCode = " + responseCode);
             final String result = inputStreamToString(uc.getInputStream());
-            Log.v(LOG_TAG, "result = " + result);
             if (responseCode != 200) {
                 switch (responseCode) {
                     case 401:
