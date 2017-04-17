@@ -1,28 +1,23 @@
 package com.moggot.mytranslator.fragments;
 
-import android.content.ClipData;
-import android.support.test.espresso.Espresso;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.action.ViewActions;
-import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import com.moggot.mytranslator.Consts;
 import com.moggot.mytranslator.DataBase;
 import com.moggot.mytranslator.MainActivity;
 import com.moggot.mytranslator.R;
 import com.moggot.mytranslator.translator.Translator;
 
 import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -31,6 +26,8 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.pressImeActionButton;
+import static android.support.test.espresso.action.ViewActions.swipeLeft;
+import static android.support.test.espresso.action.ViewActions.swipeRight;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
@@ -54,18 +51,35 @@ public class RootFragmentTest {
     @Test
     public void onViewCreated() throws Exception {
         clearDB();
-//        clickInputLang();
-//        clickOutputLang();
-//        clickChangeLang();
-//        checkTranslation();
-//        clickClearText();
-//        checkAddedItemsCount();
+        if (!checkInternetConnection())
+            return;
+        clickInputLang();
+        clickOutputLang();
+        clickChangeLang();
+        checkTranslation();
+        clickClearText();
+        checkAddedItemsCount();
         clickBackButtonToSave();
+        clickHistoryItem();
+        addItemToFavorites();
+        deleteFavoritesItem();
     }
 
     private void clearDB() {
         DataBase db = new DataBase(mActivityRule.getActivity());
         db.deleteAll();
+    }
+
+    private boolean checkInternetConnection() {
+        if (isNetworkAvailable())
+            return true;
+        else {
+            onView(withId(R.id.etText)).perform(typeText("test connection"));
+            onView(withId(R.id.tvErrorConnection)).check(matches(withText(mActivityRule.getActivity().getString(R.string.connection_error))));
+            onView(withId(R.id.tvNoInternet)).check(matches(withText(mActivityRule.getActivity().getString(R.string.no_internet))));
+            return false;
+        }
+
     }
 
     private void clickChangeLang() {
@@ -131,13 +145,54 @@ public class RootFragmentTest {
 
     private void clickBackButtonToSave() {
         clearDB();
-        onView(withId(R.id.etText)).perform(typeText("Hello"), pressImeActionButton());
+        onView(withId(R.id.etText)).perform(typeText("Hello,"), pressImeActionButton());
         onView(withId(R.id.etText)).perform(typeText(" World"));
         onView(withId(R.id.etText)).perform(ViewActions.pressKey(KeyEvent.KEYCODE_BACK));
+        onView(withId(R.id.btnClearText)).perform(click());
         onData(instanceOf(Translator.class))
                 .inAdapterView(allOf(withId(android.R.id.list), isDisplayed()))
                 .atPosition(1)
                 .check(matches(isDisplayed()));
+    }
+
+    private void clickHistoryItem() {
+        clearDB();
+        onView(withId(R.id.etText)).perform(typeText("Hello, World!"));
+        onView(withId(R.id.btnClearText)).perform(click());
+        onData(instanceOf(Translator.class))
+                .inAdapterView(allOf(withId(android.R.id.list), isDisplayed()))
+                .atPosition(0).perform(click());
+        onView(withId(R.id.tvTranslation)).check(matches(withText("Привет, Мир!")));
+        onView(withId(R.id.btnClearText)).perform(click());
+    }
+
+    private void addItemToFavorites() {
+        clearDB();
+        onView(withId(R.id.etText)).perform(typeText("one"));
+        onView(withId(R.id.btnClearText)).perform(click());
+        onView(withId(R.id.etText)).perform(typeText("two"));
+        onView(withId(R.id.btnClearText)).perform(click());
+        onData(instanceOf(Translator.class))
+                .inAdapterView(allOf(withId(android.R.id.list), isDisplayed()))
+                .atPosition(1).onChildView(withId(R.id.adapterIwFavorites)).perform(click());
+        onView(withId(R.id.pager)).perform(swipeLeft());
+        onView(withId(R.id.pager)).perform(swipeRight());
+    }
+
+    private void deleteFavoritesItem() {
+        clearDB();
+        onView(withId(R.id.etText)).perform(typeText("Hello!"));
+        onView(withId(R.id.btnClearText)).perform(click());
+        onData(instanceOf(Translator.class))
+                .inAdapterView(allOf(withId(android.R.id.list), isDisplayed()))
+                .atPosition(0).onChildView(withId(R.id.adapterIwFavorites)).perform(click());
+        onData(instanceOf(Translator.class))
+                .inAdapterView(allOf(withId(android.R.id.list), isDisplayed()))
+                .atPosition(0).perform(click());
+        onView(withId(R.id.pager)).perform(swipeLeft());
+        onView(withId(R.id.btnClearFavorites)).perform(click());
+        onView(withId(android.R.id.button1)).perform(click());
+        onView(withId(R.id.pager)).perform(swipeRight());
     }
 
     private String getText(final Matcher<View> matcher) {
@@ -162,4 +217,10 @@ public class RootFragmentTest {
         return stringHolder[0];
     }
 
+    private boolean isNetworkAvailable() {
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) mActivityRule.getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return (activeNetworkInfo != null && activeNetworkInfo.isConnected());
+    }
 }
