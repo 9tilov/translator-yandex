@@ -1,30 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-
     <color name="background">#1B2024</color>
     <color name="background_light">#FFFFFF</color>
     <color name="text">#000000</color>
+    <color name="text_white">#FFFFFF</color>
+
     <color name="delete">#FF3B30</color>
 
-    <color name="image_disable">#CCCCCC</color>
+    <color name="frame">#383129</color>
 
-    <color name="disable">#CCCCCC</color>
+    <!--https://colorscheme.ru/#3y21T8A70w0w0-->
 
-    <color name="frame">#6D5B00</color>
-
-    <color name="image">#451D5A</color>
-
-    <color name="separator">#644036</color>
-
-    <color name="tab_selected">#644036</color>
-    <color name="tab_deselected">#C6AF89</color>
-
-    <!--https://colorscheme.ru/#1r31T&#45;&#45;oTE8Lt печочный-->
-    <!--https://colorscheme.ru/#2r41T&#45;&#45;oTE8Lt зеленый-->
-    <!--http://fammeo.ru/images/articles/art1632.jpg белый с красным-->
 </resources>
 
 

@@ -6,6 +6,8 @@
     <string name="dialog_title_delete_history">Удалить историю?</string>
     <string name="dialog_title_delete_favorites">Удалить избранное?</string>
 
+    <string name="favorites">Избранное</string>
+
     <string name="yes">Да</string>
     <string name="cancel">Отмена</string>
 

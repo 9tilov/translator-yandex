@@ -6,6 +6,8 @@
     <string name="dialog_title_delete_history">Delete history?</string>
     <string name="dialog_title_delete_favorites">Delete favorites?</string>
 
+    <string name="favorites">Favorites</string>
+
     <string name="yes">Yes</string>
     <string name="cancel">Cancel</string>
 

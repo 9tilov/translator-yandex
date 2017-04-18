@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="10"
+        android:layout_weight="15"
         android:background="@color/background">
 
         <TextView
@@ -25,7 +25,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="90"
+        android:layout_weight="85"
         android:orientation="vertical">
 
         <Button

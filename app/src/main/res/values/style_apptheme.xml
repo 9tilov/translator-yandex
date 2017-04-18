@@ -4,7 +4,7 @@
 
     <style name="TextLang">
         <item name="android:textSize">@dimen/text_size_lang</item>
-        <item name="android:textColor">@color/text</item>
+        <item name="android:textColor">@color/text_white</item>
     </style>
 
     <style name="Text">
