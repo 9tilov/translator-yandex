@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableStringBuilder;
@@ -29,6 +31,15 @@ public class MainActivity extends AppCompatActivity {
         pager = (ViewPager) findViewById(R.id.pager);
         final SlidePagerAdapter pagerAdapter = new SlidePagerAdapter(getSupportFragmentManager());
         pager.setAdapter(pagerAdapter);
+
+        PagerTabStrip header = (PagerTabStrip) findViewById(R.id.pager_header);
+
+        final int version = Build.VERSION.SDK_INT;
+        if (version >= 23) {
+            header.setTabIndicatorColor(ContextCompat.getColor(this, R.color.pager_haeder_indicator));
+        } else {
+            header.setTabIndicatorColor(getResources().getColor(R.color.pager_haeder_indicator));
+        }
 
     }
 

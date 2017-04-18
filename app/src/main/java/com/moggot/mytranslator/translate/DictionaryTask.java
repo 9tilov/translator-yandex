@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import com.github.ybq.android.spinkit.style.ThreeBounce;
 import com.moggot.mytranslator.Consts;
 import com.moggot.mytranslator.R;
-import com.moggot.mytranslator.translate.Dictionary;
 import com.moggot.mytranslator.translator.Translator;
 
 /**
@@ -79,6 +77,7 @@ public class DictionaryTask extends AsyncTask<Translator, Void, String> {
             if (result == null || result.isEmpty()) {
                 scrollViewDetails.setVisibility(View.GONE);
                 params.height = LinearLayout.LayoutParams.MATCH_PARENT;
+                ((TextView) translatorFragment.getView().findViewById(R.id.tvTranslation)).setTextSize(parentFragment.getContext().getResources().getDimension(R.dimen.text_size_dictionary));
                 progressBar.setVisibility(View.GONE);
                 return;
             }

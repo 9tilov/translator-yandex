@@ -2,6 +2,9 @@
 <resources>
     <color name="background">#1B2024</color>
     <color name="background_light">#FFFFFF</color>
+
+    <color name="pager_haeder_indicator">#7D8892</color>
+
     <color name="text">#000000</color>
     <color name="text_white">#FFFFFF</color>
 

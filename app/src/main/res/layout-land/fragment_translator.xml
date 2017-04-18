@@ -11,7 +11,7 @@
         android:id="@+id/llFragmentTranslation"
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="85"
+        android:layout_weight="83"
         android:orientation="vertical">
 
         <Button
@@ -39,17 +39,16 @@
             android:layout_height="match_parent"
             android:layout_marginEnd="@dimen/button_size"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
             android:layout_marginRight="@dimen/button_size"
             android:layout_marginStart="5dp"
             android:orientation="vertical"
-            android:weightSum="7">
+            android:weightSum="9">
 
             <ScrollView
                 android:id="@+id/scrollTranslation"
                 android:layout_width="match_parent"
                 android:layout_height="0dip"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:fillViewport="true"
                 android:scrollbars="vertical">
 
@@ -78,7 +77,7 @@
                 android:id="@+id/scrollDetails"
                 android:layout_width="match_parent"
                 android:layout_height="0dip"
-                android:layout_weight="6"
+                android:layout_weight="7"
                 android:fillViewport="true"
                 android:scrollbars="vertical">
 
@@ -131,7 +130,7 @@
         style="@style/Dictionary"
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="15"
+        android:layout_weight="17"
         android:gravity="center"
         android:text="@string/yandex_translator"/>
 </LinearLayout>

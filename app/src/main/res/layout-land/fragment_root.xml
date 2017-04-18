@@ -75,6 +75,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_weight="5"
             android:background="@drawable/border"
             android:orientation="vertical"
@@ -116,14 +117,12 @@
                 android:scrollHorizontally="false" />
         </RelativeLayout>
 
-
         <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/root_frame"
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="6"
             android:background="@color/background_light">
-
         </FrameLayout>
 
     </LinearLayout>

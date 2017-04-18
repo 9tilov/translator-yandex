@@ -45,14 +45,17 @@ public class TranslationDisplay extends Display {
     }
 
     private void displayDetails() {
+        ScrollView scrollViewDetails = (ScrollView) fragment.getView().findViewById(R.id.scrollDetails);
+        scrollViewDetails.setVisibility(View.VISIBLE);
+        ScrollView scrollViewTranslation = ((ScrollView) fragment.getView().findViewById(R.id.scrollTranslation));
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) scrollViewTranslation.getLayoutParams();
+        params.height = 0;
         if (!translator.getDetails().isEmpty())
             ((TextView) fragment.getView().findViewById(R.id.tvDetails)).setText(translator.getDetails());
         else {
-            ScrollView scrollViewDetails = (ScrollView) fragment.getView().findViewById(R.id.scrollDetails);
             scrollViewDetails.setVisibility(View.GONE);
-            ScrollView scrollViewTranslation = ((ScrollView) fragment.getView().findViewById(R.id.scrollTranslation));
-            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) scrollViewTranslation.getLayoutParams();
             params.height = LinearLayout.LayoutParams.MATCH_PARENT;
+            ((TextView) fragment.getView().findViewById(R.id.tvTranslation)).setTextSize(fragment.getContext().getResources().getDimension(R.dimen.text_size_dictionary));
         }
     }
 
