@@ -1,6 +1,7 @@
 package com.moggot.mytranslator.observer;
 
 import android.support.v4.app.Fragment;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -55,7 +56,7 @@ public class TranslationDisplay extends Display {
         else {
             scrollViewDetails.setVisibility(View.GONE);
             params.height = LinearLayout.LayoutParams.MATCH_PARENT;
-            ((TextView) fragment.getView().findViewById(R.id.tvTranslation)).setTextSize(fragment.getContext().getResources().getDimension(R.dimen.text_size_dictionary));
+            ((TextView) fragment.getView().findViewById(R.id.tvTranslation)).setTextSize(TypedValue.COMPLEX_UNIT_SP, fragment.getContext().getResources().getDimension(R.dimen.text_size_dictionary));
         }
     }
 
