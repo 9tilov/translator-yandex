@@ -3,16 +3,10 @@ package com.moggot.mytranslator.translate;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.moggot.mytranslator.Consts;
 import com.moggot.mytranslator.R;
-import com.moggot.mytranslator.translate.Translate;
 import com.moggot.mytranslator.translator.Translator;
 
 /**
