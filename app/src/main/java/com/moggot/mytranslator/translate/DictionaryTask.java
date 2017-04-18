@@ -4,7 +4,10 @@ import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.github.ybq.android.spinkit.style.ThreeBounce;
@@ -66,13 +69,21 @@ public class DictionaryTask extends AsyncTask<Translator, Void, String> {
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
         Log.v(LOG_TAG, "result = " + result);
-        if (result == null) {
-            progressBar.setVisibility(View.GONE);
-            return;
-        }
-        translator.setDetails(result);
         Fragment translatorFragment = parentFragment.getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
         if (translatorFragment != null && translatorFragment.getView() != null) {
+            ScrollView scrollViewDetails = (ScrollView) translatorFragment.getView().findViewById(R.id.scrollDetails);
+            scrollViewDetails.setVisibility(View.VISIBLE);
+            ScrollView scrollViewTranslation = ((ScrollView) translatorFragment.getView().findViewById(R.id.scrollTranslation));
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) scrollViewTranslation.getLayoutParams();
+            params.height = 0;
+            if (result == null || result.isEmpty()) {
+                scrollViewDetails.setVisibility(View.GONE);
+                params.height = LinearLayout.LayoutParams.MATCH_PARENT;
+                progressBar.setVisibility(View.GONE);
+                return;
+            }
+            translator.setDetails(result);
+
             TextView tvDetails = (TextView) translatorFragment.getView().findViewById(R.id.tvDetails);
             tvDetails.setText(result);
         }

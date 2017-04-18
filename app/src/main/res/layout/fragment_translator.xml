@@ -12,9 +12,8 @@
         android:orientation="vertical"
         android:weightSum="20">
 
-        <TextView
-            android:id="@+id/tvTranslation"
-            style="@style/Translation"
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/scrollTranslation"
             android:layout_width="match_parent"
             android:layout_height="0dip"
             android:layout_marginEnd="@dimen/button_size"
@@ -22,17 +21,6 @@
             android:layout_marginRight="@dimen/button_size"
             android:layout_marginStart="5dp"
             android:layout_weight="3"
-            android:gravity="center_vertical" />
-
-        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/scrollCreateAlarmActivity"
-            android:layout_width="match_parent"
-            android:layout_height="0dip"
-            android:layout_marginEnd="@dimen/button_size"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="@dimen/button_size"
-            android:layout_marginStart="5dp"
-            android:layout_weight="14"
             android:fillViewport="true"
             android:scrollbars="vertical">
 
@@ -49,45 +37,70 @@
                     android:visibility="gone"
                     app:SpinKit_Color="@color/text" />
 
-                <FrameLayout
+                <TextView
+                    android:id="@+id/tvTranslation"
+                    style="@style/Translation"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/button_size"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="@dimen/button_size"
+                    android:layout_marginStart="5dp"
+                    android:gravity="center_vertical" />
+            </FrameLayout>
+        </ScrollView>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:weightSum="4">
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/scrollDetails"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_marginEnd="@dimen/button_size"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="@dimen/button_size"
+            android:layout_marginStart="5dp"
+            android:layout_weight="14"
+            android:fillViewport="true"
+            android:scrollbars="vertical">
 
-                        <TextView
-                            android:id="@+id/tvErrorConnection"
-                            style="@style/Text"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dip"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="@string/connection_error"
-                            android:visibility="gone"/>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                        <TextView
-                            android:id="@+id/tvNoInternet"
-                            style="@style/TextSmall"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dip"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="@string/no_internet"
-                            android:visibility="gone"/>
 
-                    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:weightSum="4">
 
                     <TextView
-                        android:id="@+id/tvDetails"
-                        style="@style/Dictionary"
+                        android:id="@+id/tvErrorConnection"
+                        style="@style/Text"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="0dip"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/connection_error"
+                        android:visibility="gone" />
 
-                </FrameLayout>
+                    <TextView
+                        android:id="@+id/tvNoInternet"
+                        style="@style/TextSmall"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dip"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/no_internet"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvDetails"
+                    style="@style/Dictionary"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
             </FrameLayout>
         </ScrollView>
 

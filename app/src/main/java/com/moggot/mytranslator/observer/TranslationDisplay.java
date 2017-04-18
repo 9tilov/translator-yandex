@@ -1,7 +1,10 @@
 package com.moggot.mytranslator.observer;
 
 import android.support.v4.app.Fragment;
+import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.moggot.mytranslator.R;
@@ -42,7 +45,15 @@ public class TranslationDisplay extends Display {
     }
 
     private void displayDetails() {
-        ((TextView) fragment.getView().findViewById(R.id.tvDetails)).setText(translator.getDetails());
+        if (!translator.getDetails().isEmpty())
+            ((TextView) fragment.getView().findViewById(R.id.tvDetails)).setText(translator.getDetails());
+        else {
+            ScrollView scrollViewDetails = (ScrollView) fragment.getView().findViewById(R.id.scrollDetails);
+            scrollViewDetails.setVisibility(View.GONE);
+            ScrollView scrollViewTranslation = ((ScrollView) fragment.getView().findViewById(R.id.scrollTranslation));
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) scrollViewTranslation.getLayoutParams();
+            params.height = LinearLayout.LayoutParams.MATCH_PARENT;
+        }
     }
 
 }
