@@ -161,7 +161,6 @@ public class Consts {
     public static final String SHARED_PREF_NAME = "my_shared_pref";
 
     public static final String EXTRA_LANG = "extra_lang";
-    public static final String EXTRA_STATE = "extra_state";
     public static final String EXTRA_TEXT = "extra_text";
 
     public static final String TAG_FRAGMENT_TRANSLATOR = "tag_fragment_translator";

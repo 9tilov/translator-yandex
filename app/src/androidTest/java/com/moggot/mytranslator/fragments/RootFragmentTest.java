@@ -1,8 +1,12 @@
 package com.moggot.mytranslator.fragments;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.action.ViewActions;
@@ -36,8 +40,10 @@ import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVi
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.not;
 
 /**
  * Created by toor on 16.04.17.
@@ -107,17 +113,24 @@ public class RootFragmentTest {
     }
 
     private void checkTranslation() {
+        rotateScreen();
         onView(withId(R.id.tvInputLang)).perform(click());
         onData(anything()).inAdapterView(withId(R.id.lvLanguages)).atPosition(0).perform(click());
         onView(withId(R.id.tvOutputLang)).perform(click());
         onData(anything()).inAdapterView(withId(R.id.lvLanguages)).atPosition(1).perform(click());
         onView(withId(R.id.etText)).perform(typeText("time"));
+        onView(withId(R.id.btnClearText)).check(matches(isDisplayed()));
+        onView(withId(R.id.btnAddFavorites)).check(matches(isDisplayed()));
+        onView(withId(R.id.btnCopyTranslation)).check(matches(isDisplayed()));
+        onView(withId(R.id.tvYandexTranslatorLink)).check(matches(isDisplayed()));
         onView(withId(R.id.rlFragmentTranslation)).check(matches(isDisplayed()));
         onView(withId(R.id.tvTranslation)).check(matches(withText("время")));
+        rotateScreen();
+        onView(withId(R.id.etText)).perform(clearText());
+        onView(withId(R.id.btnClearText)).check(matches(not(isDisplayed())));
     }
 
     private void clickClearText() {
-        onView(withId(R.id.etText)).perform(clearText());
         onView(withId(R.id.btnClearText)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
         onView(withId(R.id.etText)).perform(typeText("Hello, World!"));
         onView(withId(R.id.btnClearText)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
@@ -170,12 +183,15 @@ public class RootFragmentTest {
         clearDB();
         onView(withId(R.id.etText)).perform(typeText("one"));
         onView(withId(R.id.btnClearText)).perform(click());
+        rotateScreen();
         onView(withId(R.id.etText)).perform(typeText("two"));
+        onView(withId(R.id.etText)).perform(ViewActions.pressKey(KeyEvent.KEYCODE_BACK));
         onView(withId(R.id.btnClearText)).perform(click());
         onData(instanceOf(Translator.class))
                 .inAdapterView(allOf(withId(android.R.id.list), isDisplayed()))
                 .atPosition(1).onChildView(withId(R.id.adapterIwFavorites)).perform(click());
         onView(withId(R.id.pager)).perform(swipeLeft());
+        rotateScreen();
         onView(withId(R.id.pager)).perform(swipeRight());
     }
 
@@ -192,6 +208,7 @@ public class RootFragmentTest {
         onView(withId(R.id.pager)).perform(swipeLeft());
         onView(withId(R.id.btnClearFavorites)).perform(click());
         onView(withId(android.R.id.button1)).perform(click());
+        rotateScreen();
         onView(withId(R.id.pager)).perform(swipeRight());
     }
 
@@ -222,5 +239,15 @@ public class RootFragmentTest {
         ConnectivityManager connectivityManager = (ConnectivityManager) mActivityRule.getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return (activeNetworkInfo != null && activeNetworkInfo.isConnected());
+    }
+
+    private void rotateScreen() {
+        Context context = InstrumentationRegistry.getTargetContext();
+        int orientation = context.getResources().getConfiguration().orientation;
+
+        Activity activity = mActivityRule.getActivity();
+        activity.setRequestedOrientation(
+                (orientation == Configuration.ORIENTATION_PORTRAIT) ?
+                        ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE : ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 }
