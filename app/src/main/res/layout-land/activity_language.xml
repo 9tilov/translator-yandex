@@ -16,7 +16,7 @@
             android:layout_height="@dimen/button_size"
             android:onClick="onClickBack"
             android:layout_gravity="center"
-            android:background="@drawable/ic_close_black_24dp" />
+            android:background="@drawable/ic_close_24dp" />
 
     </LinearLayout>
 

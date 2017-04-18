@@ -2,8 +2,18 @@
 <!-- Generated with http://android-holo-colors.com -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Text">
+    <style name="TextLang">
         <item name="android:textSize">@dimen/text_size_lang</item>
+        <item name="android:textColor">@color/text</item>
+    </style>
+
+    <style name="Text">
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textColor">@color/text</item>
+    </style>
+
+    <style name="TextSmall">
+        <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:textColor">@color/text</item>
     </style>
 
@@ -14,14 +24,12 @@
 
     <style name="Dictionary">
         <item name="android:textSize">@dimen/text_size_dictionary</item>
-    </style>
-
-    <style name="Error">
-        <item name="android:textSize">@dimen/text_size_error</item>
+        <item name="android:textColor">@color/text</item>
     </style>
 
     <style name="TextHistory">
         <item name="android:textSize">@dimen/text_size_history</item>
         <item name="android:textColor">@color/text</item>
     </style>
+
 </resources>

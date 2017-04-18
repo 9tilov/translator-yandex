@@ -11,7 +11,7 @@
         android:id="@+id/btnClearHistory"
         android:layout_width="@dimen/button_size"
         android:layout_height="@dimen/button_size"
-        android:background="@drawable/ic_delete_forever_black_24px"
+        android:background="@drawable/ic_delete_forever_24px"
         android:onClick="onClickClearHistory"
         android:layout_gravity="end"/>
 
@@ -23,6 +23,7 @@
 
     <TextView
         android:id="@id/android:empty"
+        style="@style/TextSmall"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"

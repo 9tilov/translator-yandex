@@ -10,7 +10,7 @@
 
         <LinearLayout
             android:id="@+id/adapterRlDelete"
-            android:layout_width="@dimen/swipe_icon_width"
+            android:layout_width="@dimen/history_listitem_height"
             android:layout_height="match_parent"
             android:background="@color/delete">
 
@@ -49,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
-                    android:background="@drawable/ic_bookmark_border_black_24px" />
+                    android:background="@drawable/ic_bookmark_border_24px" />
             </RelativeLayout>
 
             <TextView
@@ -98,7 +98,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/adapterTvOutputLang"
                 android:layout_toStartOf="@+id/adapterTvOutputLang"
-                android:background="@drawable/ic_keyboard_arrow_right_black_24px" />
+                android:background="@drawable/ic_keyboard_arrow_right_24px" />
 
             <TextView
                 android:id="@+id/adapterTvOutputLang"

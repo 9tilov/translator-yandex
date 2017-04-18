@@ -42,7 +42,7 @@ public class AdapterHistoryDisplay extends Display {
         if (translator.getIsFavorites())
             ((ImageView) view.findViewById(R.id.adapterIwFavorites)).setBackgroundResource(R.drawable.ic_bookmark_24px);
         else
-            ((ImageView) view.findViewById(R.id.adapterIwFavorites)).setBackgroundResource(R.drawable.ic_bookmark_border_black_24px);
+            ((ImageView) view.findViewById(R.id.adapterIwFavorites)).setBackgroundResource(R.drawable.ic_bookmark_border_24px);
     }
 
     private void displayInputLang() {

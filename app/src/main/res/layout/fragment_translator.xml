@@ -17,9 +17,9 @@
             style="@style/Translation"
             android:layout_width="match_parent"
             android:layout_height="0dip"
-            android:layout_marginEnd="@dimen/image_size"
+            android:layout_marginEnd="@dimen/button_size"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="@dimen/image_size"
+            android:layout_marginRight="@dimen/button_size"
             android:layout_marginStart="5dp"
             android:layout_weight="3"
             android:gravity="center_vertical" />
@@ -28,9 +28,9 @@
             android:id="@+id/scrollCreateAlarmActivity"
             android:layout_width="match_parent"
             android:layout_height="0dip"
-            android:layout_marginEnd="@dimen/image_size"
+            android:layout_marginEnd="@dimen/button_size"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="@dimen/image_size"
+            android:layout_marginRight="@dimen/button_size"
             android:layout_marginStart="5dp"
             android:layout_weight="14"
             android:fillViewport="true"
@@ -51,35 +51,30 @@
 
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:weightSum="5">
+                        android:weightSum="4">
 
                         <TextView
                             android:id="@+id/tvErrorConnection"
-                            style="@style/Error"
+                            style="@style/Text"
                             android:layout_width="match_parent"
                             android:layout_height="0dip"
-                            android:layout_weight="2"
+                            android:layout_weight="1"
                             android:gravity="center"
                             android:text="@string/connection_error"
                             android:visibility="gone"/>
 
-                        <FrameLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dip"
-                            android:layout_weight="1" />
-
                         <TextView
                             android:id="@+id/tvNoInternet"
-                            style="@style/Dictionary"
+                            style="@style/TextSmall"
                             android:layout_width="match_parent"
                             android:layout_height="0dip"
-                            android:layout_weight="2"
+                            android:layout_weight="1"
                             android:gravity="center"
                             android:text="@string/no_internet"
                             android:visibility="gone"/>
@@ -109,22 +104,22 @@
 
     <Button
         android:id="@+id/btnAddFavorites"
-        android:layout_width="@dimen/image_size"
-        android:layout_height="@dimen/image_size"
+        android:layout_width="@dimen/button_size"
+        android:layout_height="@dimen/button_size"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:background="@drawable/ic_bookmark_border_black_24px"
+        android:background="@drawable/ic_bookmark_border_24px"
         android:onClick="onClickAddFavorites" />
 
     <Button
         android:id="@+id/btnCopyTranslation"
-        android:layout_width="@dimen/image_size"
-        android:layout_height="@dimen/image_size"
+        android:layout_width="@dimen/button_size"
+        android:layout_height="@dimen/button_size"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/btnAddFavorites"
         android:layout_marginTop="20dp"
-        android:background="@drawable/ic_content_copy_black_24px" />
+        android:background="@drawable/ic_content_copy_24px" />
 
 </RelativeLayout>

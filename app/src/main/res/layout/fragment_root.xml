@@ -9,14 +9,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="8"
+        android:layout_weight="10"
         android:background="@color/background"
         android:orientation="horizontal"
         android:weightSum="11">
 
         <TextView
             android:id="@+id/tvInputLang"
-            style="@style/Text"
+            style="@style/TextLang"
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="5"
@@ -29,7 +29,8 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingStart="10dp"
-            android:scrollHorizontally="true" />
+            android:scrollHorizontally="true"
+            android:text="English"/>
 
         <Button
             android:id="@+id/btnChangeLang"
@@ -37,12 +38,12 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_gravity="center"
-            android:background="@drawable/ic_swap_horiz_black_24px"
+            android:background="@drawable/ic_swap_horiz_24px"
             android:onClick="onClickChangeLang" />
 
         <TextView
             android:id="@+id/tvOutputLang"
-            style="@style/Text"
+            style="@style/TextLang"
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="5"
@@ -55,7 +56,8 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingStart="10dp"
-            android:scrollHorizontally="true" />
+            android:scrollHorizontally="true"
+            android:text="Russian"/>
 
     </LinearLayout>
 
@@ -81,7 +83,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
-            android:background="@drawable/ic_clear_black_24px"
+            android:background="@drawable/ic_clear_24px"
             android:onClick="onClickClear" />
 
 
@@ -111,7 +113,7 @@
         android:id="@+id/root_frame"
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="72"
+        android:layout_weight="70"
         android:background="@color/background_light">
 
     </FrameLayout>

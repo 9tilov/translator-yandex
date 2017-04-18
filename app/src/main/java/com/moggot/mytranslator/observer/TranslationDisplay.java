@@ -38,7 +38,7 @@ public class TranslationDisplay extends Display {
         if (translator.getIsFavorites())
             ((Button) fragment.getView().findViewById(R.id.btnAddFavorites)).setBackgroundResource(R.drawable.ic_bookmark_24px);
         else
-            ((Button) fragment.getView().findViewById(R.id.btnAddFavorites)).setBackgroundResource(R.drawable.ic_bookmark_border_black_24px);
+            ((Button) fragment.getView().findViewById(R.id.btnAddFavorites)).setBackgroundResource(R.drawable.ic_bookmark_border_24px);
     }
 
     private void displayDetails() {

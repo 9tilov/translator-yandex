@@ -1,0 +1,17 @@
+<resources>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="twodp">2dp</dimen>
+
+    <dimen name="button_size">45dp</dimen>
+    <dimen name="text_size_lang">45sp</dimen>
+    <dimen name="text_size">35sp</dimen>
+    <dimen name="text_size_small">25sp</dimen>
+    <dimen name="text_size_translation">40sp</dimen>
+    <dimen name="text_size_dictionary">25sp</dimen>
+    <dimen name="text_size_history">25sp</dimen>
+
+    <dimen name="history_listitem_height">80dp</dimen>
+    <dimen name="edittext_border_width">2dp</dimen>
+
+</resources>

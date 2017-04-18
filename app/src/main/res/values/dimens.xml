@@ -3,17 +3,15 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="twodp">2dp</dimen>
 
-    <dimen name="swipe_icon_width">70dp</dimen>
     <dimen name="button_size">30dp</dimen>
     <dimen name="text_size_lang">20sp</dimen>
+    <dimen name="text_size">20sp</dimen>
+    <dimen name="text_size_small">15sp</dimen>
     <dimen name="text_size_translation">25sp</dimen>
     <dimen name="text_size_dictionary">15sp</dimen>
-    <dimen name="text_size_error">20sp</dimen>
     <dimen name="text_size_history">15sp</dimen>
 
-    <dimen name="image_size">30dp</dimen>
-
-    <dimen name="history_listitem_height">60dp</dimen>
+    <dimen name="history_listitem_height">65dp</dimen>
     <dimen name="edittext_border_width">2dp</dimen>
 
 </resources>

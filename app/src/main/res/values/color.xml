@@ -4,21 +4,27 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="background">#C6AF89</color>
-    <color name="background_light">#EFE2CB</color>
-    <color name="text">#644036</color>
+    <color name="background">#1B2024</color>
+    <color name="background_light">#FFFFFF</color>
+    <color name="text">#000000</color>
     <color name="delete">#FF3B30</color>
 
     <color name="image_disable">#CCCCCC</color>
 
     <color name="disable">#CCCCCC</color>
 
-    <color name="frame">#644036</color>
+    <color name="frame">#6D5B00</color>
 
-    <color name="image">#644036</color>
+    <color name="image">#451D5A</color>
 
     <color name="separator">#644036</color>
 
     <color name="tab_selected">#644036</color>
     <color name="tab_deselected">#C6AF89</color>
+
+    <!--https://colorscheme.ru/#1r31T&#45;&#45;oTE8Lt печочный-->
+    <!--https://colorscheme.ru/#2r41T&#45;&#45;oTE8Lt зеленый-->
+    <!--http://fammeo.ru/images/articles/art1632.jpg белый с красным-->
 </resources>
+
+

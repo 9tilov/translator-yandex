@@ -65,15 +65,15 @@ public class MainActivity extends AppCompatActivity {
             Drawable drawable;
             if (position == 0) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    drawable = getResources().getDrawable(R.drawable.ic_translate_selected_24px, getTheme());
+                    drawable = getResources().getDrawable(R.drawable.ic_translate_tab_24px, getTheme());
                 } else {
-                    drawable = getResources().getDrawable(R.drawable.ic_translate_selected_24px);
+                    drawable = getResources().getDrawable(R.drawable.ic_translate_tab_24px);
                 }
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    drawable = getResources().getDrawable(R.drawable.ic_bookmark_24px, getTheme());
+                    drawable = getResources().getDrawable(R.drawable.ic_bookmark_tab_24px, getTheme());
                 } else {
-                    drawable = getResources().getDrawable(R.drawable.ic_bookmark_24px);
+                    drawable = getResources().getDrawable(R.drawable.ic_bookmark_tab_24px);
                 }
             }
             drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
