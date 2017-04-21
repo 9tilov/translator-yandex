@@ -14,9 +14,11 @@
         <Button
             android:layout_width="@dimen/button_size"
             android:layout_height="@dimen/button_size"
-            android:onClick="onClickBack"
             android:layout_gravity="center"
-            android:background="@drawable/ic_close_24dp" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/ic_close_24dp"
+            android:onClick="onClickBack" />
 
     </LinearLayout>
 
@@ -24,8 +26,8 @@
         android:id="@+id/lvLanguages"
         android:layout_width="match_parent"
         android:layout_height="0dip"
+        android:layout_weight="9"
         android:choiceMode="singleChoice"
-        android:descendantFocusability="beforeDescendants"
-        android:layout_weight="9" />
+        android:descendantFocusability="beforeDescendants" />
 
 </LinearLayout>

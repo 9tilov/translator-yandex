@@ -33,8 +33,7 @@
             android:layout_width="@dimen/button_size"
             android:layout_height="@dimen/button_size"
             android:layout_gravity="end"
-            android:background="@drawable/ic_delete_forever_24px"
-            android:onClick="onClickClearFavorites" />
+            android:background="@drawable/ic_delete_forever_24px" />
 
         <ListView
             android:id="@id/android:list"

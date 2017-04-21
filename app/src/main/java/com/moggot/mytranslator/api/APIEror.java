@@ -1,11 +1,16 @@
 package com.moggot.mytranslator.api;
 
 /**
- * Created by toor on 21.04.17.
+ * Класс обработки кодов ответов API Yandex Translator
  */
 
 public class APIEror {
 
+    /**
+     * Обработка ошибок
+     *
+     * @param errorCode - код ошибки
+     */
     public static void parseError(int errorCode) throws Exception {
         if (errorCode != 200) {
             switch (errorCode) {

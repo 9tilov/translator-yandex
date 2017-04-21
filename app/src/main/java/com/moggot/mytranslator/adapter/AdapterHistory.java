@@ -26,26 +26,50 @@ import com.moggot.mytranslator.translator.Translator;
 import java.util.List;
 
 /**
- * Created by toor on 29.03.17.
+ * Класс адаптера списка слов в Истории перевода
  */
 
 public class AdapterHistory extends BaseSwipeAdapter {
 
-    private List<Translator> records;
-    private DataBase db;
-    private Fragment fragment;
-
     private static final String LOG_TAG = "AdapterHistory";
 
+    /**
+     * Список слов в Истории перевода
+     */
+    private List<Translator> records;
+
+    /**
+     * База данных
+     */
+    private DataBase db;
+
+    /**
+     * ListFragment с Историей переводов
+     */
+    private Fragment fragment;
+
+    /**
+     * Конструктор
+     *
+     * @param fragment - фрагмент со списком
+     * @param records  - записи в истории
+     */
     public AdapterHistory(Fragment fragment, List<Translator> records) {
         this.records = records;
-        this.fragment = fragment;
         this.db = new DataBase(fragment.getContext());
+        this.fragment = fragment;
     }
 
+    /**
+     * Обновления адаптера при добавлении и удалении записи
+     * Так же обновляется видимость кнопки "Удалить историю перевода" после того,
+     * как вручную удаляется последняя запись
+     */
     private void update() {
         this.records = db.getAllRecords();
 
+        if (fragment.getView() == null)
+            return;
         if (records.isEmpty())
             ((Button) fragment.getView().findViewById(R.id.btnClearHistory)).setVisibility(View.GONE);
         else
@@ -54,16 +78,38 @@ public class AdapterHistory extends BaseSwipeAdapter {
         notifyDataSetChanged();
     }
 
+    /**
+     * Получение id кнопки удаления при свайпе по позиции элемента
+     *
+     * @param position - позиция view в списке
+     * @return id кнопки удаления
+     */
     @Override
     public int getSwipeLayoutResourceId(int position) {
         return R.id.swipe;
     }
 
+    /**
+     * Создание нового элемента view из xml
+     * Здесь нельзя объявлять никакие listeners.
+     * Все listeners объявляются в методе fillValues
+     *
+     * @param position - позиция view в списке
+     * @param parent   - родительский элемент
+     * @return новый элемент view
+     */
     @Override
     public View generateView(final int position, ViewGroup parent) {
         return LayoutInflater.from(fragment.getContext()).inflate(R.layout.history_item, null);
     }
 
+    /**
+     * Создание элементов списка и listeners
+     * Объявление listeners, отображение всех элементов
+     *
+     * @param position    - позиция view в списке
+     * @param convertView - уже существующий элемент списка
+     */
     @Override
     public void fillValues(final int position, final View convertView) {
         SwipeLayout swipeLayout = (SwipeLayout) convertView.findViewById(getSwipeLayoutResourceId(position));
@@ -121,21 +167,44 @@ public class AdapterHistory extends BaseSwipeAdapter {
         adapterDisplay.display();
     }
 
+    /**
+     * Получение количества элементов в списке
+     *
+     * @return количество элементов в списке
+     */
     @Override
     public int getCount() {
         return records.size();
     }
 
+    /**
+     * Получение элемента по позиции
+     *
+     * @param position - позиция элемента в списке
+     * @return элемент по позиции
+     */
     @Override
     public Object getItem(int position) {
         return records.get(position);
     }
 
+    /**
+     * Получение id элемента по позиции
+     *
+     * @param position - позиция элемента в списке
+     * @return id элемента
+     */
     @Override
     public long getItemId(int position) {
         return position;
     }
 
+    /**
+     * Получение объекта Translator по позиции
+     *
+     * @param position - позиция элемента в списке
+     * @return элемент по позиции
+     */
     private Translator getTranslator(int position) {
         return ((Translator) getItem(position));
     }

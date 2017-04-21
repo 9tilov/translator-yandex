@@ -2,6 +2,10 @@ package com.moggot.mytranslator.animation;
 
 import android.view.animation.Interpolator;
 
+/**
+ * Класс физики анимации затухания
+ */
+
 //
 // Interpolator to be used with Android view AddAlarmAnimationBounce class to achieve the spring-bounce effect.
 //
@@ -20,7 +24,7 @@ import android.view.animation.Interpolator;
 //
 //    myAnim.setInterpolator(interpolator);
 //    Button button = (Button)findViewById(R.id.button_to_animate);
-//    button.startAnimation(myAnim);
+//    button.initAnimationBehavior(myAnim);
 //
 // anim/bounce.xml file:
 // --------------------
@@ -40,37 +44,39 @@ import android.view.animation.Interpolator;
 //
 //
 public class MyBounceInterpolator implements Interpolator {
-    /**
-     * The amplitude of the bounces. The higher value (10, for example) produces more pronounced bounces.
-     * The lower values (0.1, for example) produce less noticeable wobbles.
-     */
-    double mAmplitude = 1;
 
     /**
-     * The frequency of the bounces. The higher value produces more wobbles during the animation time period.
+     * Амплитуда колебаний
      */
-    double mFrequency = 10;
+    private double mAmplitude = 1;
 
     /**
-     * Initialize a new interpolator.
+     * Частота колебаний
+     */
+    private double mFrequency = 10;
+
+    /**
+     * Инициализация нового интерполятора
      *
-     * @param      amplitude   The amplitude of the bounces. The higher value produces more pronounced bounces. The lower values (0.1, for example) produce less noticeable wobbles.
-     * @param      frequency   The frequency of the bounces. The higher value produces more wobbles during the animation time period.
-     *
+     * @param amplitude - амплитуда интерполятора
+     * @param frequency - частота интерполятора
      */
     public MyBounceInterpolator(double amplitude, double frequency) {
         mAmplitude = amplitude;
         mFrequency = frequency;
     }
 
+    /**
+     * Получение интерполятора
+     *
+     * @param time - время анимации
+     * @return интерполятора
+     */
     public float getInterpolation(float time) {
-        double amplitude = mAmplitude;
-        if (amplitude == 0) { amplitude = 0.05; }
-
         // The interpolation curve equation:
         //    -e^(-time / amplitude) * cos(frequency * time) + 1
         //
         // View the graph live: https://www.desmos.com/calculator/6gbvrm5i0s
-        return (float) (-1 * Math.pow(Math.E, -time/ mAmplitude) * Math.cos(mFrequency * time) + 1);
+        return (float) (-1 * Math.pow(Math.E, -time / mAmplitude) * Math.cos(mFrequency * time) + 1);
     }
 }

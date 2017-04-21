@@ -8,14 +8,27 @@ import android.view.animation.AnimationUtils;
 import com.moggot.mytranslator.R;
 
 /**
- * Created by toor on 15.03.17.
+ * Абстрактный класс анимации
  */
 
 public abstract class AnimationBounce {
 
+    /**
+     * Контекст Activity
+     */
     protected Context context;
+
+    /**
+     * Анимация
+     */
     protected final Animation animation;
 
+    /**
+     * Конструктор
+     * Здесь инициализируется общая анимация
+     *
+     * @param context - констекст Activity
+     */
     public AnimationBounce(Context context) {
         this.context = context;
         this.animation = AnimationUtils.loadAnimation(context, R.anim.bounce);
@@ -27,15 +40,29 @@ public abstract class AnimationBounce {
         animation.setInterpolator(interpolator);
     }
 
-    private void initButton(View view) {
+    /**
+     * Инициализация view
+     *
+     * @param view - view, которую нужно анимировать
+     */
+    private void initView(View view) {
         view.startAnimation(animation);
     }
 
-    protected abstract void startAnimation(View view);
+    /**
+     * Инициализация поведения после анимации
+     *
+     * @param view - view, которую необходимо анимировать
+     */
+    protected abstract void initAnimationBehavior(View view);
 
+    /**
+     * Запуск анимации
+     *
+     * @param view - view, которую необходимо анимировать
+     */
     public final void animate(final View view) {
-        initButton(view);
-        startAnimation(view);
+        initView(view);
+        initAnimationBehavior(view);
     }
-
 }

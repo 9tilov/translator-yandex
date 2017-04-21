@@ -24,7 +24,7 @@ import com.moggot.mytranslator.observer.TranslatorData;
 import com.moggot.mytranslator.translator.Translator;
 
 /**
- * Created by toor on 12.04.17.
+ * Класс фрагмента списка избранных слов перевода
  */
 
 public class FavoritesListFragment extends ListFragment {

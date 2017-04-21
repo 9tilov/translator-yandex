@@ -20,50 +20,98 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by toor on 24.03.17.
+ * Класс адаптера списка с поддерживаемыми языками
  */
 
 public class AdapterLanguage extends BaseAdapter {
 
     private static final String LOG_TAG = "AdapterLanguage";
 
+    /**
+     * Контекст Activity
+     */
     private Context context;
-    private LayoutInflater inflater;
+
+    /**
+     * Список поддерживаемых языков
+     */
     private List<String> languages;
+
+    /**
+     * Тип языка
+     * #input - язык с которго преводим
+     * #output - языка на который переводим
+     */
     private Consts.LANG_TYPE type;
 
+    /**
+     * Конструктор
+     *
+     * @param context - констекст Activity
+     * @param type    - тип языка
+     */
     public AdapterLanguage(Context context, Consts.LANG_TYPE type) {
         this.context = context;
-        this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.languages = new ArrayList<>();
         this.type = type;
 
         fillLangList();
     }
 
-    // кол-во элементов
+    /**
+     * Получение количества элементов в списке
+     *
+     * @return количество элементов в списке
+     */
     @Override
     public int getCount() {
         return languages.size();
     }
 
-    // элемент по позиции
+    /**
+     * Получение элемента по позиции
+     *
+     * @param position - позиция элемента в списке
+     * @return элемент по позиции
+     */
     @Override
     public Object getItem(int position) {
         return languages.get(position);
     }
 
-    private String getLang(int position) {
+    /**
+     * Получение языка по позиции
+     *
+     * @param position - позиция элемента в списке
+     * @return элемент по позиции
+     */
+    public String getLang(int position) {
         return ((String) getItem(position));
     }
 
+    /**
+     * Получение id элемента по позиции
+     *
+     * @param position - позиция элемента в списке
+     * @return id элемента
+     */
     @Override
     public long getItemId(int position) {
         return position;
     }
 
+    /**
+     * Создание нового элемента view из xml
+     * Заполняем адаптер в записимости от типа языка
+     *
+     * @param position    - позиция view в списке
+     * @param convertView - уже существующий элемент списка
+     * @param parent      - родительский элемент
+     * @return новый элемент view
+     */
     @Override
     public View getView(final int position, final View convertView, ViewGroup parent) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View view = convertView;
         if (view == null)
@@ -112,16 +160,18 @@ public class AdapterLanguage extends BaseAdapter {
         return view;
     }
 
+    /**
+     * Заполнение списка поддерживаемых языков
+     */
     private void fillLangList() {
 
-        languages.add(context.getString(R.string.en_short));
-        languages.add(context.getString(R.string.ru_short));
-        languages.add(context.getString(R.string.xh_short));
         languages.add(context.getString(R.string.az_short));
-        languages.add(context.getString(R.string.de_short));
         languages.add(context.getString(R.string.sq_short));
+        languages.add(context.getString(R.string.xh_short));
         languages.add(context.getString(R.string.am_short));
+        languages.add(context.getString(R.string.en_short));
         languages.add(context.getString(R.string.ar_short));
+        languages.add(context.getString(R.string.hy_short));
         languages.add(context.getString(R.string.af_short));
         languages.add(context.getString(R.string.eu_short));
         languages.add(context.getString(R.string.ba_short));
@@ -153,6 +203,7 @@ public class AdapterLanguage extends BaseAdapter {
         languages.add(context.getString(R.string.ky_short));
         languages.add(context.getString(R.string.zh_short));
         languages.add(context.getString(R.string.ko_short));
+        languages.add(context.getString(R.string.xh_short));
         languages.add(context.getString(R.string.la_short));
         languages.add(context.getString(R.string.lv_short));
         languages.add(context.getString(R.string.lt_short));
@@ -165,6 +216,7 @@ public class AdapterLanguage extends BaseAdapter {
         languages.add(context.getString(R.string.mi_short));
         languages.add(context.getString(R.string.mr_short));
         languages.add(context.getString(R.string.mhr_short));
+        languages.add(context.getString(R.string.mn_short));
         languages.add(context.getString(R.string.de_short));
         languages.add(context.getString(R.string.ne_short));
         languages.add(context.getString(R.string.no_short));
@@ -174,6 +226,7 @@ public class AdapterLanguage extends BaseAdapter {
         languages.add(context.getString(R.string.pl_short));
         languages.add(context.getString(R.string.pt_short));
         languages.add(context.getString(R.string.ro_short));
+        languages.add(context.getString(R.string.ru_short));
         languages.add(context.getString(R.string.ceb_short));
         languages.add(context.getString(R.string.sr_short));
         languages.add(context.getString(R.string.si_short));
@@ -193,6 +246,7 @@ public class AdapterLanguage extends BaseAdapter {
         languages.add(context.getString(R.string.uk_short));
         languages.add(context.getString(R.string.ur_short));
         languages.add(context.getString(R.string.fi_short));
+        languages.add(context.getString(R.string.fr_short));
         languages.add(context.getString(R.string.hi_short));
         languages.add(context.getString(R.string.hr_short));
         languages.add(context.getString(R.string.cs_short));

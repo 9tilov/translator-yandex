@@ -9,17 +9,29 @@ import android.widget.EditText;
 import com.moggot.mytranslator.R;
 
 /**
- * Created by toor on 10.04.17.
+ * Класс анимации кнопки clear (очистка Edittext)
  */
 
 public class ClearButtonAnimationBounce extends AnimationBounce {
 
+    /**
+     * Конструктор
+     * Контекст передается в базовый класс для общей инициализации анимации
+     *
+     * @param context - констекс Activity
+     */
     public ClearButtonAnimationBounce(Context context) {
         super(context);
     }
 
+    /**
+     * Инициализация поведения после анимации
+     * Происходит очистка Edittext
+     *
+     * @param view - view, которую необходимо анимировать
+     */
     @Override
-    protected void startAnimation(final View view) {
+    protected void initAnimationBehavior(final View view) {
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(android.view.animation.Animation arg0) {
@@ -32,7 +44,7 @@ public class ClearButtonAnimationBounce extends AnimationBounce {
 
             @Override
             public void onAnimationEnd(Animation arg0) {
-                ((EditText)((Activity)context).findViewById(R.id.etText)).setText("");
+                ((EditText) ((Activity) context).findViewById(R.id.etText)).setText("");
             }
         });
     }
