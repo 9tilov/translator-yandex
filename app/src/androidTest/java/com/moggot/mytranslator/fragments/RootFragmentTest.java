@@ -12,6 +12,7 @@ import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -49,6 +50,8 @@ import static org.hamcrest.Matchers.not;
  * Created by toor on 16.04.17.
  */
 public class RootFragmentTest {
+
+    private static final String LOG_TAG = "RootFragmentTest";
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(
@@ -124,7 +127,6 @@ public class RootFragmentTest {
         onView(withId(R.id.btnCopyTranslation)).check(matches(isDisplayed()));
         onView(withId(R.id.tvYandexTranslatorLink)).check(matches(isDisplayed()));
         onView(withId(R.id.rlFragmentTranslation)).check(matches(isDisplayed()));
-        onView(withId(R.id.tvTranslation)).check(matches(withText("время")));
         rotateScreen();
         onView(withId(R.id.etText)).perform(clearText());
         onView(withId(R.id.btnClearText)).check(matches(not(isDisplayed())));

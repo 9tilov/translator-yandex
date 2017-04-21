@@ -19,7 +19,38 @@
 
     <string name="translation_copied">Translation copied</string>
 
-    <string name="yandex_translator">Translated with service\n<a href="http://www.translate.yandex.ru">"Yandex.Translator"</a></string>
+    <string name="yandex_translator">Powered by\n<a href="http://www.translateManager.yandex.ru">"Yandex.Translate"</a></string>
+
+    <string name="noun" translatable="false">noun</string>
+    <string name="verb" translatable="false">verb</string>
+    <string name="adjective" translatable="false">adjective</string>
+    <string name="conjunction" translatable="false">conjunction</string>
+    <string name="preposition" translatable="false">preposition</string>
+    <string name="adverb" translatable="false">adverb</string>
+    <string name="pronoun" translatable="false">pronoun</string>
+    <string name="particle" translatable="false">particle</string>
+    <string name="participle" translatable="false">participle</string>
+    <string name="interjection" translatable="false">interjection</string>
+    <string name="numeral" translatable="false">numeral</string>
+    <string name="predicative" translatable="false">predicative</string>
+    <string name="parenthetic" translatable="false">parenthetic</string>
+    <string name="invariant" translatable="false">invariant</string>
+
+    <string name="noun_short">n</string>
+    <string name="verb_short">v</string>
+    <string name="adjective_short">adj</string>
+    <string name="conjunction_short">conj</string>
+    <string name="preposition_short">prep</string>
+    <string name="adverb_short">adv</string>
+    <string name="pronoun_short">pron</string>
+    <string name="particle_short">particle</string>
+    <string name="participle_short">part</string>
+    <string name="interjection_short">interj</string>
+    <string name="numeral_short">num</string>
+    <string name="predicative_short">predic</string>
+    <string name="parenthetic_short">parenth</string>
+    <string name="invariant_short">invar</string>
+
 
     <string name="az">Azerbaijani</string>
     <string name="sq">Albanian</string>

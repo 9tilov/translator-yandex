@@ -1,19 +1,14 @@
 package com.moggot.mytranslator.state;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
-import android.widget.TextView;
 
 import com.moggot.mytranslator.Consts;
 import com.moggot.mytranslator.DataBase;
-import com.moggot.mytranslator.translate.DictionaryTask;
+import com.moggot.mytranslator.translate.TranslateManager;
 import com.moggot.mytranslator.R;
-import com.moggot.mytranslator.translate.TranslationTask;
 import com.moggot.mytranslator.fragments.TranslatorFragment;
+import com.moggot.mytranslator.observer.DetailsDisplay;
 import com.moggot.mytranslator.observer.Display;
 import com.moggot.mytranslator.observer.TranslationDisplay;
 import com.moggot.mytranslator.observer.TranslatorData;
@@ -55,31 +50,16 @@ public class TranslationOn extends State {
         Translator foundRecord = db.findRecord(translator);
 
         if (foundRecord == null) {
-            if (!isNetworkAvailable()) {
-                TextView tvError = (TextView) fragment.getView().findViewById(R.id.tvErrorConnection);
-                tvError.setVisibility(View.VISIBLE);
-                TextView tvNoInternet = (TextView) fragment.getView().findViewById(R.id.tvNoInternet);
-                tvNoInternet.setVisibility(View.VISIBLE);
-                return;
-            }
-
-            TranslationTask translationTask = new TranslationTask(parentFragment);
-            translationTask.execute(translator);
-            DictionaryTask dictionaryTask = new DictionaryTask(parentFragment);
-            dictionaryTask.execute(translator);
+            TranslateManager translateManager = new TranslateManager(parentFragment);
+            translateManager.translate(translator);
         } else {
             translator.setTranslator(foundRecord);
+            TranslatorData translatorData = new TranslatorData();
+            Display translationDisplay = new TranslationDisplay(fragment, translatorData);
+            Display detailsDisplay = new DetailsDisplay(fragment, translatorData);
+            translatorData.setTranslator(translator);
+            translationDisplay.display();
+            detailsDisplay.display();
         }
-
-        TranslatorData translatorData = new TranslatorData();
-        Display display = new TranslationDisplay(fragment, translatorData);
-        translatorData.setTranslator(translator);
-        display.display();
-    }
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) parentFragment.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return (activeNetworkInfo != null && activeNetworkInfo.isConnected());
     }
 }

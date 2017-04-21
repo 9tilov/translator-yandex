@@ -13,7 +13,7 @@ public class TranslatorData implements Observable {
 
     private List<Observer> observers;
 
-    private Translator record;
+    private Translator translator;
 
     public TranslatorData() {
         observers = new LinkedList<>();
@@ -32,12 +32,12 @@ public class TranslatorData implements Observable {
     @Override
     public void notifyObservers() {
         for (Observer observer : observers) {
-            observer.update(record);
+            observer.update(translator);
         }
     }
 
     public void setTranslator(Translator record) {
-        this.record = record;
+        this.translator = record;
         notifyObservers();
     }
 }

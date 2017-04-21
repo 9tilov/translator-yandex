@@ -7,130 +7,125 @@
     android:orientation="vertical"
     android:weightSum="100">
 
-    <RelativeLayout
-        android:id="@+id/llFragmentTranslation"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="83"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/btnAddFavorites"
-            android:layout_width="@dimen/button_size"
-            android:layout_height="@dimen/button_size"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:background="@drawable/ic_bookmark_border_24px"
-            android:onClick="onClickAddFavorites" />
-
-        <Button
-            android:id="@+id/btnCopyTranslation"
-            android:layout_width="@dimen/button_size"
-            android:layout_height="@dimen/button_size"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/btnAddFavorites"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/ic_content_copy_24px" />
+        android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/llError"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/button_size"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="@dimen/button_size"
-            android:layout_marginStart="5dp"
             android:orientation="vertical"
-            android:weightSum="9">
+            android:visibility="gone">
 
-            <ScrollView
-                android:id="@+id/scrollTranslation"
+            <TextView
+                android:id="@+id/tvErrorConnection"
+                style="@style/Text"
                 android:layout_width="match_parent"
-                android:layout_height="0dip"
-                android:layout_weight="2"
-                android:fillViewport="true"
-                android:scrollbars="vertical">
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/connection_error" />
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
-                        android:id="@+id/spin_kit"
-                        style="@style/SpinKitView.ThreeBounce"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:visibility="gone"
-                        app:SpinKit_Color="@color/text" />
-
-                    <TextView
-                        android:id="@+id/tvTranslation"
-                        style="@style/Translation"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
-                </FrameLayout>
-            </ScrollView>
-
-            <ScrollView
-                android:id="@+id/scrollDetails"
+            <TextView
+                android:id="@+id/tvNoInternet"
+                style="@style/TextSmall"
                 android:layout_width="match_parent"
-                android:layout_height="0dip"
-                android:layout_weight="7"
-                android:fillViewport="true"
-                android:scrollbars="vertical">
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:text="@string/no_internet" />
+        </LinearLayout>
 
-                <FrameLayout
+        <RelativeLayout
+            android:id="@+id/rlTranslation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnAddFavorites"
+                android:layout_width="@dimen/button_size"
+                android:layout_height="@dimen/button_size"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/ic_bookmark_border_24px"
+                android:onClick="onClickAddFavorites" />
+
+            <Button
+                android:id="@+id/btnCopyTranslation"
+                android:layout_width="@dimen/button_size"
+                android:layout_height="@dimen/button_size"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/btnAddFavorites"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/ic_content_copy_24px" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/button_size"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="@dimen/button_size"
+                android:layout_marginStart="5dp"
+                android:orientation="vertical"
+                android:weightSum="15">
+
+                <ScrollView
+                    android:id="@+id/scrollTranslation"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="0dip"
+                    android:layout_weight="2"
+                    android:fillViewport="true"
+                    android:scrollbars="vertical">
 
-
-                    <LinearLayout
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:weightSum="4">
+                        android:layout_height="wrap_content">
+
+                        <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+                            android:id="@+id/spin_kit"
+                            style="@style/SpinKitView.ThreeBounce"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:visibility="gone"
+                            app:SpinKit_Color="@color/frame" />
 
                         <TextView
-                            android:id="@+id/tvErrorConnection"
-                            style="@style/Text"
+                            android:id="@+id/tvTranslation"
+                            style="@style/Translation"
                             android:layout_width="match_parent"
-                            android:layout_height="0dip"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="@string/connection_error"
-                            android:visibility="gone" />
+                            android:layout_height="match_parent" />
+                    </FrameLayout>
+                </ScrollView>
 
-                        <TextView
-                            android:id="@+id/tvNoInternet"
-                            style="@style/TextSmall"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dip"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="@string/no_internet"
-                            android:visibility="gone" />
-
-                    </LinearLayout>
+                <ScrollView
+                    android:id="@+id/scrollDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dip"
+                    android:layout_weight="11"
+                    android:fillViewport="true"
+                    android:scrollbars="vertical">
 
                     <TextView
                         android:id="@+id/tvDetails"
                         style="@style/Dictionary"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="wrap_content" />
 
-                </FrameLayout>
-            </ScrollView>
-        </LinearLayout>
-    </RelativeLayout>
+                </ScrollView>
 
-    <TextView
-        android:id="@+id/tvYandexTranslatorLink"
-        style="@style/Dictionary"
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="17"
-        android:gravity="center"
-        android:text="@string/yandex_translator"/>
+                <TextView
+                    android:id="@+id/tvYandexTranslatorLink"
+                    style="@style/Dictionary"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dip"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:text="@string/yandex_translator" />
+            </LinearLayout>
+        </RelativeLayout>
+    </FrameLayout>
 </LinearLayout>

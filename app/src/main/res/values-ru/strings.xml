@@ -12,14 +12,29 @@
     <string name="cancel">Отмена</string>
 
     <string name="connection_error"><b>Ошибка соединения</b></string>
-    <string name="no_internet">Проверьте подключение к Интернету\nи повторите попыткуn</string>
+    <string name="no_internet">Проверьте подключение к Интернету\nи повторите попытку</string>
 
     <string name="empty_history">Нет переводов в истории</string>
     <string name="empty_favorites">Нет переводов в избранном</string>
 
     <string name="translation_copied">Перевод скопирован</string>
 
-    <string name="yandex_translator">Переведено сервисом\n<a href="http://www.translate.yandex.ru">«Яндекс.Переводчик»</a></string>
+    <string name="yandex_translator">Переведено сервисом\n<a href="http://www.translateManager.yandex.ru">«Яндекс.Переводчик»</a></string>
+
+    <string name="noun_short">сущ</string>
+    <string name="verb_short">гл</string>
+    <string name="adjective_short">прил</string>
+    <string name="conjunction_short">союз</string>
+    <string name="preposition_short">предл</string>
+    <string name="adverb_short">нареч</string>
+    <string name="pronoun_short">мест</string>
+    <string name="particle_short">част</string>
+    <string name="participle_short">прич</string>
+    <string name="interjection_short">межд</string>
+    <string name="numeral_short">числ</string>
+    <string name="predicative_short">предик</string>
+    <string name="parenthetic_short">вводн</string>
+    <string name="invariant_short">неизм</string>
 
     <string name="az">Азербайджанский</string>
     <string name="sq">Албанский</string>
