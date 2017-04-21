@@ -12,7 +12,6 @@ import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -60,7 +59,8 @@ public class RootFragmentTest {
     @Test
     public void onViewCreated() throws Exception {
         clearDB();
-        if (!checkInternetConnection())
+        checkWithoutInternet();
+        if (!checkWithoutInternet())
             return;
         clickInputLang();
         clickOutputLang();
@@ -74,12 +74,7 @@ public class RootFragmentTest {
         deleteFavoritesItem();
     }
 
-    private void clearDB() {
-        DataBase db = new DataBase(mActivityRule.getActivity());
-        db.deleteAll();
-    }
-
-    private boolean checkInternetConnection() {
+    private boolean checkWithoutInternet() {
         if (isNetworkAvailable())
             return true;
         else {
@@ -88,7 +83,6 @@ public class RootFragmentTest {
             onView(withId(R.id.tvNoInternet)).check(matches(withText(mActivityRule.getActivity().getString(R.string.no_internet))));
             return false;
         }
-
     }
 
     private void clickChangeLang() {
@@ -234,6 +228,11 @@ public class RootFragmentTest {
             }
         });
         return stringHolder[0];
+    }
+
+    private void clearDB() {
+        DataBase db = new DataBase(mActivityRule.getActivity());
+        db.deleteAll();
     }
 
     private boolean isNetworkAvailable() {
