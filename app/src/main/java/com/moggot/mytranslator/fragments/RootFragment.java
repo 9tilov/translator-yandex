@@ -22,7 +22,6 @@ import com.moggot.mytranslator.LangSharedPreferences;
 import com.moggot.mytranslator.LanguageActivity;
 import com.moggot.mytranslator.MainActivity;
 import com.moggot.mytranslator.R;
-import com.moggot.mytranslator.observer.DetailsDisplay;
 import com.moggot.mytranslator.state.State;
 import com.moggot.mytranslator.state.TranslationOff;
 import com.moggot.mytranslator.state.TranslationOn;
@@ -274,10 +273,8 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
         if (fragment == null)
             return;
         Display translationDisplay = new TranslationDisplay(fragment, translatorData);
-        Display detailsDisplay = new DetailsDisplay(fragment, translatorData);
         translatorData.setTranslator(translator);
         translationDisplay.display();
-        detailsDisplay.display();
         saveOrEditRecord();
     }
 

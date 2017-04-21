@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="background">#eb6100</color>
-    <color name="background_light">#FFFFFF</color>
+    <color name="background_light">#FFF8E7</color>
 
-    <color name="pager_haeder_indicator">#FFFFFF</color>
+    <color name="background_edittext">#FFFFFF</color>
+
+    <color name="pager_header_indicator">#FFFFFF</color>
 
     <color name="text">#212121</color>
     <color name="text_white">#FFFFFF</color>

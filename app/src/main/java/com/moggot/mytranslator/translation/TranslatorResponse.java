@@ -1,9 +1,9 @@
-package com.moggot.mytranslator.translate;
+package com.moggot.mytranslator.translation;
 
 import android.support.v4.app.Fragment;
 
-import com.moggot.mytranslator.APIEror;
-import com.moggot.mytranslator.ApiKeys;
+import com.moggot.mytranslator.api.APIEror;
+import com.moggot.mytranslator.api.ApiKeys;
 import com.moggot.mytranslator.App;
 import com.moggot.mytranslator.Consts;
 import com.moggot.mytranslator.gson.WordTranslator;
@@ -26,7 +26,6 @@ public class TranslatorResponse extends Translation {
     private static final String LOG_TAG = "TranslatorResponse";
 
     private Fragment translatorFragment;
-
 
     public TranslatorResponse(final Fragment parentFragment) {
 

@@ -1,4 +1,4 @@
-package com.moggot.mytranslator.translate;
+package com.moggot.mytranslator.translation;
 
 import com.moggot.mytranslator.translator.Translator;
 

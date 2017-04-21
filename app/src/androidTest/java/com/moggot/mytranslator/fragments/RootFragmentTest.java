@@ -40,7 +40,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVi
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.not;
@@ -116,14 +115,15 @@ public class RootFragmentTest {
         onView(withId(R.id.tvOutputLang)).perform(click());
         onData(anything()).inAdapterView(withId(R.id.lvLanguages)).atPosition(1).perform(click());
         onView(withId(R.id.etText)).perform(typeText("time"));
+        onView(withId(R.id.flFragmentTranslation)).check(matches(isDisplayed()));
         onView(withId(R.id.btnClearText)).check(matches(isDisplayed()));
         onView(withId(R.id.btnAddFavorites)).check(matches(isDisplayed()));
         onView(withId(R.id.btnCopyTranslation)).check(matches(isDisplayed()));
         onView(withId(R.id.tvYandexTranslatorLink)).check(matches(isDisplayed()));
-        onView(withId(R.id.rlFragmentTranslation)).check(matches(isDisplayed()));
         rotateScreen();
         onView(withId(R.id.etText)).perform(clearText());
         onView(withId(R.id.btnClearText)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.llFragmentHistory)).check(matches(isDisplayed()));
     }
 
     private void clickClearText() {

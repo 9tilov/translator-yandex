@@ -1,12 +1,11 @@
-package com.moggot.mytranslator.translate;
+package com.moggot.mytranslator.translation;
 
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
 import com.github.ybq.android.spinkit.style.ThreeBounce;
-import com.moggot.mytranslator.ApiKeys;
+import com.moggot.mytranslator.api.ApiKeys;
 import com.moggot.mytranslator.App;
 import com.moggot.mytranslator.Consts;
 import com.moggot.mytranslator.R;
@@ -17,8 +16,8 @@ import com.moggot.mytranslator.gson.Syn;
 import com.moggot.mytranslator.gson.Tr;
 import com.moggot.mytranslator.gson.Tr_;
 import com.moggot.mytranslator.gson.WordDictionary;
-import com.moggot.mytranslator.observer.DetailsDisplay;
 import com.moggot.mytranslator.observer.Display;
+import com.moggot.mytranslator.observer.TranslationDisplay;
 import com.moggot.mytranslator.observer.TranslatorData;
 import com.moggot.mytranslator.translator.Translator;
 
@@ -70,7 +69,7 @@ public class DictionaryResponse extends Translation {
                         translator.setDetails(result);
 
                         TranslatorData translatorData = new TranslatorData();
-                        Display display = new DetailsDisplay(translatorFragment, translatorData);
+                        Display display = new TranslationDisplay(translatorFragment, translatorData);
                         translatorData.setTranslator(translator);
                         display.display();
                     }

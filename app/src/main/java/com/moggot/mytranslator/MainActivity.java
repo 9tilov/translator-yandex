@@ -36,9 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
         final int version = Build.VERSION.SDK_INT;
         if (version >= 23) {
-            header.setTabIndicatorColor(ContextCompat.getColor(this, R.color.pager_haeder_indicator));
+            header.setTabIndicatorColor(ContextCompat.getColor(this, R.color.pager_header_indicator));
         } else {
-            header.setTabIndicatorColor(getResources().getColor(R.color.pager_haeder_indicator));
+            header.setTabIndicatorColor(getResources().getColor(R.color.pager_header_indicator));
         }
 
     }

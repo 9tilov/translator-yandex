@@ -1,4 +1,4 @@
-package com.moggot.mytranslator;
+package com.moggot.mytranslator.api;
 
 /**
  * Created by toor on 21.04.17.

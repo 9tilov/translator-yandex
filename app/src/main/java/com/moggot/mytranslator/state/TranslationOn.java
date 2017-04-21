@@ -5,10 +5,9 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.moggot.mytranslator.Consts;
 import com.moggot.mytranslator.DataBase;
-import com.moggot.mytranslator.translate.TranslateManager;
+import com.moggot.mytranslator.translation.TranslateManager;
 import com.moggot.mytranslator.R;
 import com.moggot.mytranslator.fragments.TranslatorFragment;
-import com.moggot.mytranslator.observer.DetailsDisplay;
 import com.moggot.mytranslator.observer.Display;
 import com.moggot.mytranslator.observer.TranslationDisplay;
 import com.moggot.mytranslator.observer.TranslatorData;
@@ -56,10 +55,8 @@ public class TranslationOn extends State {
             translator.setTranslator(foundRecord);
             TranslatorData translatorData = new TranslatorData();
             Display translationDisplay = new TranslationDisplay(fragment, translatorData);
-            Display detailsDisplay = new DetailsDisplay(fragment, translatorData);
             translatorData.setTranslator(translator);
             translationDisplay.display();
-            detailsDisplay.display();
         }
     }
 }
