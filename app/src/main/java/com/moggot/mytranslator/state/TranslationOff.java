@@ -12,22 +12,30 @@ import com.moggot.mytranslator.observer.TranslatorData;
 import com.moggot.mytranslator.translator.Translator;
 
 /**
- * Created by toor on 02.04.17.
+ * Класс состояния Off (выключенного переводчика)
  */
-
 public class TranslationOff extends State {
 
     private static final String LOG_TAG = "TranslationOff";
 
-    private Fragment parentFragment;
+    /**
+     * Фрагмент с историей перевода
+     */
+    private Fragment fragment;
 
+    /**
+     * Конструктор
+     *
+     * @param parentFragment - родительский фрагмент
+     */
     public TranslationOff(Fragment parentFragment) {
         super(parentFragment);
-        this.parentFragment = parentFragment;
-        Fragment fragment = parentFragment.getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_HISTORY);
+
+        fragment = parentFragment.getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_HISTORY);
         if (fragment == null) {
             FragmentTransaction ft = parentFragment.getChildFragmentManager().beginTransaction();
-            ft.replace(R.id.root_frame, HistoryListFragment.newInstance(), Consts.TAG_FRAGMENT_HISTORY);
+            fragment = HistoryListFragment.newInstance();
+            ft.replace(R.id.root_frame, fragment, Consts.TAG_FRAGMENT_HISTORY);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             ft.commit();
 
@@ -35,12 +43,14 @@ public class TranslationOff extends State {
         }
     }
 
+    /**
+     * Отображение данных при показе истории переводов, когда транслятор выключен
+     *
+     * @param translator - родительский фрагмент
+     */
     public void show(Translator translator) {
         super.show(translator);
 
-        Fragment fragment = parentFragment.getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_HISTORY);
-        if (fragment == null)
-            return;
         TranslatorData translatorData = new TranslatorData();
         Display display = new HistoryDisplay(fragment, translatorData);
         translatorData.setTranslator(translator);

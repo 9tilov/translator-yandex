@@ -10,7 +10,6 @@ import com.moggot.mytranslator.R;
 /**
  * Абстрактный класс анимации
  */
-
 public abstract class AnimationBounce {
 
     /**

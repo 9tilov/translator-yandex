@@ -2,10 +2,6 @@ package com.moggot.mytranslator.animation;
 
 import android.view.animation.Interpolator;
 
-/**
- * Класс физики анимации затухания
- */
-
 //
 // Interpolator to be used with Android view AddAlarmAnimationBounce class to achieve the spring-bounce effect.
 //
@@ -43,6 +39,10 @@ import android.view.animation.Interpolator;
 //    </set>
 //
 //
+
+/**
+ * Класс физики анимации затухания
+ */
 public class MyBounceInterpolator implements Interpolator {
 
     /**

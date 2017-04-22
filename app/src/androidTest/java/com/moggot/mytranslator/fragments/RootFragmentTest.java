@@ -98,22 +98,22 @@ public class RootFragmentTest {
         onView(withId(R.id.tvInputLang)).perform(click());
         onData(anything()).inAdapterView(withId(R.id.lvLanguages)).atPosition(6).perform(click());
 
-        onView(withId(R.id.tvInputLang)).check(matches(withText(mActivityRule.getActivity().getString(R.string.am))));
+        onView(withId(R.id.tvInputLang)).check(matches(withText(mActivityRule.getActivity().getString(R.string.hy))));
     }
 
     private void clickOutputLang() {
         onView(withId(R.id.tvOutputLang)).perform(click());
         onData(anything()).inAdapterView(withId(R.id.lvLanguages)).atPosition(5).perform(click());
 
-        onView(withId(R.id.tvOutputLang)).check(matches(withText(mActivityRule.getActivity().getString(R.string.sq))));
+        onView(withId(R.id.tvOutputLang)).check(matches(withText(mActivityRule.getActivity().getString(R.string.ar))));
     }
 
     private void checkTranslation() {
         rotateScreen();
         onView(withId(R.id.tvInputLang)).perform(click());
-        onData(anything()).inAdapterView(withId(R.id.lvLanguages)).atPosition(0).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.lvLanguages)).atPosition(4).perform(click());
         onView(withId(R.id.tvOutputLang)).perform(click());
-        onData(anything()).inAdapterView(withId(R.id.lvLanguages)).atPosition(1).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.lvLanguages)).atPosition(61).perform(click());
         onView(withId(R.id.etText)).perform(typeText("time"));
         onView(withId(R.id.flFragmentTranslation)).check(matches(isDisplayed()));
         onView(withId(R.id.btnClearText)).check(matches(isDisplayed()));

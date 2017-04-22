@@ -3,7 +3,6 @@ package com.moggot.mytranslator.api;
 /**
  * Класс обработки кодов ответов API Yandex Translator
  */
-
 public class APIEror {
 
     /**

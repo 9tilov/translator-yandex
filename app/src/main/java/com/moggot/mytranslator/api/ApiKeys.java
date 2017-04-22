@@ -3,7 +3,6 @@ package com.moggot.mytranslator.api;
 /**
  * Класс для хранения API-ключей
  */
-
 public class ApiKeys {
 
     /**

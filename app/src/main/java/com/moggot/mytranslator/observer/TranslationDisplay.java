@@ -11,20 +11,32 @@ import android.widget.TextView;
 import com.moggot.mytranslator.R;
 
 /**
- * Created by toor on 07.04.17.
+ * Класс для отображения данных перевода
  */
-
 public class TranslationDisplay extends Display {
 
     private static final String LOG_TAG = "TranslationDisplay";
+
+    /**
+     * Фрагмент, в котором необходимо отобразить данные
+     */
     private Fragment fragment;
 
+    /**
+     * Конструктор
+     *
+     * @param fragment       - фрагмент, в котором необходимо отобразить данные
+     * @param translatorData - данные транслятора
+     */
     public TranslationDisplay(Fragment fragment, TranslatorData translatorData) {
         super(fragment.getContext());
         this.fragment = fragment;
         translatorData.registerObserver(this);
     }
 
+    /**
+     * Отображение данных
+     */
     @Override
     public void display() {
         if (fragment.getView() == null)
@@ -35,6 +47,9 @@ public class TranslationDisplay extends Display {
 
     }
 
+    /**
+     * Отображение перевода
+     */
     private void dislpayTranslation() {
         (fragment.getView().findViewById(R.id.rlTranslation)).setVisibility(View.VISIBLE);
         (fragment.getView().findViewById(R.id.llError)).setVisibility(View.GONE);
@@ -42,6 +57,9 @@ public class TranslationDisplay extends Display {
         ((TextView) fragment.getView().findViewById(R.id.tvTranslation)).setText(translator.getTranslation());
     }
 
+    /**
+     * Отображение флага Избранное
+     */
     private void displayFavorites() {
         if (translator.getIsFavorites())
             ((Button) fragment.getView().findViewById(R.id.btnAddFavorites)).setBackgroundResource(R.drawable.ic_bookmark_24px);
@@ -49,6 +67,9 @@ public class TranslationDisplay extends Display {
             ((Button) fragment.getView().findViewById(R.id.btnAddFavorites)).setBackgroundResource(R.drawable.ic_bookmark_border_24px);
     }
 
+    /**
+     * Отображение детального перевода
+     */
     private void displayDetails() {
         ScrollView scrollViewDetails = (ScrollView) fragment.getView().findViewById(R.id.scrollDetails);
         ScrollView scrollViewTranslation = ((ScrollView) fragment.getView().findViewById(R.id.scrollTranslation));

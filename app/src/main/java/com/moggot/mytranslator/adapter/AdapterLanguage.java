@@ -22,7 +22,6 @@ import java.util.List;
 /**
  * Класс адаптера списка с поддерживаемыми языками
  */
-
 public class AdapterLanguage extends BaseAdapter {
 
     private static final String LOG_TAG = "AdapterLanguage";

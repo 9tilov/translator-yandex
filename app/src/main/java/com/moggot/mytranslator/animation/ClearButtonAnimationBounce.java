@@ -11,7 +11,6 @@ import com.moggot.mytranslator.R;
 /**
  * Класс анимации кнопки clear (очистка Edittext)
  */
-
 public class ClearButtonAnimationBounce extends AnimationBounce {
 
     /**

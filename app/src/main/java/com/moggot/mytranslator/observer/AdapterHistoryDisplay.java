@@ -8,19 +8,31 @@ import android.widget.TextView;
 import com.moggot.mytranslator.R;
 
 /**
- * Created by toor on 29.03.17.
+ * Класс для отображения данных адаптера истории слов
  */
-
 public class AdapterHistoryDisplay extends Display {
 
+    /**
+     * Родительское view адаптера
+     */
     private View view;
 
+    /**
+     * Конструктор
+     *
+     * @param context        - контекст Activity
+     * @param view           - view адаптера
+     * @param translatorData - данные транслятора
+     */
     public AdapterHistoryDisplay(Context context, View view, TranslatorData translatorData) {
         super(context);
         this.view = view;
         translatorData.registerObserver(this);
     }
 
+    /**
+     * Отображение данных
+     */
     @Override
     public void display() {
         displayText();
@@ -30,14 +42,24 @@ public class AdapterHistoryDisplay extends Display {
         displayOutputLang();
     }
 
+    /**
+     * Отображение текста, который нужно перевести
+     */
     private void displayText() {
         ((TextView) view.findViewById(R.id.adapterTvText)).setText(translator.getText());
     }
 
+    /**
+     * Отображение текста перевода
+     */
     private void displayTranslation() {
         ((TextView) view.findViewById(R.id.adapterTvTranslation)).setText(translator.getTranslation());
     }
 
+    /**
+     * Отображение флага, отвечащего, избранное слово или нет
+     * Флаг всегда активен, так как это список избранных слов
+     */
     private void displayFavoritesFlag() {
         if (translator.getIsFavorites())
             ((ImageView) view.findViewById(R.id.adapterIwFavorites)).setBackgroundResource(R.drawable.ic_bookmark_24px);
@@ -45,10 +67,16 @@ public class AdapterHistoryDisplay extends Display {
             ((ImageView) view.findViewById(R.id.adapterIwFavorites)).setBackgroundResource(R.drawable.ic_bookmark_border_24px);
     }
 
+    /**
+     * Отображение входного языка
+     */
     private void displayInputLang() {
         ((TextView) view.findViewById(R.id.adapterTvInputLang)).setText(translator.getInputLanguage());
     }
 
+    /**
+     * Отображение выходного языка
+     */
     private void displayOutputLang() {
         ((TextView) view.findViewById(R.id.adapterTvOutputLang)).setText(translator.getOutputLanguage());
     }

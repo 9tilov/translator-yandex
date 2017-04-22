@@ -9,7 +9,6 @@ import retrofit2.http.Query;
 /**
  * Интерфейс получения объекта с данными от сервера Yandex Dictionary
  */
-
 public interface YandexDictionaryApi {
 
     /**

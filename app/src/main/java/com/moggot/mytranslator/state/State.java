@@ -8,17 +8,32 @@ import com.moggot.mytranslator.observer.TranslatorData;
 import com.moggot.mytranslator.translator.Translator;
 
 /**
- * Created by toor on 02.04.17.
+ * Абстрактный класс состояния переводчика
+ * Реализовани паттерн "Состояние"
+ * Состояние может быть либо Off, либо On
+ * Off - перевод слова не осуществляется, на главном экране отображается история переводов
+ * On - происходит перевод. Переводчик переходит в состояние On при наборе текста, либо
+ * при загрузке слова из истории/избранного переводов.
  */
+public abstract class State {
 
-public class State {
-
+    /**
+     * Родительский фрагмент
+     */
     protected Fragment parentFragment;
 
+    /**
+     * Конструктор
+     * @param parentFragment - родительский фрагмент
+     */
     public State(Fragment parentFragment) {
         this.parentFragment = parentFragment;
     }
 
+    /**
+     * Отображение данных родительского фрагмента
+     * @param translator - родительский фрагмент
+     */
     void show(Translator translator){
         TranslatorData translatorData = new TranslatorData();
         if (parentFragment != null) {

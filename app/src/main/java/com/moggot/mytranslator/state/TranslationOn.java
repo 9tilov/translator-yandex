@@ -14,36 +14,44 @@ import com.moggot.mytranslator.observer.TranslatorData;
 import com.moggot.mytranslator.translator.Translator;
 
 /**
- * Created by toor on 02.04.17.
+ * Класс состояния On (включенного переводчика)
  */
-
 public class TranslationOn extends State {
 
     private static final String LOG_TAG = "TranslationOn";
 
-    private Fragment parentFragment;
+    /**
+     * Фрагмент с переводом слова
+     */
+    private Fragment fragment;
 
+    /**
+     * Конструктор
+     *
+     * @param parentFragment - родительский фрагмент
+     */
     public TranslationOn(Fragment parentFragment) {
         super(parentFragment);
-        this.parentFragment = parentFragment;
-        Fragment fragment = parentFragment.getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
+
+        fragment = parentFragment.getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
         if (fragment == null) {
             FragmentTransaction ft = parentFragment.getChildFragmentManager().beginTransaction();
-            ft.replace(R.id.root_frame, TranslatorFragment.newInstance(), Consts.TAG_FRAGMENT_TRANSLATOR);
+            fragment = TranslatorFragment.newInstance();
+            ft.replace(R.id.root_frame, fragment, Consts.TAG_FRAGMENT_TRANSLATOR);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             ft.commit();
 
             parentFragment.getChildFragmentManager().executePendingTransactions();
         }
-
     }
 
+    /**
+     * Отображение данных при показе экрана перевода, когда транслятор включен
+     *
+     * @param translator - родительский фрагмент
+     */
     public void show(Translator translator) {
         super.show(translator);
-
-        Fragment fragment = parentFragment.getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
-        if (fragment == null || fragment.getView() == null)
-            return;
 
         DataBase db = new DataBase(parentFragment.getContext());
         Translator foundRecord = db.findRecord(translator);

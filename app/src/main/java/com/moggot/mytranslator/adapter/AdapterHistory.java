@@ -28,7 +28,6 @@ import java.util.List;
 /**
  * Класс адаптера списка слов в Истории перевода
  */
-
 public class AdapterHistory extends BaseSwipeAdapter {
 
     private static final String LOG_TAG = "AdapterHistory";

@@ -19,25 +19,49 @@ import com.moggot.mytranslator.animation.AnimationBounce;
 import com.moggot.mytranslator.animation.EmptyAnimationBounce;
 
 /**
- * Created by toor on 28.03.17.
+ * Класс фрагмента с экраном перевода
  */
-
 public class TranslatorFragment extends Fragment {
 
+    private static final String LOG_TAG = "TranslatorFragment";
+
+    /**
+     * Интерфейс для передачи данных в родительский фрагмент
+     */
     public interface TranslatorEventListener {
+
+        /**
+         * Установка флага favorites для переведенного слова
+         */
         void setFavorites();
     }
 
-    private static final String LOG_TAG = "TranslatorFragment";
+    /**
+     * Listener для передачи данных
+     */
     private TranslatorEventListener translatorEventListener;
 
+    /**
+     * Конструктор
+     */
     public TranslatorFragment() {
     }
 
+    /**
+     * Метод для создания экземпляра фрагмента
+     *
+     * @return текущий фрагмент
+     */
     public static Fragment newInstance() {
         return new TranslatorFragment();
     }
 
+    /**
+     * Вызывается, когда фрагмент связывается с Activity
+     * Получаем родительский фрагмент, данный фрагмент связан с {@link RootFragment} как ребенок-родитель
+     *
+     * @param context - контекст Activity
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -48,14 +72,25 @@ public class TranslatorFragment extends Fragment {
         }
     }
 
+    /**
+     * Загрузка интерфейса фрагмента
+     *
+     * @param inflater           - разметка фрагмента
+     * @param container          - родительский контейнер фрагмента
+     * @param savedInstanceState - Bundle для загрузки состояния фрагмента
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.v(LOG_TAG, "onCreateView");
-
         return inflater.inflate(R.layout.fragment_translator, container, false);
     }
 
+    /**
+     * Вызывается после создания фрагмента
+     *
+     * @param view               - коренвое view фрагмента
+     * @param savedInstanceState - Bundle для загрузки состояния фрагмента
+     */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -84,18 +119,25 @@ public class TranslatorFragment extends Fragment {
             }
         });
 
-        TextView tvTranslatorLicense =(TextView)view.findViewById(R.id.tvYandexTranslatorLink);
+        TextView tvTranslatorLicense = (TextView) view.findViewById(R.id.tvYandexTranslatorLink);
         tvTranslatorLicense.setClickable(true);
         tvTranslatorLicense.setMovementMethod(LinkMovementMethod.getInstance());
 
     }
 
+    /**
+     * Всплывающее сообщение при копировании слова перевода
+     */
     private void translationCopied() {
         Toast toast = Toast.makeText(getContext(),
                 getContext().getString(R.string.translation_copied), Toast.LENGTH_SHORT);
         toast.show();
     }
 
+    /**
+     * Удаляем View фрагмента
+     * Вместе с этим очищаем память под созданный listener
+     */
     public void onDestroyView() {
         super.onDestroyView();
         translatorEventListener = null;

@@ -35,18 +35,20 @@ public class DictionaryResponse extends Translation {
 
     private static final String LOG_TAG = "DictionaryResponse";
 
-    private Fragment parentFragment;
+    private Fragment translatorFragment;
     private ProgressBar progressBar;
 
     public DictionaryResponse(final Fragment parentFragment) {
 
-        if (parentFragment != null && parentFragment.getView() != null) {
+        if (parentFragment != null) {
+            translatorFragment = parentFragment.getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
 
-            this.parentFragment = parentFragment;
-            progressBar = (ProgressBar) parentFragment.getView().findViewById(R.id.spin_kit);
-            ThreeBounce threeBounce = new ThreeBounce();
-            progressBar.setIndeterminateDrawable(threeBounce);
-            progressBar.setVisibility(View.VISIBLE);
+            if (translatorFragment != null && translatorFragment.getView() != null) {
+                progressBar = (ProgressBar) translatorFragment.getView().findViewById(R.id.spin_kit);
+                ThreeBounce threeBounce = new ThreeBounce();
+                progressBar.setIndeterminateDrawable(threeBounce);
+                progressBar.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -62,7 +64,6 @@ public class DictionaryResponse extends Translation {
                 }
 
                 if (response.isSuccessful()) {
-                    Fragment translatorFragment = parentFragment.getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
                     if (translatorFragment != null) {
                         WordDictionary wordDictionary = response.body();
                         String result = parse(wordDictionary);
@@ -95,34 +96,34 @@ public class DictionaryResponse extends Translation {
         strResult.append("]\n");
         for (Def definition : definitions) {
             String pos = definition.getPos();
-            if (pos.equals(parentFragment.getString(R.string.noun)))
-                pos = parentFragment.getString(R.string.noun_short);
-            if (pos.equals(parentFragment.getString(R.string.verb)))
-                pos = parentFragment.getString(R.string.verb_short);
-            if (pos.equals(parentFragment.getString(R.string.adjective)))
-                pos = parentFragment.getString(R.string.adjective_short);
-            if (pos.equals(parentFragment.getString(R.string.conjunction)))
-                pos = parentFragment.getString(R.string.conjunction_short);
-            if (pos.equals(parentFragment.getString(R.string.preposition)))
-                pos = parentFragment.getString(R.string.preposition_short);
-            if (pos.equals(parentFragment.getString(R.string.adverb)))
-                pos = parentFragment.getString(R.string.adverb_short);
-            if (pos.equals(parentFragment.getString(R.string.pronoun)))
-                pos = parentFragment.getString(R.string.pronoun_short);
-            if (pos.equals(parentFragment.getString(R.string.particle)))
-                pos = parentFragment.getString(R.string.particle_short);
-            if (pos.equals(parentFragment.getString(R.string.participle)))
-                pos = parentFragment.getString(R.string.participle_short);
-            if (pos.equals(parentFragment.getString(R.string.interjection)))
-                pos = parentFragment.getString(R.string.interjection_short);
-            if (pos.equals(parentFragment.getString(R.string.numeral)))
-                pos = parentFragment.getString(R.string.numeral_short);
-            if (pos.equals(parentFragment.getString(R.string.predicative)))
-                pos = parentFragment.getString(R.string.predicative_short);
-            if (pos.equals(parentFragment.getString(R.string.invariant)))
-                pos = parentFragment.getString(R.string.invariant_short);
-            if (pos.equals(parentFragment.getString(R.string.parenthetic)))
-                pos = parentFragment.getString(R.string.parenthetic_short);
+            if (pos.equals(translatorFragment.getString(R.string.noun)))
+                pos = translatorFragment.getString(R.string.noun_short);
+            if (pos.equals(translatorFragment.getString(R.string.verb)))
+                pos = translatorFragment.getString(R.string.verb_short);
+            if (pos.equals(translatorFragment.getString(R.string.adjective)))
+                pos = translatorFragment.getString(R.string.adjective_short);
+            if (pos.equals(translatorFragment.getString(R.string.conjunction)))
+                pos = translatorFragment.getString(R.string.conjunction_short);
+            if (pos.equals(translatorFragment.getString(R.string.preposition)))
+                pos = translatorFragment.getString(R.string.preposition_short);
+            if (pos.equals(translatorFragment.getString(R.string.adverb)))
+                pos = translatorFragment.getString(R.string.adverb_short);
+            if (pos.equals(translatorFragment.getString(R.string.pronoun)))
+                pos = translatorFragment.getString(R.string.pronoun_short);
+            if (pos.equals(translatorFragment.getString(R.string.particle)))
+                pos = translatorFragment.getString(R.string.particle_short);
+            if (pos.equals(translatorFragment.getString(R.string.participle)))
+                pos = translatorFragment.getString(R.string.participle_short);
+            if (pos.equals(translatorFragment.getString(R.string.interjection)))
+                pos = translatorFragment.getString(R.string.interjection_short);
+            if (pos.equals(translatorFragment.getString(R.string.numeral)))
+                pos = translatorFragment.getString(R.string.numeral_short);
+            if (pos.equals(translatorFragment.getString(R.string.predicative)))
+                pos = translatorFragment.getString(R.string.predicative_short);
+            if (pos.equals(translatorFragment.getString(R.string.invariant)))
+                pos = translatorFragment.getString(R.string.invariant_short);
+            if (pos.equals(translatorFragment.getString(R.string.parenthetic)))
+                pos = translatorFragment.getString(R.string.parenthetic_short);
             strResult.append(pos);
             strResult.append("\n");
             List<Tr> translations = definition.getTr();

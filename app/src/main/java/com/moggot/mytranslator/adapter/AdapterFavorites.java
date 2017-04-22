@@ -26,7 +26,6 @@ import java.util.List;
 /**
  * Класс адаптера списка Избранных слов
  */
-
 public class AdapterFavorites extends BaseSwipeAdapter {
 
     private static final String LOG_TAG = "AdapterFavorites";

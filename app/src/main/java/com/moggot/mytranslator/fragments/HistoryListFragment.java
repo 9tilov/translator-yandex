@@ -21,27 +21,68 @@ import com.moggot.mytranslator.observer.TranslatorData;
 import com.moggot.mytranslator.translator.Translator;
 
 /**
- * Created by toor on 11.04.17.
+ * Класс фрагмента истории перевода
  */
-
 public class HistoryListFragment extends ListFragment {
 
+    /**
+     * Интерфейс для передачи данных в родительский фрагмент
+     */
     public interface HistoryListEventListener {
+
+        /**
+         * Загрузка элемента из истории перевода в родительский фрагмент
+         *
+         * @param translator - транслятор
+         */
         void loadHistoryItem(Translator translator);
     }
 
+    /**
+     * База данных
+     */
     private DataBase db;
-    private HistoryListEventListener historyListEventListener;
+
+    /**
+     * Дисплей для отображения данных
+     */
     private Display display;
 
+    /**
+     * Listener для передачи данных
+     */
+    private HistoryListEventListener historyListEventListener;
+
+    /**
+     * Получение listener
+     *
+     * @return listener
+     */
     public HistoryListEventListener getHistoryListEventListener() {
         return historyListEventListener;
     }
 
+    /**
+     * Конструктор
+     */
+    public HistoryListFragment() {
+    }
+
+    /**
+     * Метод для создания экземпляра фрагмента
+     *
+     * @return текущий фрагмент
+     */
     public static Fragment newInstance() {
         return new HistoryListFragment();
     }
 
+    /**
+     * Вызывается, когда фрагмент связывается с Activity
+     * Получаем родительский фрагмент. Данный фрагмент связан с {@link RootFragment} как ребенок-родитель
+     *
+     * @param context - контекст Activity
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -52,11 +93,21 @@ public class HistoryListFragment extends ListFragment {
         }
     }
 
+    /**
+     * Подготавливаем БД для работы
+     *
+     * @param savedInstanceState - Bundle для загрузки состояния фрагмента
+     */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         db = new DataBase(getContext());
     }
 
+    /**
+     * Отображаем данные фрагмента
+     *
+     * @param savedInstanceState - Bundle для загрузки состояния фрагмента
+     */
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -65,12 +116,25 @@ public class HistoryListFragment extends ListFragment {
         display.display();
     }
 
+    /**
+     * Загрузка интерфейса фрагмента
+     *
+     * @param inflater           - разметка фрагмента
+     * @param container          - родительский контейнер фрагмента
+     * @param savedInstanceState - Bundle для загрузки состояния фрагмента
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_history, null);
     }
 
+    /**
+     * Вызывается после создания фрагмента
+     *
+     * @param view               - коренвое view фрагмента
+     * @param savedInstanceState - Bundle для загрузки состояния фрагмента
+     */
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -103,6 +167,10 @@ public class HistoryListFragment extends ListFragment {
         });
     }
 
+    /**
+     * Удаляем View фрагмента
+     * Вместе с этим очищаем память под созданный listener
+     */
     public void onDestroyView() {
         super.onDestroyView();
         historyListEventListener = null;

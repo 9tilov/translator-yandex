@@ -3,10 +3,14 @@ package com.moggot.mytranslator.observer;
 import com.moggot.mytranslator.translator.Translator;
 
 /**
- * Created by toor on 22.02.17.
+ * Интерфейс, с помощью которого наблюдатель получает оповещение
+ * Реализован паттерн "Наблюдатель"
  */
-
 public interface Observer {
 
-    void update(Translator record);
+    /**
+     * Обновление наблюдателя
+     * @param translator - транслятор
+     */
+    void update(Translator translator);
 }

@@ -7,7 +7,6 @@ import android.view.animation.Animation;
 /**
  * Класс пустой анимации, после которой не происходит никаких действий
  */
-
 public class EmptyAnimationBounce extends AnimationBounce {
 
     /**

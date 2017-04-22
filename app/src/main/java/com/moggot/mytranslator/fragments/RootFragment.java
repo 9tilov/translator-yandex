@@ -37,7 +37,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Created by toor on 10.04.17.
+ * Класс рутового фрагмента, в котором хранятся фрагменты {@link HistoryListFragment} и {@link TranslatorFragment}
+ * Фрагмент {@link FavoritesListFragment} является для него соседним
  */
 public class RootFragment extends Fragment implements HistoryListFragment.HistoryListEventListener
         , TranslatorFragment.TranslatorEventListener
@@ -45,41 +46,87 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
 
     private static final String LOG_TAG = "RootFragment";
 
+    /**
+     * транслятор
+     */
     private Translator translator;
-    private BackAwareEditText etText;
+
+    /**
+     * Контекст транслятора
+     */
     private TranslatorContext translatorContext;
+
+    /**
+     * Поле для ввода текста, который нужно перевести
+     */
+    private BackAwareEditText etText;
+
+    /**
+     * База данных
+     */
     private DataBase db;
 
+    /**
+     * Конструктор
+     */
     public RootFragment() {
     }
 
+    /**
+     * Метод для создания экземпляра фрагмента
+     *
+     * @return текущий фрагмент
+     */
     public static Fragment newInstance() {
         return new RootFragment();
     }
 
+    /**
+     * Фрагмент не будет пересоздан при смене состояния Activity
+     * Подготавливаем БД для работы
+     *
+     * @param savedInstanceState - Bundle для загрузки состояния фрагмента
+     */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        this.db = new DataBase(getContext());
+        db = new DataBase(getContext());
     }
 
+    /**
+     * Загрузка интерфейса фрагмента
+     *
+     * @param inflater           - разметка фрагмента
+     * @param container          - родительский контейнер фрагмента
+     * @param savedInstanceState - Bundle для загрузки состояния фрагмента
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_root, container, false);
     }
 
+    /**
+     * Вызывается после создания фрагмента
+     * Здесь происходит инициализация начального состояния транслятора,
+     * загрузка его текущего состояния при необходимости,
+     * обработка нажатий кнопок и обработка ввода текста пользователем для перевода
+     *
+     * @param view               - коренвое view фрагмента
+     * @param savedInstanceState - Bundle для загрузки состояния фрагмента
+     */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         etText = (BackAwareEditText) view.findViewById(R.id.etText);
 
-        createTranslator();
 
         if (savedInstanceState != null)
             etText.setText(savedInstanceState.getString(Consts.EXTRA_TEXT));
         State stateOff = new TranslationOff(this);
+        translator = createTranslator();
+        translatorContext = createTranslatorContext(translator);
         translatorContext.setState(stateOff);
         translatorContext.show(translator);
 
@@ -89,19 +136,22 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
             public void onTextChanged(CharSequence cs, int start,
                                       int lengthBefore,
                                       int lengthAfter) {
+
+                //блок для обработки случая, когда поле ввода пусто
                 if (etText.getText().toString().isEmpty()) {
-                    resetTranslator();
+                    resetTranslator(translator);
                     State stateOff = new TranslationOff(RootFragment.this);
                     translatorContext.setState(stateOff);
                     translatorContext.show(translator);
                     return;
                 }
 
+                //если состояние Off, то оно переводится в On
                 if (translatorContext.getState() instanceof TranslationOff) {
                     State stateOn = new TranslationOn(RootFragment.this);
                     translatorContext.setState(stateOn);
                 }
-                resetTranslator();
+                resetTranslator(translator);
                 translator.setText(cs.toString());
                 translatorContext.show(translator);
             }
@@ -116,26 +166,27 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
             }
         });
 
+        //обработка нажатия кнопки Done на клавиатуре
         etText.setOnEditorActionListener(new TextView.OnEditorActionListener()
 
         {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                    saveOrEditRecord();
+                    saveOrEditRecord(translator);
                 }
                 return false;
             }
         });
 
-        etText.setBackPressedListener(new BackAwareEditText.BackPressedListener()
-
-        {
+        //обработка нажатия кнопки back, когда клавиатура видна
+        etText.setBackPressedListener(new BackAwareEditText.BackPressedListener() {
             @Override
             public void onImeBack(BackAwareEditText editText) {
-                saveOrEditRecord();
+                saveOrEditRecord(translator);
             }
         });
 
+        //перевод курсора в конец строки при фокусе
         etText.setOnFocusChangeListener(new View.OnFocusChangeListener()
 
         {
@@ -147,6 +198,7 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
             }
         });
 
+        //обработка нажатия кнопки смены языка
         Button btnChangeLang = (Button) view.findViewById(R.id.btnChangeLang);
         btnChangeLang.setOnClickListener(new View.OnClickListener() {
 
@@ -155,7 +207,7 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
                 Animation bounce = AnimationUtils.loadAnimation(getContext(), R.anim.change_lang);
                 view.startAnimation(bounce);
 
-                resetTranslator();
+                resetTranslator(translator);
 
                 String inputLang = LangSharedPreferences.loadInputLanguage(getContext());
                 String outputLang = LangSharedPreferences.loadOutputLanguage(getContext());
@@ -173,18 +225,20 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
             }
         });
 
+        //обработка нажатия кнопки очистки поля ввода текста
         Button btnClearText = (Button) view.findViewById(R.id.btnClearText);
         btnClearText.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                saveOrEditRecord();
+                saveOrEditRecord(translator);
                 AnimationBounce animation = new ClearButtonAnimationBounce(getContext());
                 animation.animate(view);
-                resetTranslator();
+                resetTranslator(translator);
             }
         });
 
+        //обработка нажатия кнопки входного языка
         TextView tvInputLang = (TextView) view.findViewById(R.id.tvInputLang);
         tvInputLang.setOnClickListener(new View.OnClickListener() {
 
@@ -193,10 +247,11 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
                 Intent intent = new Intent(getContext(), LanguageActivity.class);
                 intent.putExtra(Consts.EXTRA_LANG, Consts.LANG_TYPE.INPUT.getType());
                 startActivityForResult(intent, Consts.REQUEST_CODE_ACTIVITY_LANGUAGE);
-                saveOrEditRecord();
+                saveOrEditRecord(translator);
             }
         });
 
+        //обработка нажатия кнопки выходного языка
         TextView tvOutputLang = (TextView) view.findViewById(R.id.tvOutputLang);
         tvOutputLang.setOnClickListener(new View.OnClickListener() {
 
@@ -205,17 +260,22 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
                 Intent intent = new Intent(getContext(), LanguageActivity.class);
                 intent.putExtra(Consts.EXTRA_LANG, Consts.LANG_TYPE.OUTPUT.getType());
                 startActivityForResult(intent, Consts.REQUEST_CODE_ACTIVITY_LANGUAGE);
-                saveOrEditRecord();
+                saveOrEditRecord(translator);
             }
         });
     }
 
-    private void createTranslator() {
+    /**
+     * Создание транслятора
+     *
+     * @return новый транслятор
+     */
+    private Translator createTranslator() {
         String inputLanguage = LangSharedPreferences.loadInputLanguage(getContext());
         String outputLanguage = LangSharedPreferences.loadOutputLanguage(getContext());
         Calendar calendar = Calendar.getInstance();
         Date date = new Date(calendar.getTimeInMillis());
-        translator = new Translator(null
+        return new Translator(null
                 , ""
                 , ""
                 , inputLanguage
@@ -223,11 +283,26 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
                 , false
                 , ""
                 , date);
-
-        translatorContext = new TranslatorContext(getActivity(), translator);
     }
 
-    private void resetTranslator() {
+    /**
+     * Создание контекста транслятора
+     *
+     * @param translator - транслятор
+     * @return контекст транслятора для смены состояния
+     */
+    private TranslatorContext createTranslatorContext(Translator translator) {
+        return new TranslatorContext(getContext(), translator);
+    }
+
+    /**
+     * Сброс данных транслятора
+     * Данный метод нужен для сброса данных транслятора,
+     * в том числе его ID при каждом новом вводимом символе
+     *
+     * @param translator - транслятор
+     */
+    private void resetTranslator(Translator translator) {
         translator.setId(null);
         translator.setText("");
         translator.setTranslation("");
@@ -240,7 +315,12 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
         translator.setDate(date);
     }
 
-    private void saveOrEditRecord() {
+    /**
+     * Сохранение транслятора, либо его перезапись
+     *
+     * @param translator - транслятор
+     */
+    private void saveOrEditRecord(Translator translator) {
         if (translator.getText().isEmpty() || translator.getTranslation().isEmpty())
             return;
         if (db.findRecord(translator) != null)
@@ -249,12 +329,22 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
             db.addRecord(translator);
     }
 
+    /**
+     * Загрузка элемента из истории переводов
+     *
+     * @param loadedTranslator - загруженный транслятор
+     */
     public void loadHistoryItem(Translator loadedTranslator) {
         translator.setTranslator(loadedTranslator);
         etText.setText(translator.getText());
         etText.clearFocus();
     }
 
+    /**
+     * Загрузка элемента из избранного
+     *
+     * @param loadedTranslator - загруженный транслятор
+     */
     public void loadFavoriteItem(Translator loadedTranslator) {
         translator.setTranslator(loadedTranslator);
         etText.setText(translator.getText());
@@ -263,6 +353,9 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
         ((MainActivity) getActivity()).getViewPager().setCurrentItem(0);
     }
 
+    /**
+     * Установка флага Избранное текущему слову
+     */
     public void setFavorites() {
         if (translator.getIsFavorites())
             translator.setIsFavorites(false);
@@ -275,9 +368,14 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
         Display translationDisplay = new TranslationDisplay(fragment, translatorData);
         translatorData.setTranslator(translator);
         translationDisplay.display();
-        saveOrEditRecord();
+        saveOrEditRecord(translator);
     }
 
+    /**
+     * Вызывается при смене страниц ViewPager
+     *
+     * @param isVisibleToUser - флаг, показывающий, виден ли фрагмент или нет
+     */
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
@@ -292,6 +390,12 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
         }
     }
 
+    /**
+     * Сохранение состояния фрагмента
+     * Сохранение текста в поле ввода при сменен состояния Activity
+     *
+     * @param outState - Bunlde для сохранения состояния
+     */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -300,12 +404,19 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
         }
     }
 
+    /**
+     * Вызывается при переходе с Activity для выбора языка обратно в MainActivity
+     *
+     * @param requestCode - код ответа
+     * @param resultCode  - код, показыващий успешно ли выполнена операция
+     * @param data        - данные с ответом
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case Consts.REQUEST_CODE_ACTIVITY_LANGUAGE:
-                resetTranslator();
+                resetTranslator(translator);
                 String inputLang = LangSharedPreferences.loadInputLanguage(getContext());
                 String outputLang = LangSharedPreferences.loadOutputLanguage(getContext());
                 translator.setInputLanguage(inputLang);
@@ -316,6 +427,10 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
         }
     }
 
+    /**
+     * Удаляем View фрагмента
+     * Удаляем память под созданные View
+     */
     public void onDestroyView() {
         super.onDestroyView();
         etText = null;

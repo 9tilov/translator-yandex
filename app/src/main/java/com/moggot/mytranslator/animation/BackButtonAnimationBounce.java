@@ -8,7 +8,6 @@ import android.view.animation.Animation;
 /**
  * Класс анимации кнопки back в Activity с выбором языка
  */
-
 public class BackButtonAnimationBounce extends AnimationBounce {
 
     /**

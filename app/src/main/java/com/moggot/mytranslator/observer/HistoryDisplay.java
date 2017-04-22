@@ -13,15 +13,28 @@ import com.moggot.mytranslator.translator.Translator;
 import java.util.List;
 
 /**
- * Created by toor on 07.04.17.
+ * Класс для отображения данных на экране истории переводов
  */
-
 public class HistoryDisplay extends Display {
 
     private static final String LOG_TAG = "HistoryDisplay";
+
+    /**
+     * Фрагмент, в котором необходимо отобразить данные
+     */
     private Fragment fragment;
+
+    /**
+     * База данных
+     */
     private DataBase db;
 
+    /**
+     * Конструктор
+     *
+     * @param fragment       - фрагмент, в котором необходимо отобразить данные
+     * @param translatorData - данные транслятора
+     */
     public HistoryDisplay(Fragment fragment, TranslatorData translatorData) {
         super(fragment.getContext());
         this.fragment = fragment;
@@ -29,6 +42,9 @@ public class HistoryDisplay extends Display {
         translatorData.registerObserver(this);
     }
 
+    /**
+     * Отображение данных
+     */
     @Override
     public void display() {
         if (fragment.getView() == null)
@@ -37,6 +53,9 @@ public class HistoryDisplay extends Display {
         displayHistoryList();
     }
 
+    /**
+     * Отображение кнопки очистки истории переводов
+     */
     private void displayClearHistoryButton() {
         if (db.getAllRecords().isEmpty())
             ((Button) fragment.getView().findViewById(R.id.btnClearHistory)).setVisibility(View.GONE);
@@ -44,6 +63,9 @@ public class HistoryDisplay extends Display {
             ((Button) fragment.getView().findViewById(R.id.btnClearHistory)).setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Отображение истории переводов
+     */
     private void displayHistoryList() {
         List<Translator> records = db.getAllRecords();
         AdapterHistory adapter = new AdapterHistory(fragment, records);

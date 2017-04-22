@@ -13,16 +13,28 @@ import com.moggot.mytranslator.translator.Translator;
 import java.util.List;
 
 /**
- * Created by toor on 10.04.17.
+ * Класс для отображения данных на экране избранных слов
  */
-
 public class FavoritesDisplay extends Display {
 
     private static final String LOG_TAG = "FavoritesDisplay";
 
+    /**
+     * Фрагмент, в котором необходимо отобразить данные
+     */
     private Fragment fragment;
+
+    /**
+     * База данных
+     */
     private DataBase db;
 
+    /**
+     * Конструктор
+     *
+     * @param fragment       - фрагмент, в котором необходимо отобразить данные
+     * @param translatorData - данные транслятора
+     */
     public FavoritesDisplay(Fragment fragment, TranslatorData translatorData) {
         super(fragment.getContext());
         this.fragment = fragment;
@@ -30,6 +42,9 @@ public class FavoritesDisplay extends Display {
         translatorData.registerObserver(this);
     }
 
+    /**
+     * Отображение данных
+     */
     @Override
     public void display() {
         if (fragment.getView() == null)
@@ -38,6 +53,9 @@ public class FavoritesDisplay extends Display {
         displayFavoritesList();
     }
 
+    /**
+     * Отображение кнопки очистки списка избранных слов
+     */
     private void displayClearFavoritesButton() {
         if (db.getFavoritesRecords().isEmpty())
             ((Button) fragment.getView().findViewById(R.id.btnClearFavorites)).setVisibility(View.GONE);
@@ -45,6 +63,9 @@ public class FavoritesDisplay extends Display {
             ((Button) fragment.getView().findViewById(R.id.btnClearFavorites)).setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Отображение списка избранных слов
+     */
     private void displayFavoritesList() {
         List<Translator> records = db.getFavoritesRecords();
         AdapterFavorites adapter = new AdapterFavorites(fragment, records);
