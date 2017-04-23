@@ -14,7 +14,15 @@
 
     <color name="frame">#0F439C</color>
 
-    <!--https://colorscheme.ru/#0q31Tw0tCw0w0-->
+    <color name="text_tr">#4276CE</color>
+    <color name="text_pos">#994000</color>
+    <color name="text_gen">#F6B43D</color>
+    <color name="text_syn">#264375</color>
+    <color name="text_numbers">#001333</color>
+    <color name="text_mean">#F68A3D</color>
+    <color name="text_ex">#678DCE</color>
+
+
 </resources>
 
 
