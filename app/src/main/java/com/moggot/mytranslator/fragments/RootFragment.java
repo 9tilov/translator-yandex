@@ -361,10 +361,10 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
             translator.setIsFavorites(false);
         else
             translator.setIsFavorites(true);
-        TranslatorData translatorData = new TranslatorData();
         Fragment fragment = getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
         if (fragment == null)
             return;
+        TranslatorData translatorData = new TranslatorData();
         Display translationDisplay = new TranslationDisplay(fragment, translatorData);
         translatorData.setTranslator(translator);
         translationDisplay.display();

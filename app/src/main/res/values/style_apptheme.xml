@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generated with http://android-holo-colors.com -->
+<?xml version="1.0" encoding="utf-8"?><!-- Generated with http://android-holo-colors.com -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
     <style name="TextLang">
@@ -17,8 +16,8 @@
         <item name="android:textColor">@color/text</item>
     </style>
 
-    <style name="TextLangAdapter">
-        <item name="android:textSize">@dimen/text_size_lang_adapter</item>
+    <style name="TextError">
+        <item name="android:textSize">@dimen/text_size_error</item>
         <item name="android:textColor">@color/text</item>
     </style>
 

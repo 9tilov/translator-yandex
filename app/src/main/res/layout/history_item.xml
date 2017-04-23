@@ -38,7 +38,7 @@
 
             <RelativeLayout
                 android:id="@+id/rlFavorites"
-                android:layout_width="70dp"
+                android:layout_width="@dimen/history_listitem_height"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
@@ -48,8 +48,8 @@
                     android:id="@+id/adapterIwFavorites"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
                     android:background="@drawable/ic_bookmark_border_24px" />
             </RelativeLayout>
 
@@ -59,12 +59,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
+                android:layout_toEndOf="@+id/rlFavorites"
+                android:layout_toLeftOf="@+id/rlLang"
+                android:layout_toRightOf="@+id/rlFavorites"
+                android:layout_toStartOf="@+id/rlLang"
                 android:ellipsize="end"
-                android:maxLength="20"
-                android:maxLines="1"
-                android:scrollHorizontally="true"
-                android:text="text" />
+                android:gravity="center"
+                android:maxLines="1" />
 
             <TextView
                 android:id="@+id/adapterTvTranslation"
@@ -72,47 +73,50 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
+                android:layout_toEndOf="@+id/rlFavorites"
+                android:layout_toLeftOf="@+id/rlLang"
+                android:layout_toRightOf="@+id/rlFavorites"
+                android:layout_toStartOf="@+id/rlLang"
                 android:ellipsize="end"
-                android:maxLength="20"
-                android:maxLines="1"
-                android:scrollHorizontally="true"
-                android:text="translation" />
+                android:gravity="center"
+                android:maxLines="1" />
 
-            <TextView
-                android:id="@+id/adapterTvInputLang"
-                style="@style/TextHistory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/adapterIwArrow"
-                android:layout_toStartOf="@+id/adapterIwArrow"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:scrollHorizontally="true"
-                android:text="en" />
-
-            <ImageView
-                android:id="@+id/adapterIwArrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/adapterTvOutputLang"
-                android:layout_toStartOf="@+id/adapterTvOutputLang"
-                android:background="@drawable/ic_keyboard_arrow_right_24px" />
-
-            <TextView
-                android:id="@+id/adapterTvOutputLang"
-                style="@style/TextHistory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <RelativeLayout
+                android:id="@+id/rlLang"
+                android:layout_width="@dimen/history_listitem_height"
+                android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:scrollHorizontally="true"
-                android:text="ru" />
+                android:layout_centerVertical="true">
+
+                <TextView
+                    android:id="@+id/adapterTvInputLang"
+                    style="@style/TextHistory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/adapterIwArrow"
+                    android:layout_toStartOf="@+id/adapterIwArrow"
+                    android:text="en" />
+
+                <ImageView
+                    android:id="@+id/adapterIwArrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_keyboard_arrow_right_24px" />
+
+                <TextView
+                    android:id="@+id/adapterTvOutputLang"
+                    style="@style/TextHistory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/adapterIwArrow"
+                    android:layout_toRightOf="@+id/adapterIwArrow"
+                    android:text="ru" />
+            </RelativeLayout>
         </RelativeLayout>
     </com.daimajia.swipe.SwipeLayout>
 </FrameLayout>

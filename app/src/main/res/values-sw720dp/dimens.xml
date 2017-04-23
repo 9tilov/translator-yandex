@@ -6,8 +6,8 @@
     <dimen name="button_size">45dp</dimen>
     <dimen name="text_size_lang">45sp</dimen>
     <dimen name="text_size">35sp</dimen>
-    <dimen name="text_size_small">25sp</dimen>
-    <dimen name="text_size_lang_adapter">28sp</dimen>
+    <dimen name="text_size_small">28sp</dimen>
+    <dimen name="text_size_error">25sp</dimen>
     <dimen name="text_size_translation">45sp</dimen>
     <dimen name="text_size_dictionary">30sp</dimen>
     <dimen name="text_size_history">25sp</dimen>
