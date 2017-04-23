@@ -7,6 +7,7 @@
     <dimen name="text_size_lang">20sp</dimen>
     <dimen name="text_size">20sp</dimen>
     <dimen name="text_size_small">15sp</dimen>
+    <dimen name="text_size_lang_adapter">18sp</dimen>
     <dimen name="text_size_translation">25sp</dimen>
     <dimen name="text_size_dictionary">15sp</dimen>
     <dimen name="text_size_history">15sp</dimen>

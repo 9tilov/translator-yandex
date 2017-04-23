@@ -17,6 +17,11 @@
         <item name="android:textColor">@color/text</item>
     </style>
 
+    <style name="TextLangAdapter">
+        <item name="android:textSize">@dimen/text_size_lang_adapter</item>
+        <item name="android:textColor">@color/text</item>
+    </style>
+
     <style name="Translation">
         <item name="android:textSize">@dimen/text_size_translation</item>
         <item name="android:textColor">@color/text</item>
