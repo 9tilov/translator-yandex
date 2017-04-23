@@ -1,5 +1,6 @@
 package com.moggot.mytranslator.translation;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -37,10 +38,12 @@ public class DictionaryResponse extends Translation {
 
     private Fragment translatorFragment;
     private ProgressBar progressBar;
+    private Context context;
 
     public DictionaryResponse(final Fragment parentFragment) {
 
         if (parentFragment != null) {
+            this.context = parentFragment.getContext();
             translatorFragment = parentFragment.getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
 
             if (translatorFragment != null && translatorFragment.getView() != null) {
@@ -96,34 +99,34 @@ public class DictionaryResponse extends Translation {
         strResult.append("]\n");
         for (Def definition : definitions) {
             String pos = definition.getPos();
-            if (pos.equals(translatorFragment.getString(R.string.noun)))
-                pos = translatorFragment.getString(R.string.noun_short);
-            if (pos.equals(translatorFragment.getString(R.string.verb)))
-                pos = translatorFragment.getString(R.string.verb_short);
-            if (pos.equals(translatorFragment.getString(R.string.adjective)))
-                pos = translatorFragment.getString(R.string.adjective_short);
-            if (pos.equals(translatorFragment.getString(R.string.conjunction)))
-                pos = translatorFragment.getString(R.string.conjunction_short);
-            if (pos.equals(translatorFragment.getString(R.string.preposition)))
-                pos = translatorFragment.getString(R.string.preposition_short);
-            if (pos.equals(translatorFragment.getString(R.string.adverb)))
-                pos = translatorFragment.getString(R.string.adverb_short);
-            if (pos.equals(translatorFragment.getString(R.string.pronoun)))
-                pos = translatorFragment.getString(R.string.pronoun_short);
-            if (pos.equals(translatorFragment.getString(R.string.particle)))
-                pos = translatorFragment.getString(R.string.particle_short);
-            if (pos.equals(translatorFragment.getString(R.string.participle)))
-                pos = translatorFragment.getString(R.string.participle_short);
-            if (pos.equals(translatorFragment.getString(R.string.interjection)))
-                pos = translatorFragment.getString(R.string.interjection_short);
-            if (pos.equals(translatorFragment.getString(R.string.numeral)))
-                pos = translatorFragment.getString(R.string.numeral_short);
-            if (pos.equals(translatorFragment.getString(R.string.predicative)))
-                pos = translatorFragment.getString(R.string.predicative_short);
-            if (pos.equals(translatorFragment.getString(R.string.invariant)))
-                pos = translatorFragment.getString(R.string.invariant_short);
-            if (pos.equals(translatorFragment.getString(R.string.parenthetic)))
-                pos = translatorFragment.getString(R.string.parenthetic_short);
+            if (pos.equals(context.getString(R.string.noun)))
+                pos = context.getString(R.string.noun_short);
+            if (pos.equals(context.getString(R.string.verb)))
+                pos = context.getString(R.string.verb_short);
+            if (pos.equals(context.getString(R.string.adjective)))
+                pos = context.getString(R.string.adjective_short);
+            if (pos.equals(context.getString(R.string.conjunction)))
+                pos = context.getString(R.string.conjunction_short);
+            if (pos.equals(context.getString(R.string.preposition)))
+                pos = context.getString(R.string.preposition_short);
+            if (pos.equals(context.getString(R.string.adverb)))
+                pos = context.getString(R.string.adverb_short);
+            if (pos.equals(context.getString(R.string.pronoun)))
+                pos = context.getString(R.string.pronoun_short);
+            if (pos.equals(context.getString(R.string.particle)))
+                pos = context.getString(R.string.particle_short);
+            if (pos.equals(context.getString(R.string.participle)))
+                pos = context.getString(R.string.participle_short);
+            if (pos.equals(context.getString(R.string.interjection)))
+                pos = context.getString(R.string.interjection_short);
+            if (pos.equals(context.getString(R.string.numeral)))
+                pos = context.getString(R.string.numeral_short);
+            if (pos.equals(context.getString(R.string.predicative)))
+                pos = context.getString(R.string.predicative_short);
+            if (pos.equals(context.getString(R.string.invariant)))
+                pos = context.getString(R.string.invariant_short);
+            if (pos.equals(context.getString(R.string.parenthetic)))
+                pos = context.getString(R.string.parenthetic_short);
             strResult.append(pos);
             strResult.append("\n");
             List<Tr> translations = definition.getTr();

@@ -36,7 +36,7 @@ public class TranslatorContext {
         return this.state;
     }
 
-    public void show(Translator translator) {
+    public void show() {
         this.state.show(translator);
     }
 }

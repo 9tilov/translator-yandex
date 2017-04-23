@@ -128,7 +128,7 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
         translator = createTranslator();
         translatorContext = createTranslatorContext(translator);
         translatorContext.setState(stateOff);
-        translatorContext.show(translator);
+        translatorContext.show();
 
         etText.addTextChangedListener(new TextWatcher() {
 
@@ -142,7 +142,7 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
                     resetTranslator(translator);
                     State stateOff = new TranslationOff(RootFragment.this);
                     translatorContext.setState(stateOff);
-                    translatorContext.show(translator);
+                    translatorContext.show();
                     return;
                 }
 
@@ -153,7 +153,7 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
                 }
                 resetTranslator(translator);
                 translator.setText(cs.toString());
-                translatorContext.show(translator);
+                translatorContext.show();
             }
 
             @Override
@@ -221,7 +221,7 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
                 translator.setOutputLanguage(outputLang);
                 translator.setText(etText.getText().toString());
 
-                translatorContext.show(translator);
+                translatorContext.show();
             }
         });
 
@@ -383,7 +383,7 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
         try {
             if (isVisibleToUser) {
                 if (translatorContext != null)
-                    translatorContext.show(translator);
+                    translatorContext.show();
             }
         } catch (IllegalStateException e) {
             e.printStackTrace();
@@ -422,7 +422,7 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
                 translator.setInputLanguage(inputLang);
                 translator.setOutputLanguage(outputLang);
                 translator.setText(etText.getText().toString());
-                translatorContext.show(translator);
+                translatorContext.show();
                 break;
         }
     }
