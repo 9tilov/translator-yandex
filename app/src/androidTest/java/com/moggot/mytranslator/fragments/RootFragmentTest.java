@@ -121,6 +121,10 @@ public class RootFragmentTest {
         onView(withId(R.id.btnCopyTranslation)).check(matches(isDisplayed()));
         onView(withId(R.id.tvYandexTranslatorLink)).check(matches(isDisplayed()));
         rotateScreen();
+        while (true) {
+            if (getText(withId(R.id.tvTranslation)).equals("время") && !getText(withId(R.id.tvDetails)).isEmpty())
+            break;
+        }
         onView(withId(R.id.etText)).perform(clearText());
         onView(withId(R.id.btnClearText)).check(matches(not(isDisplayed())));
         onView(withId(R.id.llFragmentHistory)).check(matches(isDisplayed()));
@@ -137,12 +141,37 @@ public class RootFragmentTest {
     private void checkAddedItemsCount() {
         clearDB();
         onView(withId(R.id.etText)).perform(typeText("my"));
+        String translation = "";
+        String details = "";
+        while (true) {
+            translation = getText(withId(R.id.tvTranslation));
+            details = getText(withId(R.id.tvDetails));
+            if (translation.equals("мой") && !details.isEmpty())
+                break;
+        }
         onView(withId(R.id.btnClearText)).perform(click());
         onView(withId(R.id.etText)).perform(typeText("code"));
+        while (true) {
+            translation = getText(withId(R.id.tvTranslation));
+            details = getText(withId(R.id.tvDetails));
+            if (translation.equals("код") && !details.isEmpty())
+                break;
+        }
         onView(withId(R.id.btnClearText)).perform(click());
         onView(withId(R.id.etText)).perform(typeText("is"));
+        while (true) {
+            translation = getText(withId(R.id.tvTranslation));
+            if (translation.equals("является"))
+                break;
+        }
         onView(withId(R.id.btnClearText)).perform(click());
         onView(withId(R.id.etText)).perform(typeText("awesome"));
+        while (true) {
+            translation = getText(withId(R.id.tvTranslation));
+            details = getText(withId(R.id.tvDetails));
+            if (translation.equals("удивительный") && !details.isEmpty())
+                break;
+        }
         onView(withId(R.id.btnClearText)).perform(click());
 
         onData(instanceOf(Translator.class))
@@ -178,9 +207,18 @@ public class RootFragmentTest {
     private void addItemToFavorites() {
         clearDB();
         onView(withId(R.id.etText)).perform(typeText("one"));
+        while (true) {
+            if (getText(withId(R.id.tvTranslation)).equals("один"))
+                break;
+        }
+
         onView(withId(R.id.btnClearText)).perform(click());
         rotateScreen();
         onView(withId(R.id.etText)).perform(typeText("two"));
+        while (true) {
+            if (getText(withId(R.id.tvTranslation)).equals("два"))
+                break;
+        }
         onView(withId(R.id.etText)).perform(ViewActions.pressKey(KeyEvent.KEYCODE_BACK));
         onView(withId(R.id.btnClearText)).perform(click());
         onData(instanceOf(Translator.class))
