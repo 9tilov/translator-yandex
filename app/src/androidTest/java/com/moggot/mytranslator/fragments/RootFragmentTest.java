@@ -65,6 +65,7 @@ public class RootFragmentTest {
         clickOutputLang();
         clickChangeLang();
         checkTranslation();
+        checkLongText();
         clickClearText();
         checkAddedItemsCount();
         clickBackButtonToSave();
@@ -123,11 +124,28 @@ public class RootFragmentTest {
         rotateScreen();
         while (true) {
             if (getText(withId(R.id.tvTranslation)).equals("время") && !getText(withId(R.id.tvDetails)).isEmpty())
-            break;
+                break;
         }
         onView(withId(R.id.etText)).perform(clearText());
         onView(withId(R.id.btnClearText)).check(matches(not(isDisplayed())));
         onView(withId(R.id.llFragmentHistory)).check(matches(isDisplayed()));
+    }
+
+    private void checkLongText() {
+        onView(withId(R.id.tvInputLang)).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.lvLanguages)).atPosition(4).perform(click());
+        onView(withId(R.id.tvOutputLang)).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.lvLanguages)).atPosition(61).perform(click());
+        onView(withId(R.id.etText)).perform(typeText("A Hello, World! program is traditionally used to introduce novice programmers to a programming language.\n" +
+                "Hello world! is also traditionally used in a sanity test to make sure that a computer language is correctly installed, and that the operator understands how to use it.\n"));
+        onView(withId(R.id.etText)).perform(ViewActions.pressKey(KeyEvent.KEYCODE_BACK));
+        onView(withId(R.id.flFragmentTranslation)).check(matches(isDisplayed()));
+        onView(withId(R.id.btnClearText)).check(matches(isDisplayed()));
+        onView(withId(R.id.btnAddFavorites)).check(matches(isDisplayed()));
+        onView(withId(R.id.btnCopyTranslation)).check(matches(isDisplayed()));
+        onView(withId(R.id.tvYandexTranslatorLink)).check(matches(isDisplayed()));
+        onView(withId(R.id.tvDetails)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.etText)).perform(clearText());
     }
 
     private void clickClearText() {
