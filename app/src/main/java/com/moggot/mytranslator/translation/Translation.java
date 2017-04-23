@@ -2,19 +2,40 @@ package com.moggot.mytranslator.translation;
 
 import com.moggot.mytranslator.translator.Translator;
 
-import java.net.URLEncoder;
-
 /**
- * Created by toor on 19.04.17.
+ * Класс, использущий интерфейс стратегии и запускащий тот или иной алгоритм перевода
  */
+public class Translation {
 
-abstract class Translation {
+    /**
+     * Алгоритм перевода
+     */
+    private TranslationAlgorithm algorithm;
 
-    abstract void translate(final Translator translator) throws Exception;
-
-    String getLangStr(Translator translator) throws Exception {
-        String ENCODING = "UTF-8";
-        return URLEncoder.encode(translator.getInputLanguage(), ENCODING) + URLEncoder.encode("-", ENCODING) + URLEncoder.encode(translator.getOutputLanguage(), ENCODING);
+    /**
+     * Конструктор
+     *
+     * @param algorithm - алгоритм перевода
+     */
+    public Translation(TranslationAlgorithm algorithm) {
+        this.algorithm = algorithm;
     }
 
+    /**
+     * Установка алгоритма перевода
+     *
+     * @param algorithm - алгоритм перевода
+     */
+    public void setAlgorithm(TranslationAlgorithm algorithm) {
+        this.algorithm = algorithm;
+    }
+
+    /**
+     * Перевод слова
+     *
+     * @param translator - транслятор
+     */
+    public void translate(final Translator translator) {
+        algorithm.translate(translator);
+    }
 }

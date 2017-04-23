@@ -5,25 +5,33 @@ import android.support.v4.app.Fragment;
 import com.moggot.mytranslator.translator.Translator;
 
 /**
- * Created by toor on 19.04.17.
+ * Класс, управляющий переводом
+ * Здесь производятся запросы на обычный и детальный перевод слова.
  */
-
 public class TranslateManager {
 
-    private DictionaryResponse dictionaryResponse;
-    private TranslatorResponse translatorResponse;
+    /**
+     * Родительский фрагмент
+     */
+    private Fragment parentFragment;
 
+    /**
+     * Конструктор
+     *
+     * @param parentFragment - родительский фрагмент
+     */
     public TranslateManager(final Fragment parentFragment) {
-        this.translatorResponse = new TranslatorResponse(parentFragment);
-        this.dictionaryResponse = new DictionaryResponse(parentFragment);
+        this.parentFragment = parentFragment;
     }
 
-    public void translate(final Translator translator) {
-        try {
-            translatorResponse.translate(translator);
-            dictionaryResponse.translate(translator);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    /**
+     * Перевод слова
+     * @param translator - транслятор
+     */
+    public void translate(Translator translator) {
+        Translation translation = new Translation(new TranslatorResponse(parentFragment));
+        translation.translate(translator);
+        translation.setAlgorithm(new DictionaryResponse(parentFragment));
+        translation.translate(translator);
     }
 }

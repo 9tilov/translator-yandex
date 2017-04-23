@@ -232,6 +232,10 @@ public class RootFragmentTest {
     private void deleteFavoritesItem() {
         clearDB();
         onView(withId(R.id.etText)).perform(typeText("Hello!"));
+        while (true) {
+            if (getText(withId(R.id.tvTranslation)).equals("Привет!"))
+                break;
+        }
         onView(withId(R.id.btnClearText)).perform(click());
         onData(instanceOf(Translator.class))
                 .inAdapterView(allOf(withId(android.R.id.list), isDisplayed()))

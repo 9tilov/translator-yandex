@@ -29,17 +29,34 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Created by toor on 19.04.17.
+ * Класс запроса детального перевода
  */
-
-public class DictionaryResponse extends Translation {
+public class DictionaryResponse implements TranslationAlgorithm {
 
     private static final String LOG_TAG = "DictionaryResponse";
 
+    /**
+     * Фрагмент, который отображает перевод
+     */
     private Fragment translatorFragment;
+
+    /**
+     * {@link ProgressBar} для отображения процесса получения данных с сервера
+     */
     private ProgressBar progressBar;
+
+    /**
+     * Контекст Activity
+     */
     private Context context;
 
+    /**
+     * Конструктор
+     * Здесь получаем фрагмент, который отображает перевод и контекст Activity
+     * Так же запускаем {@link ProgressBar}
+     *
+     * @param parentFragment - родительский фрагмент
+     */
     public DictionaryResponse(final Fragment parentFragment) {
 
         if (parentFragment != null) {
@@ -55,9 +72,15 @@ public class DictionaryResponse extends Translation {
         }
     }
 
+    /**
+     * Детальный перевод слова
+     *
+     * @param translator - транслятор
+     */
     @Override
-    public void translate(final Translator translator) throws Exception {
-        App.getYandexDictionaryApi().getDetails(ApiKeys.YANDEX_DICTIONARY_API_KEY, translator.getText(), getLangStr(translator)).enqueue(new Callback<WordDictionary>() {
+    public void translate(final Translator translator) {
+        String langDirection = translator.getInputLanguage() + "-" + translator.getOutputLanguage();
+        App.getYandexDictionaryApi().getDetails(ApiKeys.YANDEX_DICTIONARY_API_KEY, translator.getText(), langDirection).enqueue(new Callback<WordDictionary>() {
             @Override
             public void onResponse(Call<WordDictionary> call, Response<WordDictionary> response) {
 
@@ -88,15 +111,25 @@ public class DictionaryResponse extends Translation {
         });
     }
 
+    /**
+     * Парсинг json  с детальным переводом слова
+     *
+     * @param wordDictionary - объект с данными детального перевода с файла json
+     * @return строка форматтированным ответом
+     */
     private String parse(WordDictionary wordDictionary) {
         StringBuilder strResult = new StringBuilder();
         List<Def> definitions = wordDictionary.getDef();
         if (definitions.isEmpty())
             return "";
         strResult.append(definitions.get(0).getText());
-        strResult.append(" [");
-        strResult.append(definitions.get(0).getTs());
-        strResult.append("]\n");
+        String transcription = definitions.get(0).getTs();
+        if (transcription != null) {
+            strResult.append(" [");
+            strResult.append(transcription);
+            strResult.append("]\n");
+        } else
+            strResult.append("\n");
         for (Def definition : definitions) {
             String pos = definition.getPos();
             if (pos.equals(context.getString(R.string.noun)))

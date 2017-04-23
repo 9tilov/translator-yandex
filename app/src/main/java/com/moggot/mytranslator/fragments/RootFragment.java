@@ -152,7 +152,7 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
                     translatorContext.setState(stateOn);
                 }
                 resetTranslator(translator);
-                translator.setText(cs.toString());
+                translator.setText(cs.toString().trim());
                 translatorContext.show();
             }
 

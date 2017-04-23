@@ -18,15 +18,23 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Created by toor on 19.04.17.
+ * Класс запроса обычного перевода
  */
-
-public class TranslatorResponse extends Translation {
+public class TranslatorResponse implements TranslationAlgorithm {
 
     private static final String LOG_TAG = "TranslatorResponse";
 
+    /**
+     * Фрагмент, который отображает перевод
+     */
     private Fragment translatorFragment;
 
+    /**
+     * Конструктор
+     * Здесь получаем фрагмент, который отображает перевод и контекст Activity
+     *
+     * @param parentFragment - родительский фрагмент
+     */
     public TranslatorResponse(final Fragment parentFragment) {
 
         if (parentFragment != null) {
@@ -34,9 +42,16 @@ public class TranslatorResponse extends Translation {
         }
     }
 
+
+    /**
+     * Обычный перевод слова
+     *
+     * @param translator - транслятор
+     */
     @Override
-    public void translate(final Translator translator) throws Exception {
-        App.getYandexTranslationApi().getTranslation(ApiKeys.YANDEX_API_KEY, translator.getText(), getLangStr(translator)).enqueue(new Callback<WordTranslator>() {
+    public void translate(final Translator translator) {
+        String langDirection = translator.getInputLanguage() + "-" + translator.getOutputLanguage();
+        App.getYandexTranslationApi().getTranslation(ApiKeys.YANDEX_API_KEY, translator.getText(), langDirection).enqueue(new Callback<WordTranslator>() {
             @Override
             public void onResponse(Call<WordTranslator> call, Response<WordTranslator> response) {
 
