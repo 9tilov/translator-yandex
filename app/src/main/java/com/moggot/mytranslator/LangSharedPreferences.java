@@ -2,42 +2,71 @@ package com.moggot.mytranslator;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 /**
- * Created by toor on 24.03.17.
+ * Класс хранения входного и выходного языков
  */
-
 public class LangSharedPreferences {
-
-    private static final String inputLang = "inputLanguage";
-    private static final String outputLang = "outputLanguage";
 
     private static final String LOG_TAG = "LangSharedPreferences";
 
+    /**
+     * Ключ для хранения входного языка
+     */
+    private static final String inputLang = "inputLanguage";
+
+    /**
+     * Ключ для хранения выходного языка
+     */
+    private static final String outputLang = "outputLanguage";
+
+    /**
+     * Сохранение входного языка
+     *
+     * @param context  - контекст Activity
+     * @param language - код входного языка
+     */
     public static void saveInputLanguage(Context context, String language) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(Consts.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Consts.SHARED_PREF_LANG, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(inputLang);
         editor.putString(inputLang, language);
         editor.apply();
     }
 
+    /**
+     * Сохранение выходного языка
+     *
+     * @param context  - контекст Activity
+     * @param language - код выходного языка
+     */
     public static void saveOutputLanguage(Context context, String language) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(Consts.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Consts.SHARED_PREF_LANG, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(outputLang);
         editor.putString(outputLang, language);
         editor.apply();
     }
 
+    /**
+     * Загрузка входного языка
+     *
+     * @param context - контекст Activity
+     * @return входной язык
+     */
     public static String loadInputLanguage(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(Consts.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Consts.SHARED_PREF_LANG, Context.MODE_PRIVATE);
         return sharedPreferences.getString(inputLang, context.getString(R.string.en_short));
     }
 
+    /**
+     * Загрузка выходного языка
+     *
+     * @param context - контекст Activity
+     * @return выходной язык
+     */
     public static String loadOutputLanguage(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(Consts.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Consts.SHARED_PREF_LANG, Context.MODE_PRIVATE);
         return sharedPreferences.getString(outputLang, context.getString(R.string.ru_short));
     }
 

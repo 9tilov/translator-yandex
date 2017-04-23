@@ -17,12 +17,23 @@ import android.text.style.ImageSpan;
 import com.moggot.mytranslator.fragments.FavoritesListFragment;
 import com.moggot.mytranslator.fragments.RootFragment;
 
+/**
+ * Класс главного Activity
+ */
 public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "MainActivity";
 
+    /**
+     * Pager для смены экранов
+     */
     private ViewPager pager;
 
+    /**
+     * Создание Activity
+     *
+     * @param savedInstanceState - Bundle для хранения данных Activity
+     */
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,21 +51,40 @@ public class MainActivity extends AppCompatActivity {
         } else {
             header.setTabIndicatorColor(getResources().getColor(R.color.pager_header_indicator));
         }
-
     }
 
+    /**
+     * Получение pager'a
+     */
     public ViewPager getViewPager() {
         return pager;
     }
 
+    /**
+     * Адаптер для pager'a
+     */
     public class SlidePagerAdapter extends FragmentPagerAdapter {
 
+        /**
+         * Количество экранов в pager
+         */
         static final int NUM_ITEMS = 2;
 
+        /**
+         * Конструктор
+         *
+         * @param fm - менеджер управления фрагментами
+         */
         public SlidePagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
+        /**
+         * Получение экрана pager'a по его позиции
+         *
+         * @param position - позиция экрана
+         * @return фрагмент pager'a по позиции
+         */
         @Override
         public Fragment getItem(int position) {
 
@@ -64,11 +94,22 @@ public class MainActivity extends AppCompatActivity {
                 return FavoritesListFragment.newInstance();
         }
 
+        /**
+         * Получение количества экранов
+         *
+         * @return количество экранов
+         */
         @Override
         public int getCount() {
             return NUM_ITEMS;
         }
 
+        /**
+         * Установка картинов на header pager'a
+         *
+         * @param position - позиция экрана
+         * @return картинка
+         */
         @Override
         public CharSequence getPageTitle(int position) {
 

@@ -42,7 +42,6 @@ public class TranslatorResponse implements TranslationAlgorithm {
         }
     }
 
-
     /**
      * Обычный перевод слова
      *

@@ -10,10 +10,18 @@ import com.moggot.mytranslator.adapter.AdapterLanguage;
 import com.moggot.mytranslator.animation.AnimationBounce;
 import com.moggot.mytranslator.animation.BackButtonAnimationBounce;
 
+/**
+ * Класс Activity с выбором языка
+ */
 public class LanguageActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "LanguageActivity";
 
+    /**
+     * Создание Activity
+     *
+     * @param savedInstanceState - Bundle для хранения данных Activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +34,11 @@ public class LanguageActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
     }
 
+    /**
+     * Обработка нажатия кнопки Назад
+     *
+     * @param view - view кнопки Назад
+     */
     public void onClickBack(View view) {
         AnimationBounce animationBounce = new BackButtonAnimationBounce(this);
         animationBounce.animate(view);

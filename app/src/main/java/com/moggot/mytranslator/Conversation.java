@@ -7,15 +7,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by toor on 24.03.17.
+ * Класс преобразования кода языка в читаемый вид
  */
-
 public class Conversation {
 
     private static final String LOG_TAG = "Conversation";
 
+    /**
+     * Map для преобразования
+     */
     private Map<String, String> shortToLong = new HashMap<>();
 
+    /**
+     * Конструктор
+     *
+     * @param context - контекст Activity
+     */
     public Conversation(Context context) {
 
         shortToLong.put(context.getString(R.string.az_short), context.getString(R.string.az));
@@ -110,7 +117,13 @@ public class Conversation {
         shortToLong.put(context.getString(R.string.ja_short), context.getString(R.string.ja));
     }
 
-    public String getLongLangName(String shortLangName) {
-        return shortToLong.get(shortLangName);
+    /**
+     * Получение строки с полным названием языка
+     *
+     * @param langCode - код языка
+     * @return полное название языка
+     */
+    public String getLongLangName(String langCode) {
+        return shortToLong.get(langCode);
     }
 }
