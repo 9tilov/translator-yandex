@@ -56,6 +56,14 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/ic_content_copy_24px" />
 
+        <TextView
+            android:id="@+id/tvYandexTranslatorLink"
+            style="@style/Dictionary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:text="@string/yandex_translator" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -65,6 +73,7 @@
             android:layout_marginRight="@dimen/button_size"
             android:layout_marginStart="5dp"
             android:orientation="vertical"
+            android:layout_above="@+id/tvYandexTranslatorLink"
             android:weightSum="15">
 
             <ScrollView
@@ -100,7 +109,7 @@
                 android:id="@+id/scrollDetails"
                 android:layout_width="match_parent"
                 android:layout_height="0dip"
-                android:layout_weight="11"
+                android:layout_weight="13"
                 android:fillViewport="true"
                 android:scrollbars="vertical">
 
@@ -111,15 +120,7 @@
                     android:layout_height="wrap_content" />
 
             </ScrollView>
-
-            <TextView
-                android:id="@+id/tvYandexTranslatorLink"
-                style="@style/Dictionary"
-                android:layout_width="match_parent"
-                android:layout_height="0dip"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:text="@string/yandex_translator" />
         </LinearLayout>
+
     </RelativeLayout>
 </FrameLayout>
