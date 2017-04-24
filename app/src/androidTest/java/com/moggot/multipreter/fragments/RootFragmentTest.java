@@ -116,16 +116,16 @@ public class RootFragmentTest {
         onView(withId(R.id.tvOutputLang)).perform(click());
         onData(anything()).inAdapterView(withId(R.id.lvLanguages)).atPosition(61).perform(click());
         onView(withId(R.id.etText)).perform(typeText("time"));
-        onView(withId(R.id.flFragmentTranslation)).check(matches(isDisplayed()));
-        onView(withId(R.id.btnClearText)).check(matches(isDisplayed()));
-        onView(withId(R.id.btnAddFavorites)).check(matches(isDisplayed()));
-        onView(withId(R.id.btnCopyTranslation)).check(matches(isDisplayed()));
-        onView(withId(R.id.tvYandexTranslatorLink)).check(matches(isDisplayed()));
         rotateScreen();
         while (true) {
             if (getText(withId(R.id.tvTranslation)).equals("время") && !getText(withId(R.id.tvDetails)).isEmpty())
                 break;
         }
+        onView(withId(R.id.flFragmentTranslation)).check(matches(isDisplayed()));
+        onView(withId(R.id.btnClearText)).check(matches(isDisplayed()));
+        onView(withId(R.id.btnAddFavorites)).check(matches(isDisplayed()));
+        onView(withId(R.id.btnCopyTranslation)).check(matches(isDisplayed()));
+        onView(withId(R.id.tvYandexTranslatorLink)).check(matches(isDisplayed()));
         onView(withId(R.id.etText)).perform(clearText());
         onView(withId(R.id.btnClearText)).check(matches(not(isDisplayed())));
         onView(withId(R.id.llFragmentHistory)).check(matches(isDisplayed()));
@@ -145,6 +145,14 @@ public class RootFragmentTest {
         onView(withId(R.id.btnCopyTranslation)).check(matches(isDisplayed()));
         onView(withId(R.id.tvYandexTranslatorLink)).check(matches(isDisplayed()));
         onView(withId(R.id.tvDetails)).check(matches(not(isDisplayed())));
+        rotateScreen();
+        onView(withId(R.id.flFragmentTranslation)).check(matches(isDisplayed()));
+        onView(withId(R.id.btnClearText)).check(matches(isDisplayed()));
+        onView(withId(R.id.btnAddFavorites)).check(matches(isDisplayed()));
+        onView(withId(R.id.btnCopyTranslation)).check(matches(isDisplayed()));
+        onView(withId(R.id.tvYandexTranslatorLink)).check(matches(isDisplayed()));
+        onView(withId(R.id.tvDetails)).check(matches(not(isDisplayed())));
+        rotateScreen();
         onView(withId(R.id.etText)).perform(clearText());
     }
 
