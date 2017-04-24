@@ -19,7 +19,7 @@
 
     <string name="translation_copied">Перевод скопирован</string>
 
-    <string name="yandex_translator">Переведено сервисом\n<a href="http://www.translateManager.yandex.ru">«Яндекс.Переводчик»</a></string>
+    <string name="yandex_translator">Переведено сервисом\n<a href="http://www.translate.yandex.ru">«Яндекс.Переводчик»</a></string>
 
     <string name="noun_short">сущ</string>
     <string name="verb_short">гл</string>

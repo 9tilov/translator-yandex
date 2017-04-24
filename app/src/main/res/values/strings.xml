@@ -19,7 +19,7 @@
 
     <string name="translation_copied">Translation copied</string>
 
-    <string name="yandex_translator">Powered by\n<a href="http://www.translateManager.yandex.ru">"Yandex.Translate"</a></string>
+    <string name="yandex_translator">Powered by\n<a href="http://www.translate.yandex.ru">"Yandex.Translate"</a></string>
 
     <string name="noun" translatable="false">noun</string>
     <string name="verb" translatable="false">verb</string>
