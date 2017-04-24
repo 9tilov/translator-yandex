@@ -5,6 +5,10 @@ import android.content.SharedPreferences;
 
 /**
  * Класс хранения входного и выходного языков
+ * Было принято решение использовать SharedPrefernces, а не SQLite
+ * для хранения язков перевода, т.к. не хочется стрелять из пушки
+ * по воробьям. Языка перевода удобнее хранить в SharedPreferences,
+ * не создавая при этом дополнительной таблицы в БД.
  */
 public class LangSharedPreferences {
 
