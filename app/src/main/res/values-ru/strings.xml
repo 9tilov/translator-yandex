@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyTranslator</string>
+    <string name="app_name">Multipreter</string>
 
     <string name="edittext_hint">Введите текст&#8230;</string>
 
