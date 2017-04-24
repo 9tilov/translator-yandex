@@ -96,7 +96,7 @@
                 android:onClick="onClickClear" />
 
 
-            <com.moggot.mytranslator.BackAwareEditText
+            <com.moggot.multipreter.BackAwareEditText
                 android:id="@+id/etText"
                 style="@style/Text"
                 android:layout_width="match_parent"
