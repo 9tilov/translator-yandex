@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -163,8 +164,11 @@ public class TranslatorFragment extends Fragment {
 
         super.onResume();
 
-        this.tracker.set(Consts.FIREBASE_ITEM_NAME, getClass().getSimpleName());
-        this.tracker.send(new HitBuilders.ScreenViewBuilder().build());
+        if(tracker != null){
+            Log.v(LOG_TAG, "name = " + getClass().getSimpleName());
+            tracker.setScreenName(getClass().getSimpleName());
+            tracker.send(new HitBuilders.ScreenViewBuilder().build());
+        }
     }
 
     /**

@@ -12,18 +12,28 @@ import android.support.v4.app.ActivityCompat;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 /**
- * Created by dmitry on 25.11.16.
+ * Класс {@link FirebaseAnalysis}
  */
 
 public class FirebaseAnalysis {
 
+    /**
+     * Объект firebase для аналитики
+     */
     private FirebaseAnalytics firebaseAnalytics;
 
+    /**
+     * Конструктор
+     * @param ctx - сонтекст Activity
+     */
     public FirebaseAnalysis(Context ctx) {
         if (ActivityCompat.checkSelfPermission(ctx, android.Manifest.permission.WAKE_LOCK) == PackageManager.PERMISSION_GRANTED)
             firebaseAnalytics = FirebaseAnalytics.getInstance(ctx);
     }
 
+    /**
+     * Инициализация Firebase
+     */
     public void init() {
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, Consts.FIREBASE_ITEM_ID);

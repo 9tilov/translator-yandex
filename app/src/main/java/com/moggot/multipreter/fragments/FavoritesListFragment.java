@@ -212,18 +212,6 @@ public class FavoritesListFragment extends ListFragment {
     }
 
     /**
-     * Регистрируем появление фрагмента
-     */
-    @Override
-    public void onResume() {
-
-        super.onResume();
-
-        this.tracker.set(Consts.FIREBASE_ITEM_NAME, getClass().getSimpleName());
-        this.tracker.send(new HitBuilders.ScreenViewBuilder().build());
-    }
-
-    /**
      * Удаляем View фрагмента
      * Вместе с этим очищаем память под созданный listener
      */

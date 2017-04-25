@@ -186,8 +186,10 @@ public class HistoryListFragment extends ListFragment {
 
         super.onResume();
 
-        this.tracker.set(Consts.FIREBASE_ITEM_NAME, getClass().getSimpleName());
-        this.tracker.send(new HitBuilders.ScreenViewBuilder().build());
+        if(tracker != null){
+            tracker.setScreenName(getClass().getSimpleName());
+            tracker.send(new HitBuilders.ScreenViewBuilder().build());
+        }
     }
 
     /**

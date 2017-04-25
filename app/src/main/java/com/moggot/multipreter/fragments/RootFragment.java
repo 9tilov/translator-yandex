@@ -451,18 +451,6 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
     }
 
     /**
-     * Регистрируем появление фрагмента
-     */
-    @Override
-    public void onResume() {
-
-        super.onResume();
-
-        this.tracker.set(Consts.FIREBASE_ITEM_NAME, getClass().getSimpleName());
-        this.tracker.send(new HitBuilders.ScreenViewBuilder().build());
-    }
-
-    /**
      * Удаляем View фрагмента
      * Удаляем память под созданные View
      */
