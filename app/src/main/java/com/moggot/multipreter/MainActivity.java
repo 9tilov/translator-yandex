@@ -39,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        FirebaseAnalysis firebaseAnalytics = new FirebaseAnalysis(this);
+        firebaseAnalytics.init();
+
         pager = (ViewPager) findViewById(R.id.pager);
         final SlidePagerAdapter pagerAdapter = new SlidePagerAdapter(getSupportFragmentManager());
         pager.setAdapter(pagerAdapter);

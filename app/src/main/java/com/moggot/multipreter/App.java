@@ -2,6 +2,8 @@ package com.moggot.multipreter;
 
 import android.app.Application;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 import com.moggot.multipreter.api.YandexDictionaryApi;
 import com.moggot.multipreter.api.YandexTranslationApi;
 
@@ -22,6 +24,11 @@ public class App extends Application {
      * Интерфейс с данными сервера детального перевода
      */
     private static YandexDictionaryApi yandexDictionaryApi;
+
+    /**
+     * Tracker отслеживания
+     */
+    private Tracker mTracker;
 
     /**
      * Инициализация Retrofit
@@ -59,5 +66,17 @@ public class App extends Application {
      */
     public static YandexDictionaryApi getYandexDictionaryApi() {
         return yandexDictionaryApi;
+    }
+
+    /**
+     * Получает счетчик {@link Tracker}, используемый по умолчанию для этого приложения {@link Application}.
+     * @return tracker
+     */
+    synchronized public Tracker getDefaultTracker() {
+        if (mTracker == null) {
+            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+            mTracker = analytics.newTracker(R.xml.app_tracker);
+        }
+        return mTracker;
     }
 }

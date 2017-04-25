@@ -13,9 +13,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.moggot.multipreter.App;
+import com.moggot.multipreter.Consts;
 import com.moggot.multipreter.R;
 import com.moggot.multipreter.animation.AnimationBounce;
 import com.moggot.multipreter.animation.EmptyAnimationBounce;
+import com.moggot.multipreter.observer.FavoritesDisplay;
+import com.moggot.multipreter.observer.TranslatorData;
 
 /**
  * Класс фрагмента с экраном перевода
@@ -23,6 +29,11 @@ import com.moggot.multipreter.animation.EmptyAnimationBounce;
 public class TranslatorFragment extends Fragment {
 
     private static final String LOG_TAG = "TranslatorFragment";
+
+    /**
+     * Tracker для отслеживания
+     */
+    private Tracker tracker;
 
     /**
      * Интерфейс для передачи данных в родительский фрагмент
@@ -69,6 +80,17 @@ public class TranslatorFragment extends Fragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString() + " must implement TranslatorEventListener");
         }
+    }
+
+    /**
+     * Отображаем данные фрагмента
+     *
+     * @param savedInstanceState - Bundle для загрузки состояния фрагмента
+     */
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        tracker = ((App) getActivity().getApplication()).getDefaultTracker();
     }
 
     /**
@@ -131,6 +153,18 @@ public class TranslatorFragment extends Fragment {
         Toast toast = Toast.makeText(getContext(),
                 getContext().getString(R.string.translation_copied), Toast.LENGTH_SHORT);
         toast.show();
+    }
+
+    /**
+     * Регистрируем появление фрагмента
+     */
+    @Override
+    public void onResume() {
+
+        super.onResume();
+
+        this.tracker.set(Consts.FIREBASE_ITEM_NAME, getClass().getSimpleName());
+        this.tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     /**

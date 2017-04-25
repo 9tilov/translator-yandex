@@ -1,0 +1,177 @@
+{
+  "project_info": {
+    "project_number": "79745386976",
+    "firebase_url": "https://androidapps-150409.firebaseio.com",
+    "project_id": "androidapps-150409",
+    "storage_bucket": "androidapps-150409.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:79745386976:android:4122d82995f5859c",
+        "android_client_info": {
+          "package_name": "com.moggot.svet_ku"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "79745386976-gfnkb6ukanmi3at4fv1opvtg876385eu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.moggot.svet_ku",
+            "certificate_hash": "0170ba1fd575b4aba62e3c759c75992dff56d492"
+          }
+        },
+        {
+          "client_id": "79745386976-hdjfpavlf6ef6cn88io9dd72bghm90hf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcsjvfCYq8ECvSBtLjpv6toYsepEBawVE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "79745386976-hdjfpavlf6ef6cn88io9dd72bghm90hf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:79745386976:android:d96b1e2c2cdd8827",
+        "android_client_info": {
+          "package_name": "com.moggot.findmycarlocation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "79745386976-36s87o6sc40ufbu3d90fsm910j5m7m03.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.moggot.findmycarlocation",
+            "certificate_hash": "cec90f98bc7c36b6a061f3e799cac149890c3566"
+          }
+        },
+        {
+          "client_id": "79745386976-ndt49qjtoq2sqfmv4h1hfpnfhl43mrmh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.moggot.findmycarlocation",
+            "certificate_hash": "0fae6525f9b9282cd744fd94a417879573a69b92"
+          }
+        },
+        {
+          "client_id": "79745386976-fvcgu3cf2fbqv65aipd564vug9hba8v8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.moggot.findmycarlocation",
+            "certificate_hash": "3470d5735ca9eb4d7ac7340400023351d8e53bdb"
+          }
+        },
+        {
+          "client_id": "79745386976-hdjfpavlf6ef6cn88io9dd72bghm90hf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcsjvfCYq8ECvSBtLjpv6toYsepEBawVE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "79745386976-hdjfpavlf6ef6cn88io9dd72bghm90hf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:79745386976:android:7ce4a42891142ef8",
+        "android_client_info": {
+          "package_name": "com.moggot.commonalarmclock"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "79745386976-hdjfpavlf6ef6cn88io9dd72bghm90hf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcsjvfCYq8ECvSBtLjpv6toYsepEBawVE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:79745386976:android:b66706a7f7eaf10e",
+        "android_client_info": {
+          "package_name": "com.moggot.multipreter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "79745386976-hdjfpavlf6ef6cn88io9dd72bghm90hf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcsjvfCYq8ECvSBtLjpv6toYsepEBawVE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -15,6 +15,9 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.moggot.multipreter.App;
 import com.moggot.multipreter.BackAwareEditText;
 import com.moggot.multipreter.Consts;
 import com.moggot.multipreter.DataBase;
@@ -50,6 +53,11 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
      * транслятор
      */
     private Translator translator;
+
+    /**
+     * Tracker для отслеживания
+     */
+    private Tracker tracker;
 
     /**
      * Контекст транслятора
@@ -91,6 +99,17 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         db = new DataBase(getContext());
+    }
+
+    /**
+     * Отображаем данные фрагмента
+     *
+     * @param savedInstanceState - Bundle для загрузки состояния фрагмента
+     */
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        tracker = ((App) getActivity().getApplication()).getDefaultTracker();
     }
 
     /**
@@ -384,6 +403,10 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
             if (isVisibleToUser) {
                 if (translatorContext != null)
                     translatorContext.show();
+                if(tracker != null){
+                    tracker.setScreenName(getClass().getSimpleName());
+                    tracker.send(new HitBuilders.ScreenViewBuilder().build());
+                }
             }
         } catch (IllegalStateException e) {
             e.printStackTrace();
@@ -425,6 +448,18 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
                 translatorContext.show();
                 break;
         }
+    }
+
+    /**
+     * Регистрируем появление фрагмента
+     */
+    @Override
+    public void onResume() {
+
+        super.onResume();
+
+        this.tracker.set(Consts.FIREBASE_ITEM_NAME, getClass().getSimpleName());
+        this.tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     /**

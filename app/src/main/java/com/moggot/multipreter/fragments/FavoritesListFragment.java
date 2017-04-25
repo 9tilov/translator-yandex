@@ -13,6 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.moggot.multipreter.App;
+import com.moggot.multipreter.Consts;
 import com.moggot.multipreter.DataBase;
 import com.moggot.multipreter.MainActivity;
 import com.moggot.multipreter.R;
@@ -52,6 +56,11 @@ public class FavoritesListFragment extends ListFragment {
      * Дисплей для отображения данных
      */
     private Display display;
+
+    /**
+     * Tracker для отслеживания
+     */
+    private Tracker tracker;
 
     /**
      * Listener для передачи данных
@@ -128,6 +137,8 @@ public class FavoritesListFragment extends ListFragment {
         TranslatorData translatorData = new TranslatorData();
         display = new FavoritesDisplay(this, translatorData);
         display.display();
+
+        tracker = ((App) getActivity().getApplication()).getDefaultTracker();
     }
 
     /**
@@ -193,7 +204,23 @@ public class FavoritesListFragment extends ListFragment {
         Log.v(LOG_TAG, "setUserVisibleHint = " + isVisibleToUser);
         if (isVisibleToUser) {
             display.display();
+            if(tracker != null){
+                tracker.setScreenName(getClass().getSimpleName());
+                tracker.send(new HitBuilders.ScreenViewBuilder().build());
+            }
         }
+    }
+
+    /**
+     * Регистрируем появление фрагмента
+     */
+    @Override
+    public void onResume() {
+
+        super.onResume();
+
+        this.tracker.set(Consts.FIREBASE_ITEM_NAME, getClass().getSimpleName());
+        this.tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     /**

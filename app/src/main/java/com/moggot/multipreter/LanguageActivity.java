@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
 
+import com.google.android.gms.analytics.Tracker;
 import com.moggot.multipreter.adapter.AdapterLanguage;
 import com.moggot.multipreter.animation.AnimationBounce;
 import com.moggot.multipreter.animation.BackButtonAnimationBounce;
@@ -25,6 +26,12 @@ public class LanguageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_language);
+
+        FirebaseAnalysis firebaseAnalytics = new FirebaseAnalysis(this);
+        firebaseAnalytics.init();
+
+        Tracker tracker = ((App) getApplication()).getDefaultTracker();
+        tracker.enableAdvertisingIdCollection(true);
 
         Consts.LANG_TYPE type = Consts.LANG_TYPE.fromInteger(getIntent().getIntExtra(Consts.EXTRA_LANG, 0));
 

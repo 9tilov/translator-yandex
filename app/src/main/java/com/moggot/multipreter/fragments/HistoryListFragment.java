@@ -11,6 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.moggot.multipreter.App;
+import com.moggot.multipreter.Consts;
 import com.moggot.multipreter.DataBase;
 import com.moggot.multipreter.R;
 import com.moggot.multipreter.animation.AnimationBounce;
@@ -47,6 +51,11 @@ public class HistoryListFragment extends ListFragment {
      * Дисплей для отображения данных
      */
     private Display display;
+
+    /**
+     * Tracker для отслеживания
+     */
+    private Tracker tracker;
 
     /**
      * Listener для передачи данных
@@ -114,6 +123,8 @@ public class HistoryListFragment extends ListFragment {
         TranslatorData translatorData = new TranslatorData();
         display = new HistoryDisplay(this, translatorData);
         display.display();
+
+        tracker = ((App) getActivity().getApplication()).getDefaultTracker();
     }
 
     /**
@@ -165,6 +176,18 @@ public class HistoryListFragment extends ListFragment {
                 alertDialog.show();
             }
         });
+    }
+
+    /**
+     * Регистрируем появление фрагмента
+     */
+    @Override
+    public void onResume() {
+
+        super.onResume();
+
+        this.tracker.set(Consts.FIREBASE_ITEM_NAME, getClass().getSimpleName());
+        this.tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     /**

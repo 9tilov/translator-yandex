@@ -85,4 +85,19 @@ public class Consts {
      * Код для возврата из одного Activity в другой
      */
     public static final int REQUEST_CODE_ACTIVITY_LANGUAGE = 0;
+
+    /**
+     * Firebase id
+     */
+    public final static String FIREBASE_ITEM_ID = "ID";
+
+    /**
+     * Firebase name
+     */
+    public final static String FIREBASE_ITEM_NAME = "NAME";
+
+    /**
+     * Firebase image
+     */
+    public final static String FIREBASE_CONTENT_TYPE = "IMAGE";
 }
