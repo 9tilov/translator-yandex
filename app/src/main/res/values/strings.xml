@@ -17,6 +17,10 @@
     <string name="empty_history">No translations in history</string>
     <string name="empty_favorites">No translations in favorites</string>
 
+    <string name="language_input">Source language</string>
+    <string name="language_output">Target language</string>
+
+
     <string name="translation_copied">Translation copied</string>
 
     <string name="yandex_translator">Powered by\n<a href="http://www.translate.yandex.ru">"Yandex.Translate"</a></string>

@@ -55,11 +55,6 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
     private Translator translator;
 
     /**
-     * Tracker для отслеживания
-     */
-    private Tracker tracker;
-
-    /**
      * Контекст транслятора
      */
     private TranslatorContext translatorContext;
@@ -109,7 +104,6 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        tracker = ((App) getActivity().getApplication()).getDefaultTracker();
     }
 
     /**
@@ -403,10 +397,6 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
             if (isVisibleToUser) {
                 if (translatorContext != null)
                     translatorContext.show();
-                if(tracker != null){
-                    tracker.setScreenName(getClass().getSimpleName());
-                    tracker.send(new HitBuilders.ScreenViewBuilder().build());
-                }
             }
         } catch (IllegalStateException e) {
             e.printStackTrace();

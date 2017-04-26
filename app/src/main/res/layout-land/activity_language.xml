@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:weightSum="10">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="1"
@@ -14,13 +14,22 @@
         <Button
             android:layout_width="@dimen/button_size"
             android:layout_height="@dimen/button_size"
-            android:layout_gravity="center"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:background="@drawable/ic_close_24dp"
             android:onClick="onClickBack" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/tvLanguage"
+            style="@style/TextLang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="Language" />
+
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/lvLanguages"

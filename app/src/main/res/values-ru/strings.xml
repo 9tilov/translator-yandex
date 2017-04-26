@@ -17,6 +17,9 @@
     <string name="empty_history">Нет переводов в истории</string>
     <string name="empty_favorites">Нет переводов в избранном</string>
 
+    <string name="language_input">Язык оригинала</string>
+    <string name="language_output">Язык перевода</string>
+
     <string name="translation_copied">Перевод скопирован</string>
 
     <string name="yandex_translator">Переведено сервисом\n<a href="http://www.translate.yandex.ru">«Яндекс.Переводчик»</a></string>

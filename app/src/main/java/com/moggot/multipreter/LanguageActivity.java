@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.gms.analytics.Tracker;
 import com.moggot.multipreter.adapter.AdapterLanguage;
@@ -34,6 +35,11 @@ public class LanguageActivity extends AppCompatActivity {
         tracker.enableAdvertisingIdCollection(true);
 
         Consts.LANG_TYPE type = Consts.LANG_TYPE.fromInteger(getIntent().getIntExtra(Consts.EXTRA_LANG, 0));
+
+        if (type == Consts.LANG_TYPE.INPUT)
+            ((TextView) findViewById(R.id.tvLanguage)).setText(getString(R.string.language_input));
+        else
+            ((TextView) findViewById(R.id.tvLanguage)).setText(getString(R.string.language_output));
 
         ListView listView = (ListView) findViewById(R.id.lvLanguages);
         AdapterLanguage adapter = new AdapterLanguage(this, type);
