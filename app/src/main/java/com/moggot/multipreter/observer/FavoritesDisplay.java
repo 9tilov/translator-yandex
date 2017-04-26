@@ -47,16 +47,20 @@ public class FavoritesDisplay extends Display {
      */
     @Override
     public void display() {
-        if (fragment.getView() == null)
-            return;
-        displayClearFavoritesButton();
-        displayFavoritesList();
+        try {
+            displayClearFavoritesButton();
+            displayFavoritesList();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Отображение кнопки очистки списка избранных слов
      */
-    private void displayClearFavoritesButton() {
+    private void displayClearFavoritesButton() throws NullPointerException {
+        if (fragment.getView() == null)
+            throw new NullPointerException("getView() is null");
         if (db.getFavoritesRecords().isEmpty())
             ((Button) fragment.getView().findViewById(R.id.btnClearFavorites)).setVisibility(View.GONE);
         else
@@ -66,10 +70,11 @@ public class FavoritesDisplay extends Display {
     /**
      * Отображение списка избранных слов
      */
-    private void displayFavoritesList() {
+    private void displayFavoritesList() throws NullPointerException {
+        if (((FavoritesListFragment) fragment).getListView() == null)
+            throw new NullPointerException("getListView is null");
         List<Translator> records = db.getFavoritesRecords();
         AdapterFavorites adapter = new AdapterFavorites(fragment, records);
         ((FavoritesListFragment) fragment).getListView().setAdapter(adapter);
     }
-
 }

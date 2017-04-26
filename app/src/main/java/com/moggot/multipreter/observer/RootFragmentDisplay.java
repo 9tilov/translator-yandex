@@ -1,6 +1,7 @@
 package com.moggot.multipreter.observer;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NavUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -38,17 +39,21 @@ public class RootFragmentDisplay extends Display {
      */
     @Override
     public void display() {
-        if (fragment.getView() == null)
-            return;
-        displayInputLang();
-        displayOutputLang();
-        displayClearButton();
+        try {
+            displayInputLang();
+            displayOutputLang();
+            displayClearButton();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Отображение входного языка
      */
-    private void displayInputLang() {
+    private void displayInputLang() throws NullPointerException {
+        if (fragment.getView() == null)
+            throw new NullPointerException("getView() is null");
         Conversation conversation = new Conversation(context);
         ((TextView) fragment.getView().findViewById(R.id.tvInputLang)).setText(conversation.getLongLangName(translator.getInputLanguage()));
         LangSharedPreferences.saveInputLanguage(context, translator.getInputLanguage());
@@ -57,7 +62,9 @@ public class RootFragmentDisplay extends Display {
     /**
      * Отображение выходного языка
      */
-    private void displayOutputLang() {
+    private void displayOutputLang() throws NullPointerException{
+        if (fragment.getView() == null)
+            throw new NullPointerException("getView() is null");
         Conversation conversation = new Conversation(context);
         ((TextView) fragment.getView().findViewById(R.id.tvOutputLang)).setText(conversation.getLongLangName(translator.getOutputLanguage()));
         LangSharedPreferences.saveOutputLanguage(context, translator.getOutputLanguage());
@@ -66,7 +73,9 @@ public class RootFragmentDisplay extends Display {
     /**
      * Отображение кнопки очистки поля ввода текста
      */
-    private void displayClearButton() {
+    private void displayClearButton()throws NullPointerException {
+        if (fragment.getView() == null)
+            throw new NullPointerException("getView() is null");
         if (translator.getText().isEmpty())
             ((Button) fragment.getView().findViewById(R.id.btnClearText)).setVisibility(View.GONE);
         else

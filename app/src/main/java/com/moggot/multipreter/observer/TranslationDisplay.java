@@ -58,18 +58,22 @@ public class TranslationDisplay extends Display {
      */
     @Override
     public void display() {
-        if (fragment.getView() == null)
-            return;
-        dislpayTranslation();
-        displayFavorites();
-        displayDetails();
+        try {
+            dislpayTranslation();
+            displayFavorites();
+            displayDetails();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
 
     }
 
     /**
      * Отображение перевода
      */
-    private void dislpayTranslation() {
+    private void dislpayTranslation() throws NullPointerException {
+        if (fragment.getView() == null)
+            throw new NullPointerException("getView() is null");
         (fragment.getView().findViewById(R.id.rlTranslation)).setVisibility(View.VISIBLE);
         (fragment.getView().findViewById(R.id.llError)).setVisibility(View.GONE);
 
@@ -79,7 +83,9 @@ public class TranslationDisplay extends Display {
     /**
      * Отображение флага Избранное
      */
-    private void displayFavorites() {
+    private void displayFavorites() throws NullPointerException {
+        if (fragment.getView() == null)
+            throw new NullPointerException("getView() is null");
         if (translator.getIsFavorites())
             ((Button) fragment.getView().findViewById(R.id.btnAddFavorites)).setBackgroundResource(R.drawable.ic_bookmark_24px);
         else
@@ -89,7 +95,9 @@ public class TranslationDisplay extends Display {
     /**
      * Отображение детального перевода
      */
-    private void displayDetails() {
+    private void displayDetails() throws NullPointerException {
+        if (fragment.getView() == null)
+            throw new NullPointerException("getView() is null");
         ScrollView scrollViewDetails = (ScrollView) fragment.getView().findViewById(R.id.scrollDetails);
         ScrollView scrollViewTranslation = ((ScrollView) fragment.getView().findViewById(R.id.scrollTranslation));
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) scrollViewTranslation.getLayoutParams();

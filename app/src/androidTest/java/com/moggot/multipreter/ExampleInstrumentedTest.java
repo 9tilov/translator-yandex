@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.moggot.mytranslator", appContext.getPackageName());
+        assertEquals("com.moggot.multipreter", appContext.getPackageName());
     }
 }

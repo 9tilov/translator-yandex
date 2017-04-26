@@ -44,12 +44,14 @@ public class DictionaryResponse implements TranslationAlgorithm {
      *
      * @param parentFragment - родительский фрагмент
      */
-    public DictionaryResponse(final Fragment parentFragment) {
+    public DictionaryResponse(final Fragment parentFragment) throws NullPointerException {
 
         if (parentFragment != null) {
             translatorFragment = parentFragment.getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
 
-            if (translatorFragment != null && translatorFragment.getView() != null) {
+            if (translatorFragment != null) {
+                if (translatorFragment.getView() == null)
+                    throw new NullPointerException("getView() is null");
                 progressBar = (ProgressBar) translatorFragment.getView().findViewById(R.id.spin_kit);
                 ThreeBounce threeBounce = new ThreeBounce();
                 progressBar.setIndeterminateDrawable(threeBounce);

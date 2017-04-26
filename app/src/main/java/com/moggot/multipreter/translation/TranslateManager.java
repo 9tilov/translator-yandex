@@ -30,12 +30,17 @@ public class TranslateManager {
 
     /**
      * Перевод слова
+     *
      * @param translator - транслятор
      */
     public void translate(Translator translator) {
         Translation translation = new Translation(new TranslatorResponse(parentFragment));
         translation.translate(translator);
-        translation.setAlgorithm(new DictionaryResponse(parentFragment));
-        translation.translate(translator);
+        try {
+            translation.setAlgorithm(new DictionaryResponse(parentFragment));
+            translation.translate(translator);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 }

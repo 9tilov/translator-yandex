@@ -34,15 +34,19 @@ public class NetworkConnectionError extends Display {
      */
     @Override
     public void display() {
-        if (fragment.getView() == null)
-            return;
-        dislpayError();
+        try {
+            dislpayError();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Отображение ошибки
      */
-    private void dislpayError() {
+    private void dislpayError() throws NullPointerException {
+        if (fragment.getView() == null)
+            throw new NullPointerException("getView() is null");
         (fragment.getView().findViewById(R.id.llError)).setVisibility(View.VISIBLE);
         (fragment.getView().findViewById(R.id.rlTranslation)).setVisibility(View.GONE);
     }

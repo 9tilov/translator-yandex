@@ -62,11 +62,11 @@ public class AdapterFavorites extends BaseSwipeAdapter {
      * Так же обновляется видимость кнопки "Удалить все избранные записи" после того,
      * как вручную удаляется последняя запись
      */
-    private void update() {
+    private void update() throws NullPointerException {
         records = db.getFavoritesRecords();
 
         if (fragment.getView() == null)
-            return;
+            throw new NullPointerException("getView() is null");
         if (records.isEmpty())
             ((Button) fragment.getView().findViewById(R.id.btnClearFavorites)).setVisibility(View.GONE);
         else
@@ -125,7 +125,11 @@ public class AdapterFavorites extends BaseSwipeAdapter {
                 translatorAtPosition.setIsFavorites(false);
                 db.editRecord(translatorAtPosition);
                 closeItem(position);
-                update();
+                try {
+                    update();
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
             }
         });
 

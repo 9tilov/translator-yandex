@@ -64,11 +64,11 @@ public class AdapterHistory extends BaseSwipeAdapter {
      * Так же обновляется видимость кнопки "Удалить историю перевода" после того,
      * как вручную удаляется последняя запись
      */
-    private void update() {
+    private void update() throws NullPointerException {
         this.records = db.getAllRecords();
 
         if (fragment.getView() == null)
-            return;
+            throw new NullPointerException("getView() is null");
         if (records.isEmpty())
             ((Button) fragment.getView().findViewById(R.id.btnClearHistory)).setVisibility(View.GONE);
         else
@@ -156,7 +156,11 @@ public class AdapterHistory extends BaseSwipeAdapter {
                 else
                     translatorAtPosition.setIsFavorites(true);
                 db.editRecord(translatorAtPosition);
-                update();
+                try {
+                    update();
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
             }
         });
 

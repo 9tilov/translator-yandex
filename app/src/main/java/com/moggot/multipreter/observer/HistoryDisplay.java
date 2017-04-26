@@ -47,16 +47,20 @@ public class HistoryDisplay extends Display {
      */
     @Override
     public void display() {
-        if (fragment.getView() == null)
-            return;
-        displayClearHistoryButton();
-        displayHistoryList();
+        try {
+            displayClearHistoryButton();
+            displayHistoryList();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Отображение кнопки очистки истории переводов
      */
-    private void displayClearHistoryButton() {
+    private void displayClearHistoryButton() throws NullPointerException {
+        if (fragment.getView() == null)
+            throw new NullPointerException("getView() is null");
         if (db.getAllRecords().isEmpty())
             ((Button) fragment.getView().findViewById(R.id.btnClearHistory)).setVisibility(View.GONE);
         else
@@ -66,10 +70,11 @@ public class HistoryDisplay extends Display {
     /**
      * Отображение истории переводов
      */
-    private void displayHistoryList() {
+    private void displayHistoryList() throws NullPointerException {
+        if (((HistoryListFragment) fragment).getListView() == null)
+            throw new NullPointerException("getListView is null");
         List<Translator> records = db.getAllRecords();
         AdapterHistory adapter = new AdapterHistory(fragment, records);
         ((HistoryListFragment) fragment).getListView().setAdapter(adapter);
     }
-
 }
