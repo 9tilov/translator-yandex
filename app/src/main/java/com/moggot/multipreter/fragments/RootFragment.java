@@ -10,15 +10,15 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-import com.moggot.multipreter.App;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.moggot.multipreter.BackAwareEditText;
 import com.moggot.multipreter.Consts;
 import com.moggot.multipreter.DataBase;
@@ -134,7 +134,8 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
         super.onViewCreated(view, savedInstanceState);
 
         etText = (BackAwareEditText) view.findViewById(R.id.etText);
-
+        final TextView tvInputLang = (TextView)view.findViewById(R.id.tvInputLang);
+        final TextView tvOutputLang = (TextView)view.findViewById(R.id.tvOutputLang);
 
         if (savedInstanceState != null)
             etText.setText(savedInstanceState.getString(Consts.EXTRA_TEXT));
@@ -236,6 +237,18 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
                 translator.setText(etText.getText().toString());
 
                 translatorContext.show();
+
+                Techniques technique = Techniques.BounceInRight;
+                YoYo.with(technique)
+                        .duration(1200)
+                        .interpolate(new AccelerateDecelerateInterpolator())
+                        .playOn(tvInputLang);
+
+                technique = Techniques.BounceInLeft;
+                YoYo.with(technique)
+                        .duration(1200)
+                        .interpolate(new AccelerateDecelerateInterpolator())
+                        .playOn(tvOutputLang);
             }
         });
 
@@ -253,7 +266,6 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
         });
 
         //обработка нажатия кнопки входного языка
-        TextView tvInputLang = (TextView) view.findViewById(R.id.tvInputLang);
         tvInputLang.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -266,7 +278,6 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
         });
 
         //обработка нажатия кнопки выходного языка
-        TextView tvOutputLang = (TextView) view.findViewById(R.id.tvOutputLang);
         tvOutputLang.setOnClickListener(new View.OnClickListener() {
 
             @Override

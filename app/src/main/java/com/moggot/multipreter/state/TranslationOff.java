@@ -36,7 +36,7 @@ public class TranslationOff extends State {
             FragmentTransaction ft = parentFragment.getChildFragmentManager().beginTransaction();
             fragment = HistoryListFragment.newInstance();
             ft.replace(R.id.root_frame, fragment, Consts.TAG_FRAGMENT_HISTORY);
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
             ft.commit();
 
             parentFragment.getChildFragmentManager().executePendingTransactions();

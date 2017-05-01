@@ -20,6 +20,7 @@
             android:layout_height="match_parent"
             android:layout_toLeftOf="@+id/btnChangeLang"
             android:layout_toStartOf="@+id/btnChangeLang"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:ellipsize="end"
             android:gravity="center"
@@ -48,6 +49,7 @@
             android:layout_height="match_parent"
             android:layout_toEndOf="@+id/btnChangeLang"
             android:layout_toRightOf="@+id/btnChangeLang"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:ellipsize="end"
             android:gravity="center"
@@ -115,8 +117,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="70"
-        android:background="@color/background_light">
-    </FrameLayout>
+        android:background="@color/background_light"></FrameLayout>
 </LinearLayout>
 
 
