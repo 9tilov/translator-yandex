@@ -17,7 +17,6 @@
     <!-- How long a session exists before giving up -->
     <integer name="ga_sessionTimeout">-1</integer>
 
-    <screenName name="com.moggot.multipreter.MainActivity">MainActivity</screenName>
     <screenName name="com.moggot.multipreter.LanguageActivity">LangActivity</screenName>
 
 </resources>
