@@ -25,6 +25,7 @@ import com.moggot.multipreter.gson.Mean;
 import com.moggot.multipreter.gson.Syn;
 import com.moggot.multipreter.gson.Tr;
 import com.moggot.multipreter.gson.Tr_;
+import com.moggot.multipreter.translator.Translator;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -77,7 +78,8 @@ public class TranslationDisplay extends Display {
         (fragment.getView().findViewById(R.id.rlTranslation)).setVisibility(View.VISIBLE);
         (fragment.getView().findViewById(R.id.llError)).setVisibility(View.GONE);
 
-        ((TextView) fragment.getView().findViewById(R.id.tvTranslation)).setText(translator.getTranslation());
+        String translation = parseTranslation(translator);
+        ((TextView) fragment.getView().findViewById(R.id.tvTranslation)).setText(translation);
     }
 
     /**
@@ -106,7 +108,7 @@ public class TranslationDisplay extends Display {
         }.getType();
         List<Def> defs = new Gson().fromJson(translator.getDetails(), type);
         if (defs != null && !defs.isEmpty()) {
-            SpannableStringBuilder result = parse(defs);
+            SpannableStringBuilder result = parseDetails(defs);
             scrollViewDetails.setVisibility(View.VISIBLE);
             params.height = 0;
             ((TextView) fragment.getView().findViewById(R.id.tvDetails)).setText(result);
@@ -117,13 +119,20 @@ public class TranslationDisplay extends Display {
         }
     }
 
+    private String parseTranslation(Translator translator) {
+        String translation = translator.getTranslation();
+        translation = translation.replace("%3B", ";");
+        translation = translation.replace("%2B", "+");
+        return translation;
+    }
+
     /**
      * Парсинг json  с детальным переводом слова
      *
      * @param definitions - список объектов с детальным переводом
      * @return распарсенный ответ
      */
-    private SpannableStringBuilder parse(List<Def> definitions) {
+    private SpannableStringBuilder parseDetails(List<Def> definitions) {
         SpannableStringBuilder strResult = new SpannableStringBuilder();
         strResult.append(definitions.get(0).getText());
         String transcription = definitions.get(0).getTs();

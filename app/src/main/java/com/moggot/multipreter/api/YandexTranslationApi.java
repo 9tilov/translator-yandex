@@ -20,5 +20,5 @@ public interface YandexTranslationApi {
      * @return объект с данными
      */
     @POST("api/v1.5/tr.json/translate")
-    Call<WordTranslator> getTranslation(@Query("key") String key, @Query("text") String text, @Query("lang") String lang);
+    Call<WordTranslator> getTranslation(@Query("key") String key, @Query(value = "text", encoded = true) String text, @Query("lang") String lang);
 }

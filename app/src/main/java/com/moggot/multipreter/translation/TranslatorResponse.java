@@ -1,6 +1,7 @@
 package com.moggot.multipreter.translation;
 
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.moggot.multipreter.api.APIEror;
 import com.moggot.multipreter.api.ApiKeys;
@@ -50,9 +51,17 @@ public class TranslatorResponse implements TranslationAlgorithm {
     @Override
     public void translate(final Translator translator) {
         String langDirection = translator.getInputLanguage() + "-" + translator.getOutputLanguage();
-        App.getYandexTranslationApi().getTranslation(ApiKeys.YANDEX_API_KEY, translator.getText(), langDirection).enqueue(new Callback<WordTranslator>() {
+        String text = translator.getText();
+        text = text.replace(";", "%3B");
+        text = text.replace("+", "%2B");
+        App.getYandexTranslationApi().getTranslation(ApiKeys.YANDEX_API_KEY, text, langDirection).enqueue(new Callback<WordTranslator>() {
             @Override
             public void onResponse(Call<WordTranslator> call, Response<WordTranslator> response) {
+
+                Log.v(LOG_TAG, "request = " + call.request().toString());
+
+                if (translatorFragment.getView() == null)
+                    throw new NullPointerException("getView() is null");
 
                 if (response.body() == null)
                     return;
