@@ -58,8 +58,6 @@ public class TranslatorResponse implements TranslationAlgorithm {
             @Override
             public void onResponse(Call<WordTranslator> call, Response<WordTranslator> response) {
 
-                Log.v(LOG_TAG, "request = " + call.request().toString());
-
                 if (translatorFragment.getView() == null)
                     throw new NullPointerException("getView() is null");
 
