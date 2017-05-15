@@ -34,9 +34,10 @@ public class TranslateManager {
      * @param translator - транслятор
      */
     public void translate(Translator translator) {
-        Translation translation = new Translation(new TranslatorResponse(parentFragment));
-        translation.translate(translator);
         try {
+            Translation translation = new Translation(new TranslatorResponse(parentFragment));
+            translation.translate(translator);
+
             translation.setAlgorithm(new DictionaryResponse(parentFragment));
             translation.translate(translator);
         } catch (NullPointerException e) {

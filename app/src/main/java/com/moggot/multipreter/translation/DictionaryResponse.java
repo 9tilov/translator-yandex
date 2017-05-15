@@ -1,6 +1,7 @@
 package com.moggot.multipreter.translation;
 
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -68,9 +69,15 @@ public class DictionaryResponse implements TranslationAlgorithm {
     @Override
     public void translate(final Translator translator) {
         String langDirection = translator.getInputLanguage() + "-" + translator.getOutputLanguage();
-        App.getYandexDictionaryApi().getDetails(ApiKeys.YANDEX_DICTIONARY_API_KEY, translator.getText(), langDirection).enqueue(new Callback<WordDictionary>() {
+        String text = translator.getText();
+        text = text.replace(";", "%3B");
+        text = text.replace("+", "%2B");
+        App.getYandexDictionaryApi().getDetails(ApiKeys.YANDEX_DICTIONARY_API_KEY, text, langDirection).enqueue(new Callback<WordDictionary>() {
             @Override
-            public void onResponse(Call<WordDictionary> call, Response<WordDictionary> response) {
+            public void onResponse(Call<WordDictionary>  call, Response<WordDictionary> response) {
+
+                if (translatorFragment.getView() == null)
+                    throw new NullPointerException("getView() is null");
 
                 if (response.body() == null) {
                     progressBar.setVisibility(View.GONE);
