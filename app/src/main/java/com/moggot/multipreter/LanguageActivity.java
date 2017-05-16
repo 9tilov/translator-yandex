@@ -47,11 +47,9 @@ public class LanguageActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.langRecyclerView);
         RecyclerViewLanguageAdapter adapter = new RecyclerViewLanguageAdapter(this, type);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setItemAnimator(itemAnimator);
         recyclerView.setHasFixedSize(true);
     }
 

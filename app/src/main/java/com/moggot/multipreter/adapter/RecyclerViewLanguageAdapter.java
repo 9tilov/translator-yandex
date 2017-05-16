@@ -1,5 +1,6 @@
 package com.moggot.multipreter.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -78,12 +79,11 @@ public class RecyclerViewLanguageAdapter extends RecyclerView.Adapter<RecyclerVi
             language = (TextView) itemView.findViewById(R.id.tvLang);
             rbCheck = (RadioButton) itemView.findViewById(R.id.rbCheck);
             itemView.setOnClickListener(this);
-            rbCheck.setOnClickListener(this);
         }
 
         public void setDateToView(String lang, int position) throws Exception {
-            rbCheck.setChecked(position == selectedItem);
             this.language.setText(conversation.getLongLangName(lang));
+            rbCheck.setChecked(position == selectedItem);
         }
 
         @Override
@@ -94,6 +94,7 @@ public class RecyclerViewLanguageAdapter extends RecyclerView.Adapter<RecyclerVi
                 LangSharedPreferences.saveInputLanguage(context, languages.get(selectedItem));
             else
                 LangSharedPreferences.saveOutputLanguage(context, languages.get(selectedItem));
+            ((Activity) context).finish();
         }
     }
 
