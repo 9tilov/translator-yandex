@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public class Conversation {
 
-    private static final String LOG_TAG = "Conversation";
+    private static final String LOG_TAG = Conversation.class.getSimpleName();
 
     /**
      * Map для преобразования
