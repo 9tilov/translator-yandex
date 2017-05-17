@@ -10,7 +10,7 @@ import com.moggot.multipreter.R;
  */
 public class NetworkConnectionError extends Display {
 
-    private static final String LOG_TAG = "NetworkConnectionError";
+    private static final String LOG_TAG = NetworkConnectionError.class.getSimpleName();
 
     /**
      * Фрагмент, в котором необходимо отобразить данные

@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class HistoryDisplay extends Display {
 
-    private static final String LOG_TAG = "HistoryDisplay";
+    private static final String LOG_TAG = HistoryDisplay.class.getSimpleName();
 
     /**
      * Фрагмент, в котором необходимо отобразить данные

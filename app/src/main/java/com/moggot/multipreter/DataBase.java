@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class DataBase {
 
-    private static final String LOG_TAG = "DataBase";
+    private static final String LOG_TAG = DataBase.class.getSimpleName();
 
     /**
      * Контекст Activity
@@ -29,11 +29,6 @@ public class DataBase {
     private TranslatorDao translatorDao;
 
     /**
-     * Имя БД
-     */
-    private final String DB_NAME = "alarm_db";
-
-    /**
      * Конструктор
      * Инициализация БД
      *
@@ -42,6 +37,20 @@ public class DataBase {
     public DataBase(Context context) {
         this.context = context;
         translatorDao = setupDb();
+    }
+
+    /**
+     * Инициализация БД
+     *
+     * @return объект greenDAO
+     */
+    private TranslatorDao setupDb() {
+        String DB_NAME = "alarm_db";
+        DaoMaster.DevOpenHelper masterHelper = new DaoMaster.DevOpenHelper(context, DB_NAME, null); //create database db file if not exist
+        SQLiteDatabase db = masterHelper.getWritableDatabase();  //get the created database db file
+        DaoMaster master = new DaoMaster(db);//create masterDao
+        DaoSession masterSession = master.newSession(); //Creates Session session
+        return masterSession.getTranslatorDao();
     }
 
     /**
@@ -71,31 +80,9 @@ public class DataBase {
      * @return найденная запись
      */
     public Translator findRecord(Translator translator) {
-        Translator tmpRecord = translatorDao.queryBuilder().where(TranslatorDao.Properties.Text.eq(translator.getText())
+        return translatorDao.queryBuilder().where(TranslatorDao.Properties.Text.eq(translator.getText())
                 , TranslatorDao.Properties.InputLanguage.eq(translator.getInputLanguage())
                 , TranslatorDao.Properties.OutputLanguage.eq(translator.getOutputLanguage())).unique();
-        if (tmpRecord != null)
-            return tmpRecord;
-        else
-            return null;
-    }
-
-    /**
-     * Обновление записи
-     *
-     * @param translator - запись, которую требуется обновить
-     */
-    public void editRecord(Translator translator) {
-        translatorDao.update(translator);
-    }
-
-    /**
-     * Удаление записи
-     *
-     * @param translator - запись, которую требуется удалить
-     */
-    public void deleteRecord(Translator translator) {
-        translatorDao.delete(translator);
     }
 
     /**
@@ -115,6 +102,24 @@ public class DataBase {
             item.setIsFavorites(false);
             editRecord(item);
         }
+    }
+
+    /**
+     * Обновление записи
+     *
+     * @param translator - запись, которую требуется обновить
+     */
+    public void editRecord(Translator translator) {
+        translatorDao.update(translator);
+    }
+
+    /**
+     * Удаление записи
+     *
+     * @param translator - запись, которую требуется удалить
+     */
+    public void deleteRecord(Translator translator) {
+        translatorDao.delete(translator);
     }
 
     /**
@@ -143,18 +148,5 @@ public class DataBase {
      */
     public List<Translator> getFavoritesRecords() {
         return translatorDao.queryBuilder().where(TranslatorDao.Properties.IsFavorites.eq(true)).orderDesc(TranslatorDao.Properties.Date).list();
-    }
-
-    /**
-     * Инициализация БД
-     *
-     * @return объект greenDAO
-     */
-    private TranslatorDao setupDb() {
-        DaoMaster.DevOpenHelper masterHelper = new DaoMaster.DevOpenHelper(context, DB_NAME, null); //create database db file if not exist
-        SQLiteDatabase db = masterHelper.getWritableDatabase();  //get the created database db file
-        DaoMaster master = new DaoMaster(db);//create masterDao
-        DaoSession masterSession = master.newSession(); //Creates Session session
-        return masterSession.getTranslatorDao();
     }
 }

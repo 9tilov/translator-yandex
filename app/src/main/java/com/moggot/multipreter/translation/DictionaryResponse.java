@@ -26,7 +26,7 @@ import retrofit2.Response;
  */
 public class DictionaryResponse implements TranslationAlgorithm {
 
-    private static final String LOG_TAG = "DictionaryResponse";
+    private static final String LOG_TAG = DictionaryResponse.class.getSimpleName();
 
     /**
      * Фрагмент, который отображает перевод

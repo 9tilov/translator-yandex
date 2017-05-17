@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class FavoritesDisplay extends Display {
 
-    private static final String LOG_TAG = "FavoritesDisplay";
+    private static final String LOG_TAG = FavoritesDisplay.class.getSimpleName();
 
     /**
      * Фрагмент, в котором необходимо отобразить данные

@@ -23,7 +23,7 @@ import retrofit2.Response;
  */
 public class TranslatorResponse implements TranslationAlgorithm {
 
-    private static final String LOG_TAG = "TranslatorResponse";
+    private static final String LOG_TAG = TranslatorResponse.class.getSimpleName();
 
     /**
      * Фрагмент, который отображает перевод
