@@ -38,9 +38,10 @@ public class TranslatorResponse implements TranslationAlgorithm {
      */
     public TranslatorResponse(final Fragment parentFragment) {
 
-        if (parentFragment != null) {
-            translatorFragment = parentFragment.getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
-        }
+        if (parentFragment == null)
+            throw new NullPointerException("parentFragment is null");
+
+        translatorFragment = parentFragment.getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
     }
 
     /**
@@ -58,22 +59,17 @@ public class TranslatorResponse implements TranslationAlgorithm {
             @Override
             public void onResponse(Call<WordTranslator> call, Response<WordTranslator> response) {
 
-                if (translatorFragment.getView() == null)
-                    throw new NullPointerException("getView() is null");
-
                 if (response.body() == null)
                     return;
 
                 if (response.isSuccessful()) {
-                    if (translatorFragment != null) {
-                        WordTranslator wordTranslator = response.body();
-                        translator.setTranslation(wordTranslator.getText().get(0));
+                    WordTranslator wordTranslator = response.body();
+                    translator.setTranslation(wordTranslator.getText().get(0));
 
-                        TranslatorData translatorData = new TranslatorData();
-                        Display display = new TranslationDisplay(translatorFragment, translatorData);
-                        translatorData.setTranslator(translator);
-                        display.display();
-                    }
+                    TranslatorData translatorData = new TranslatorData();
+                    Display display = new TranslationDisplay(translatorFragment, translatorData);
+                    translatorData.setTranslator(translator);
+                    display.display();
                 } else {
                     try {
                         APIEror.parseError(response.body().getCode());
@@ -85,11 +81,9 @@ public class TranslatorResponse implements TranslationAlgorithm {
 
             @Override
             public void onFailure(Call<WordTranslator> call, Throwable t) {
-                if (translatorFragment != null) {
-                    TranslatorData translatorData = new TranslatorData();
-                    Display display = new NetworkConnectionError(translatorFragment, translatorData);
-                    display.display();
-                }
+                TranslatorData translatorData = new TranslatorData();
+                Display display = new NetworkConnectionError(translatorFragment, translatorData);
+                display.display();
             }
         });
     }

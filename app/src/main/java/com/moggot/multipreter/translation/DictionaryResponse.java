@@ -47,17 +47,17 @@ public class DictionaryResponse implements TranslationAlgorithm {
      */
     public DictionaryResponse(final Fragment parentFragment) throws NullPointerException {
 
-        if (parentFragment != null) {
-            translatorFragment = parentFragment.getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
+        if (parentFragment == null)
+            throw new NullPointerException("parentFragment is null");
 
-            if (translatorFragment != null) {
-                if (translatorFragment.getView() == null)
-                    throw new NullPointerException("getView() is null");
-                progressBar = (ProgressBar) translatorFragment.getView().findViewById(R.id.spin_kit);
-                ThreeBounce threeBounce = new ThreeBounce();
-                progressBar.setIndeterminateDrawable(threeBounce);
-                progressBar.setVisibility(View.VISIBLE);
-            }
+        translatorFragment = parentFragment.getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
+        try {
+            progressBar = (ProgressBar) translatorFragment.getView().findViewById(R.id.spin_kit);
+            ThreeBounce threeBounce = new ThreeBounce();
+            progressBar.setIndeterminateDrawable(threeBounce);
+            progressBar.setVisibility(View.VISIBLE);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
     }
 
@@ -74,10 +74,7 @@ public class DictionaryResponse implements TranslationAlgorithm {
         text = text.replace("+", "%2B");
         App.getYandexDictionaryApi().getDetails(ApiKeys.YANDEX_DICTIONARY_API_KEY, text, langDirection).enqueue(new Callback<WordDictionary>() {
             @Override
-            public void onResponse(Call<WordDictionary>  call, Response<WordDictionary> response) {
-
-                if (translatorFragment.getView() == null)
-                    throw new NullPointerException("getView() is null");
+            public void onResponse(Call<WordDictionary> call, Response<WordDictionary> response) {
 
                 if (response.body() == null) {
                     progressBar.setVisibility(View.GONE);
@@ -85,16 +82,14 @@ public class DictionaryResponse implements TranslationAlgorithm {
                 }
 
                 if (response.isSuccessful()) {
-                    if (translatorFragment != null) {
-                        WordDictionary wordDictionary = response.body();
-                        String result = new Gson().toJson(wordDictionary.getDef());
-                        translator.setDetails(result);
+                    WordDictionary wordDictionary = response.body();
+                    String result = new Gson().toJson(wordDictionary.getDef());
+                    translator.setDetails(result);
 
-                        TranslatorData translatorData = new TranslatorData();
-                        Display display = new TranslationDisplay(translatorFragment, translatorData);
-                        translatorData.setTranslator(translator);
-                        display.display();
-                    }
+                    TranslatorData translatorData = new TranslatorData();
+                    Display display = new TranslationDisplay(translatorFragment, translatorData);
+                    translatorData.setTranslator(translator);
+                    display.display();
                 }
                 progressBar.setVisibility(View.GONE);
             }
