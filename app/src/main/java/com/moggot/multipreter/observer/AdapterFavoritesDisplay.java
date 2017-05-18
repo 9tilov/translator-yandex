@@ -1,6 +1,5 @@
 package com.moggot.multipreter.observer;
 
-import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,12 +19,10 @@ public class AdapterFavoritesDisplay extends Display {
     /**
      * Конструктор
      *
-     * @param context        - контекст Activity
      * @param view           - view адаптера
      * @param translatorData - данные транслятора
      */
-    public AdapterFavoritesDisplay(Context context, View view, TranslatorData translatorData) {
-        super(context);
+    public AdapterFavoritesDisplay(View view, TranslatorData translatorData) {
         this.view = view;
         translatorData.registerObserver(this);
     }

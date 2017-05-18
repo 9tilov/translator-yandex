@@ -17,19 +17,16 @@ import android.widget.Toast;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.moggot.multipreter.App;
-import com.moggot.multipreter.Consts;
 import com.moggot.multipreter.R;
 import com.moggot.multipreter.animation.AnimationBounce;
 import com.moggot.multipreter.animation.EmptyAnimationBounce;
-import com.moggot.multipreter.observer.FavoritesDisplay;
-import com.moggot.multipreter.observer.TranslatorData;
 
 /**
  * Класс фрагмента с экраном перевода
  */
 public class TranslatorFragment extends Fragment {
 
-    private static final String LOG_TAG = "TranslatorFragment";
+    private static final String LOG_TAG = TranslatorFragment.class.getSimpleName();
 
     /**
      * Tracker для отслеживания
@@ -161,11 +158,9 @@ public class TranslatorFragment extends Fragment {
      */
     @Override
     public void onResume() {
-
         super.onResume();
 
         if(tracker != null){
-            Log.v(LOG_TAG, "name = " + getClass().getSimpleName());
             tracker.setScreenName(getClass().getSimpleName());
             tracker.send(new HitBuilders.ScreenViewBuilder().build());
         }
@@ -179,5 +174,4 @@ public class TranslatorFragment extends Fragment {
         super.onDestroyView();
         translatorEventListener = null;
     }
-
 }

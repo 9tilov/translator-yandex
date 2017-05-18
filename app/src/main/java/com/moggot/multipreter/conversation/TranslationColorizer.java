@@ -1,4 +1,4 @@
-package com.moggot.multipreter;
+package com.moggot.multipreter.conversation;
 
 import android.content.Context;
 import android.os.Build;
@@ -12,6 +12,7 @@ import android.text.style.ForegroundColorSpan;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.moggot.multipreter.R;
 import com.moggot.multipreter.gson.Def;
 import com.moggot.multipreter.gson.Ex;
 import com.moggot.multipreter.gson.Mean;
@@ -24,9 +25,9 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 /**
- * Класс украшенного перевода
+ * Класс расскраски детального перевода
  */
-public class DecoratedTranslation {
+public class TranslationColorizer {
 
     /**
      * Контекст
@@ -43,22 +44,9 @@ public class DecoratedTranslation {
      *
      * @param context - контекст
      */
-    public DecoratedTranslation(Context context) {
+    public TranslationColorizer(Context context) {
         this.context = context;
         this.details = new SpannableStringBuilder();
-    }
-
-    /**
-     * Получение модифицированного перевода
-     *
-     * @param translator - транслятор
-     * @return модифицированный перевод
-     */
-    public String getDecoratedTranslation(Translator translator) {
-        String translation = translator.getTranslation();
-        translation = translation.replace("%3B", ";");
-        translation = translation.replace("%2B", "+");
-        return translation;
     }
 
     /**
@@ -114,9 +102,8 @@ public class DecoratedTranslation {
             transcription = "[" + transcription + "]";
             Spannable transcriptionSpannable = stringToSpannableString(transcription, R.color.text_tr);
             details.append(transcriptionSpannable);
-            details.append("\n");
-        } else
-            details.append("\n");
+        }
+        details.append("\n");
         if (!synBuilder.toString().isEmpty()) {
             details.append(", ");
             details.append(synBuilder);

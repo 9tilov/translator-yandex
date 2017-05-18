@@ -151,7 +151,7 @@ public class AdapterFavorites extends BaseSwipeAdapter {
         });
 
         TranslatorData translatorData = new TranslatorData();
-        Display adapterDisplay = new AdapterFavoritesDisplay(fragment.getContext(), convertView, translatorData);
+        Display adapterDisplay = new AdapterFavoritesDisplay(convertView, translatorData);
         translatorData.setTranslator(translatorAtPosition);
         adapterDisplay.display();
     }

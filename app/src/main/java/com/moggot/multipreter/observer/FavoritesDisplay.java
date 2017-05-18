@@ -36,9 +36,8 @@ public class FavoritesDisplay extends Display {
      * @param translatorData - данные транслятора
      */
     public FavoritesDisplay(Fragment fragment, TranslatorData translatorData) {
-        super(fragment.getContext());
         this.fragment = fragment;
-        db = new DataBase(context);
+        db = new DataBase(fragment.getContext());
         translatorData.registerObserver(this);
     }
 
@@ -61,6 +60,7 @@ public class FavoritesDisplay extends Display {
     private void displayClearFavoritesButton() throws NullPointerException {
         if (fragment.getView() == null)
             throw new NullPointerException("getView() is null");
+
         if (db.getFavoritesRecords().isEmpty())
             ((Button) fragment.getView().findViewById(R.id.btnClearFavorites)).setVisibility(View.GONE);
         else
@@ -73,6 +73,7 @@ public class FavoritesDisplay extends Display {
     private void displayFavoritesList() throws NullPointerException {
         if (((FavoritesListFragment) fragment).getListView() == null)
             throw new NullPointerException("getListView is null");
+
         List<Translator> records = db.getFavoritesRecords();
         AdapterFavorites adapter = new AdapterFavorites(fragment, records);
         ((FavoritesListFragment) fragment).getListView().setAdapter(adapter);

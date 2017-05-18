@@ -16,7 +16,6 @@ import android.widget.Button;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.moggot.multipreter.App;
-import com.moggot.multipreter.Consts;
 import com.moggot.multipreter.DataBase;
 import com.moggot.multipreter.MainActivity;
 import com.moggot.multipreter.R;
@@ -32,7 +31,7 @@ import com.moggot.multipreter.translator.Translator;
  */
 public class FavoritesListFragment extends ListFragment {
 
-    private static final String LOG_TAG = "FavoritesFragment";
+    private static final String LOG_TAG = FavoritesListFragment.class.getSimpleName();
 
     /**
      * Интерфейс для передачи данных в родительский фрагмент
@@ -100,13 +99,15 @@ public class FavoritesListFragment extends ListFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (getTargetFragment() == null) {
+
+        Fragment fragment = getTargetFragment();
+        if (fragment == null) {
             ViewPager pager = ((MainActivity) getActivity()).getViewPager();
-            Fragment fragment = (RootFragment) pager.getAdapter().instantiateItem(pager, 0);
-            setTargetFragment(fragment, 0);
+            Fragment rootFragment = (RootFragment) pager.getAdapter().instantiateItem(pager, 0);
+            setTargetFragment(rootFragment, 0);
         }
+
         try {
-            Fragment fragment = getTargetFragment();
             if (fragment != null)
                 favoritesListEventListener = (FavoritesListEventListener) fragment;
         } catch (ClassCastException e) {
@@ -162,7 +163,6 @@ public class FavoritesListFragment extends ListFragment {
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.v(LOG_TAG, "onViewCreated");
 
         Button btnClearFavotites = (Button) view.findViewById(R.id.btnClearFavorites);
         btnClearFavotites.setOnClickListener(new View.OnClickListener() {
@@ -201,7 +201,7 @@ public class FavoritesListFragment extends ListFragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        Log.v(LOG_TAG, "setUserVisibleHint = " + isVisibleToUser);
+
         if (isVisibleToUser) {
             display.display();
             if(tracker != null){
@@ -219,5 +219,4 @@ public class FavoritesListFragment extends ListFragment {
         super.onDestroyView();
         favoritesListEventListener = null;
     }
-
 }

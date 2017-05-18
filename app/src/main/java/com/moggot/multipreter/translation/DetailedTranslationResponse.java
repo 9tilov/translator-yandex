@@ -1,7 +1,6 @@
 package com.moggot.multipreter.translation;
 
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -11,7 +10,8 @@ import com.moggot.multipreter.api.ApiKeys;
 import com.moggot.multipreter.App;
 import com.moggot.multipreter.Consts;
 import com.moggot.multipreter.R;
-import com.moggot.multipreter.gson.WordDictionary;
+import com.moggot.multipreter.conversation.StringEscaper;
+import com.moggot.multipreter.gson.WordDetailedTranslation;
 import com.moggot.multipreter.observer.Display;
 import com.moggot.multipreter.observer.TranslationDisplay;
 import com.moggot.multipreter.observer.TranslatorData;
@@ -24,9 +24,9 @@ import retrofit2.Response;
 /**
  * Класс запроса детального перевода
  */
-public class DictionaryResponse implements TranslationAlgorithm {
+public class DetailedTranslationResponse implements TranslationAlgorithm {
 
-    private static final String LOG_TAG = DictionaryResponse.class.getSimpleName();
+    private static final String LOG_TAG = DetailedTranslationResponse.class.getSimpleName();
 
     /**
      * Фрагмент, который отображает перевод
@@ -45,7 +45,7 @@ public class DictionaryResponse implements TranslationAlgorithm {
      *
      * @param parentFragment - родительский фрагмент
      */
-    public DictionaryResponse(final Fragment parentFragment) throws NullPointerException {
+    public DetailedTranslationResponse(final Fragment parentFragment) throws NullPointerException {
 
         if (parentFragment == null)
             throw new NullPointerException("parentFragment is null");
@@ -69,12 +69,10 @@ public class DictionaryResponse implements TranslationAlgorithm {
     @Override
     public void translate(final Translator translator) {
         String langDirection = translator.getInputLanguage() + "-" + translator.getOutputLanguage();
-        String text = translator.getText();
-        text = text.replace(";", "%3B");
-        text = text.replace("+", "%2B");
-        App.getYandexDictionaryApi().getDetails(ApiKeys.YANDEX_DICTIONARY_API_KEY, text, langDirection).enqueue(new Callback<WordDictionary>() {
+        String text = StringEscaper.escapeResponse(translator.getText());
+        App.getDetailedTranslationApi().getDetails(ApiKeys.YANDEX_DICTIONARY_API_KEY, text, langDirection).enqueue(new Callback<WordDetailedTranslation>() {
             @Override
-            public void onResponse(Call<WordDictionary> call, Response<WordDictionary> response) {
+            public void onResponse(Call<WordDetailedTranslation> call, Response<WordDetailedTranslation> response) {
 
                 if (response.body() == null) {
                     progressBar.setVisibility(View.GONE);
@@ -82,22 +80,31 @@ public class DictionaryResponse implements TranslationAlgorithm {
                 }
 
                 if (response.isSuccessful()) {
-                    WordDictionary wordDictionary = response.body();
-                    String result = new Gson().toJson(wordDictionary.getDef());
+                    WordDetailedTranslation wordDetailedTranslation = response.body();
+                    String result = new Gson().toJson(wordDetailedTranslation.getDef());
                     translator.setDetails(result);
 
-                    TranslatorData translatorData = new TranslatorData();
-                    Display display = new TranslationDisplay(translatorFragment, translatorData);
-                    translatorData.setTranslator(translator);
-                    display.display();
+                    showDetailedTranslation(translator);
                 }
                 progressBar.setVisibility(View.GONE);
             }
 
             @Override
-            public void onFailure(Call<WordDictionary> call, Throwable t) {
+            public void onFailure(Call<WordDetailedTranslation> call, Throwable t) {
                 progressBar.setVisibility(View.GONE);
             }
         });
+    }
+
+    /**
+     * Отображение детального перевода на экран
+     *
+     * @param translator - транслятор
+     */
+    private void showDetailedTranslation(Translator translator) {
+        TranslatorData translatorData = new TranslatorData();
+        Display display = new TranslationDisplay(translatorFragment, translatorData);
+        translatorData.setTranslator(translator);
+        display.display();
     }
 }

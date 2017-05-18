@@ -10,7 +10,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.moggot.multipreter.Consts;
-import com.moggot.multipreter.Conversation;
+import com.moggot.multipreter.conversation.LanguageConversation;
 import com.moggot.multipreter.LangSharedPreferences;
 import com.moggot.multipreter.R;
 
@@ -26,7 +26,7 @@ public class RecyclerViewLanguageAdapter extends RecyclerView.Adapter<RecyclerVi
 
     private List<String> languages;
     private Context context;
-    private Conversation conversation;
+    private LanguageConversation languageConversation;
     private Consts.LANG_TYPE type;
     private int selectedItem = -1;
 
@@ -37,7 +37,7 @@ public class RecyclerViewLanguageAdapter extends RecyclerView.Adapter<RecyclerVi
 
         fillLangList(languages);
 
-        conversation = new Conversation(context);
+        languageConversation = new LanguageConversation(context);
         String curLang = "";
         if (type == Consts.LANG_TYPE.INPUT)
             curLang = LangSharedPreferences.loadInputLanguage(context);
@@ -82,7 +82,7 @@ public class RecyclerViewLanguageAdapter extends RecyclerView.Adapter<RecyclerVi
         }
 
         public void setDateToView(String lang, int position) throws Exception {
-            this.language.setText(conversation.getLongLangName(lang));
+            this.language.setText(languageConversation.getLongLangName(lang));
             rbCheck.setChecked(position == selectedItem);
         }
 

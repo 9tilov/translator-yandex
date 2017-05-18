@@ -1,12 +1,11 @@
 package com.moggot.multipreter.observer;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NavUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.moggot.multipreter.Conversation;
+import com.moggot.multipreter.conversation.LanguageConversation;
 import com.moggot.multipreter.LangSharedPreferences;
 import com.moggot.multipreter.R;
 
@@ -15,12 +14,17 @@ import com.moggot.multipreter.R;
  */
 public class RootFragmentDisplay extends Display {
 
-    private static final String LOG_TAG = "RootFragmentDisplay";
+    private static final String LOG_TAG = RootFragmentDisplay.class.getSimpleName();
 
     /**
      * Фрагмент, в котором необходимо отобразить данные
      */
     private Fragment fragment;
+
+    /**
+     * Преобразование кодов языков в названия
+     */
+    private LanguageConversation languageConversation;
 
     /**
      * Конструктор
@@ -29,8 +33,8 @@ public class RootFragmentDisplay extends Display {
      * @param translatorData - данные транслятора
      */
     public RootFragmentDisplay(Fragment fragment, TranslatorData translatorData) {
-        super(fragment.getContext());
         this.fragment = fragment;
+        this.languageConversation = new LanguageConversation(fragment.getContext());
         translatorData.registerObserver(this);
     }
 
@@ -54,28 +58,28 @@ public class RootFragmentDisplay extends Display {
     private void displayInputLang() throws NullPointerException {
         if (fragment.getView() == null)
             throw new NullPointerException("getView() is null");
-        Conversation conversation = new Conversation(context);
-        ((TextView) fragment.getView().findViewById(R.id.tvInputLang)).setText(conversation.getLongLangName(translator.getInputLanguage()));
-        LangSharedPreferences.saveInputLanguage(context, translator.getInputLanguage());
+        ((TextView) fragment.getView().findViewById(R.id.tvInputLang)).setText(languageConversation.getLongLangName(translator.getInputLanguage()));
+        LangSharedPreferences.saveInputLanguage(fragment.getContext(), translator.getInputLanguage());
     }
 
     /**
      * Отображение выходного языка
      */
-    private void displayOutputLang() throws NullPointerException{
+    private void displayOutputLang() throws NullPointerException {
         if (fragment.getView() == null)
             throw new NullPointerException("getView() is null");
-        Conversation conversation = new Conversation(context);
-        ((TextView) fragment.getView().findViewById(R.id.tvOutputLang)).setText(conversation.getLongLangName(translator.getOutputLanguage()));
-        LangSharedPreferences.saveOutputLanguage(context, translator.getOutputLanguage());
+
+        ((TextView) fragment.getView().findViewById(R.id.tvOutputLang)).setText(languageConversation.getLongLangName(translator.getOutputLanguage()));
+        LangSharedPreferences.saveOutputLanguage(fragment.getContext(), translator.getOutputLanguage());
     }
 
     /**
      * Отображение кнопки очистки поля ввода текста
      */
-    private void displayClearButton()throws NullPointerException {
+    private void displayClearButton() throws NullPointerException {
         if (fragment.getView() == null)
             throw new NullPointerException("getView() is null");
+
         if (translator.getText().isEmpty())
             ((Button) fragment.getView().findViewById(R.id.btnClearText)).setVisibility(View.GONE);
         else

@@ -48,7 +48,7 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
         , TranslatorFragment.TranslatorEventListener
         , FavoritesListFragment.FavoritesListEventListener {
 
-    private static final String LOG_TAG = "RootFragment";
+    private static final String LOG_TAG = RootFragment.class.getSimpleName();
 
     /**
      * транслятор
@@ -134,8 +134,8 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
         super.onViewCreated(view, savedInstanceState);
 
         etText = (BackAwareEditText) view.findViewById(R.id.etText);
-        final TextView tvInputLang = (TextView)view.findViewById(R.id.tvInputLang);
-        final TextView tvOutputLang = (TextView)view.findViewById(R.id.tvOutputLang);
+        final TextView tvInputLang = (TextView) view.findViewById(R.id.tvInputLang);
+        final TextView tvOutputLang = (TextView) view.findViewById(R.id.tvOutputLang);
 
         if (savedInstanceState != null)
             etText.setText(savedInstanceState.getString(Consts.EXTRA_TEXT));
@@ -186,7 +186,8 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
 
         {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER))
+                        || (actionId == EditorInfo.IME_ACTION_DONE)) {
                     saveOrEditRecord(translator);
                 }
                 return false;
@@ -291,6 +292,20 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
     }
 
     /**
+     * Сохранение транслятора, либо его перезапись
+     *
+     * @param translator - транслятор
+     */
+    private void saveOrEditRecord(Translator translator) {
+        if (translator.getText().isEmpty() || translator.getTranslation().isEmpty())
+            return;
+        if (db.findRecord(translator) != null)
+            db.editRecord(translator);
+        else
+            db.addRecord(translator);
+    }
+
+    /**
      * Создание транслятора
      *
      * @return новый транслятор
@@ -317,7 +332,7 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
      * @return контекст транслятора для смены состояния
      */
     private TranslatorContext createTranslatorContext(Translator translator) {
-        return new TranslatorContext(getContext(), translator);
+        return new TranslatorContext(translator);
     }
 
     /**
@@ -338,20 +353,6 @@ public class RootFragment extends Fragment implements HistoryListFragment.Histor
         Calendar calendar = Calendar.getInstance();
         Date date = new Date(calendar.getTimeInMillis());
         translator.setDate(date);
-    }
-
-    /**
-     * Сохранение транслятора, либо его перезапись
-     *
-     * @param translator - транслятор
-     */
-    private void saveOrEditRecord(Translator translator) {
-        if (translator.getText().isEmpty() || translator.getTranslation().isEmpty())
-            return;
-        if (db.findRecord(translator) != null)
-            db.editRecord(translator);
-        else
-            db.addRecord(translator);
     }
 
     /**

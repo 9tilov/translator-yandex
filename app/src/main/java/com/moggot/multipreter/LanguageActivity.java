@@ -12,7 +12,6 @@ import com.moggot.multipreter.adapter.RecyclerViewLanguageAdapter;
 import com.moggot.multipreter.animation.AnimationBounce;
 import com.moggot.multipreter.animation.BackButtonAnimationBounce;
 
-
 /**
  * Класс Activity с выбором языка
  */
