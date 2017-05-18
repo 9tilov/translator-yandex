@@ -10,7 +10,7 @@ import com.moggot.multipreter.R;
  */
 public class NetworkConnectionError extends Display {
 
-    private static final String LOG_TAG = "NetworkConnectionError";
+    private static final String LOG_TAG = NetworkConnectionError.class.getSimpleName();
 
     /**
      * Фрагмент, в котором необходимо отобразить данные
@@ -24,7 +24,6 @@ public class NetworkConnectionError extends Display {
      * @param translatorData - данные транслятора
      */
     public NetworkConnectionError(Fragment fragment, TranslatorData translatorData) {
-        super(fragment.getContext());
         this.fragment = fragment;
         translatorData.registerObserver(this);
     }
@@ -47,6 +46,7 @@ public class NetworkConnectionError extends Display {
     private void dislpayError() throws NullPointerException {
         if (fragment.getView() == null)
             throw new NullPointerException("getView() is null");
+
         (fragment.getView().findViewById(R.id.llError)).setVisibility(View.VISIBLE);
         (fragment.getView().findViewById(R.id.rlTranslation)).setVisibility(View.GONE);
     }

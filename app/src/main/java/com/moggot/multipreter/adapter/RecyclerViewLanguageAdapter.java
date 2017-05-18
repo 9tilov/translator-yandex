@@ -2,19 +2,17 @@ package com.moggot.multipreter.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.RadioButton;
+import android.widget.TextView;
 
 import com.moggot.multipreter.Consts;
+import com.moggot.multipreter.conversation.LanguageConversation;
 import com.moggot.multipreter.LangSharedPreferences;
 import com.moggot.multipreter.R;
-import com.moggot.multipreter.observer.AdapterInputLanguageDisplay;
-import com.moggot.multipreter.observer.AdapterOutputLanguageDisplay;
-import com.moggot.multipreter.observer.Display;
-import com.moggot.multipreter.observer.TranslatorData;
-import com.moggot.multipreter.translator.Translator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,148 +20,88 @@ import java.util.List;
 /**
  * Класс адаптера списка с поддерживаемыми языками
  */
-public class AdapterLanguage extends BaseAdapter {
+public class RecyclerViewLanguageAdapter extends RecyclerView.Adapter<RecyclerViewLanguageAdapter.SingleCheckViewHolder> {
 
-    private static final String LOG_TAG = "AdapterLanguage";
+    private static final String LOG_TAG = RecyclerViewLanguageAdapter.class.getSimpleName();
 
-    /**
-     * Контекст Activity
-     */
-    private Context context;
-
-    /**
-     * Список поддерживаемых языков
-     */
     private List<String> languages;
-
-    /**
-     * Тип языка
-     * #input - язык с которго преводим
-     * #output - языка на который переводим
-     */
+    private Context context;
+    private LanguageConversation languageConversation;
     private Consts.LANG_TYPE type;
+    private int selectedItem = -1;
 
-    /**
-     * Конструктор
-     *
-     * @param context - констекст Activity
-     * @param type    - тип языка
-     */
-    public AdapterLanguage(Context context, Consts.LANG_TYPE type) {
+    public RecyclerViewLanguageAdapter(Context context, Consts.LANG_TYPE type) {
         this.context = context;
         this.languages = new ArrayList<>();
         this.type = type;
 
-        fillLangList();
+        fillLangList(languages);
+
+        languageConversation = new LanguageConversation(context);
+        String curLang = "";
+        if (type == Consts.LANG_TYPE.INPUT)
+            curLang = LangSharedPreferences.loadInputLanguage(context);
+        else
+            curLang = LangSharedPreferences.loadOutputLanguage(context);
+
+        selectedItem = languages.indexOf(curLang);
     }
 
-    /**
-     * Получение количества элементов в списке
-     *
-     * @return количество элементов в списке
-     */
     @Override
-    public int getCount() {
+    public SingleCheckViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.lang_item, viewGroup, false);
+        return new SingleCheckViewHolder(v);
+    }
+
+    @Override
+    public void onBindViewHolder(SingleCheckViewHolder viewHolder, int position) {
+        String lang = languages.get(position);
+        try {
+            viewHolder.setDateToView(lang, position);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public int getItemCount() {
         return languages.size();
     }
 
-    /**
-     * Получение элемента по позиции
-     *
-     * @param position - позиция элемента в списке
-     * @return элемент по позиции
-     */
-    @Override
-    public Object getItem(int position) {
-        return languages.get(position);
-    }
+    class SingleCheckViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    /**
-     * Получение языка по позиции
-     *
-     * @param position - позиция элемента в списке
-     * @return элемент по позиции
-     */
-    public String getLang(int position) {
-        return ((String) getItem(position));
-    }
+        private RadioButton rbCheck;
+        private TextView language;
 
-    /**
-     * Получение id элемента по позиции
-     *
-     * @param position - позиция элемента в списке
-     * @return id элемента
-     */
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
+        public SingleCheckViewHolder(View itemView) {
+            super(itemView);
 
-    /**
-     * Создание нового элемента view из xml
-     * Заполняем адаптер в записимости от типа языка
-     *
-     * @param position    - позиция view в списке
-     * @param convertView - уже существующий элемент списка
-     * @param parent      - родительский элемент
-     * @return новый элемент view
-     */
-    @Override
-    public View getView(final int position, final View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        View view = convertView;
-        if (view == null)
-            view = inflater.inflate(R.layout.lang_item, parent, false);
-
-        final String language = getLang(position);
-        TranslatorData translatorData = new TranslatorData();
-        Display adapterDisplay;
-        Translator translator;
-        if (type == Consts.LANG_TYPE.INPUT) {
-            translator = new Translator(null, null, null, language, null, false, null, null);
-            adapterDisplay = new AdapterInputLanguageDisplay(context, view, translatorData);
-        } else {
-            translator = new Translator(null, null, null, null, language, false, null, null);
-            adapterDisplay = new AdapterOutputLanguageDisplay(context, view, translatorData);
+            language = (TextView) itemView.findViewById(R.id.tvLang);
+            rbCheck = (RadioButton) itemView.findViewById(R.id.rbCheck);
+            itemView.setOnClickListener(this);
         }
 
-        translatorData.setTranslator(translator);
-        adapterDisplay.display();
+        public void setDateToView(String lang, int position) throws Exception {
+            this.language.setText(languageConversation.getLongLangName(lang));
+            rbCheck.setChecked(position == selectedItem);
+        }
 
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                notifyDataSetChanged();
-
-                if (type == Consts.LANG_TYPE.INPUT) {
-                    String oppositeLang = LangSharedPreferences.loadOutputLanguage(context);
-                    if (language.equals(oppositeLang)) {
-                        String currentLanguage = LangSharedPreferences.loadInputLanguage(context);
-                        LangSharedPreferences.saveOutputLanguage(context, currentLanguage);
-                    }
-                    LangSharedPreferences.saveInputLanguage(context, language);
-                } else {
-                    String oppositeLang = LangSharedPreferences.loadInputLanguage(context);
-                    if (language.equals(oppositeLang)) {
-                        String currentLanguage = LangSharedPreferences.loadOutputLanguage(context);
-                        LangSharedPreferences.saveInputLanguage(context, currentLanguage);
-                    }
-                    LangSharedPreferences.saveOutputLanguage(context, language);
-                }
-                ((Activity) context).finish();
-
-            }
-
-        });
-        return view;
+        @Override
+        public void onClick(View v) {
+            selectedItem = getAdapterPosition();
+            notifyItemRangeChanged(0, languages.size());
+            if (type == Consts.LANG_TYPE.INPUT)
+                LangSharedPreferences.saveInputLanguage(context, languages.get(selectedItem));
+            else
+                LangSharedPreferences.saveOutputLanguage(context, languages.get(selectedItem));
+            ((Activity) context).finish();
+        }
     }
 
     /**
      * Заполнение списка поддерживаемых языков
      */
-    private void fillLangList() {
-
+    private void fillLangList(List<String> languages) {
         languages.add(context.getString(R.string.az_short));
         languages.add(context.getString(R.string.sq_short));
         languages.add(context.getString(R.string.xh_short));

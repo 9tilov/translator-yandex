@@ -165,7 +165,7 @@ public class AdapterHistory extends BaseSwipeAdapter {
         });
 
         TranslatorData translatorData = new TranslatorData();
-        Display adapterDisplay = new AdapterHistoryDisplay(fragment.getContext(), convertView, translatorData);
+        Display adapterDisplay = new AdapterHistoryDisplay(convertView, translatorData);
         translatorData.setTranslator(translatorAtPosition);
         adapterDisplay.display();
     }

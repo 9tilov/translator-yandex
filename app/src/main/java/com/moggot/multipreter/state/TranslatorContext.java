@@ -1,7 +1,5 @@
 package com.moggot.multipreter.state;
 
-import android.content.Context;
-
 import com.moggot.multipreter.translator.Translator;
 
 /**
@@ -20,18 +18,11 @@ public class TranslatorContext {
     private Translator translator;
 
     /**
-     * Контекст Activity
-     */
-    private Context context;
-
-    /**
      * Конструктор
      *
-     * @param context    - контекст Activity
      * @param translator - транслятор
      */
-    public TranslatorContext(Context context, Translator translator) {
-        this.context = context;
+    public TranslatorContext(Translator translator) {
         this.translator = translator;
         this.state = null;
     }
@@ -43,15 +34,6 @@ public class TranslatorContext {
      */
     public Translator getTranslator() {
         return this.translator;
-    }
-
-    /**
-     * Получение контекста
-     *
-     * @return контекст Activity
-     */
-    public Context getContext() {
-        return context;
     }
 
     /**

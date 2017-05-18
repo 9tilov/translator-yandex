@@ -1,6 +1,8 @@
-package com.moggot.multipreter;
+package com.moggot.multipreter.conversation;
 
 import android.content.Context;
+
+import com.moggot.multipreter.R;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,9 +10,9 @@ import java.util.Map;
 /**
  * Класс преобразования кода языка в читаемый вид
  */
-public class Conversation {
+public class LanguageConversation {
 
-    private static final String LOG_TAG = "Conversation";
+    private static final String LOG_TAG = LanguageConversation.class.getSimpleName();
 
     /**
      * Map для преобразования
@@ -22,7 +24,7 @@ public class Conversation {
      *
      * @param context - контекст Activity
      */
-    public Conversation(Context context) {
+    public LanguageConversation(Context context) {
 
         shortToLong.put(context.getString(R.string.az_short), context.getString(R.string.az));
         shortToLong.put(context.getString(R.string.sq_short), context.getString(R.string.sq));

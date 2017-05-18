@@ -22,7 +22,7 @@ import com.moggot.multipreter.fragments.RootFragment;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private static final String LOG_TAG = "MainActivity";
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     /**
      * Pager для смены экранов
@@ -137,5 +137,4 @@ public class MainActivity extends AppCompatActivity {
             return sb;
         }
     }
-
 }

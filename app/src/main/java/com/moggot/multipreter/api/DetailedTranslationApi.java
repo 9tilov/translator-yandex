@@ -1,6 +1,6 @@
 package com.moggot.multipreter.api;
 
-import com.moggot.multipreter.gson.WordDictionary;
+import com.moggot.multipreter.gson.WordDetailedTranslation;
 
 import retrofit2.Call;
 import retrofit2.http.POST;
@@ -9,7 +9,7 @@ import retrofit2.http.Query;
 /**
  * Интерфейс получения объекта с данными от сервера Yandex Dictionary
  */
-public interface YandexDictionaryApi {
+public interface DetailedTranslationApi {
 
     /**
      * Получение объекта типа Call<T> с детальными данными перевода
@@ -20,5 +20,5 @@ public interface YandexDictionaryApi {
      * @return объект с данными
      */
     @POST("api/v1/dicservice.json/lookup")
-    Call<WordDictionary> getDetails(@Query("key") String key, @Query("text") String text, @Query("lang") String lang);
+    Call<WordDetailedTranslation> getDetails(@Query("key") String key, @Query("text") String text, @Query("lang") String lang);
 }

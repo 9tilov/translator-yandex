@@ -73,5 +73,4 @@ public class LangSharedPreferences {
         SharedPreferences sharedPreferences = context.getSharedPreferences(Consts.SHARED_PREF_LANG, Context.MODE_PRIVATE);
         return sharedPreferences.getString(outputLang, context.getString(R.string.ru_short));
     }
-
 }

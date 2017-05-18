@@ -1,8 +1,8 @@
 package com.moggot.multipreter.translation;
 
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
+import com.moggot.multipreter.conversation.StringEscaper;
 import com.moggot.multipreter.api.APIEror;
 import com.moggot.multipreter.api.ApiKeys;
 import com.moggot.multipreter.App;
@@ -21,9 +21,9 @@ import retrofit2.Response;
 /**
  * Класс запроса обычного перевода
  */
-public class TranslatorResponse implements TranslationAlgorithm {
+public class TranslationResponse implements TranslationAlgorithm {
 
-    private static final String LOG_TAG = "TranslatorResponse";
+    private static final String LOG_TAG = TranslationResponse.class.getSimpleName();
 
     /**
      * Фрагмент, который отображает перевод
@@ -36,11 +36,12 @@ public class TranslatorResponse implements TranslationAlgorithm {
      *
      * @param parentFragment - родительский фрагмент
      */
-    public TranslatorResponse(final Fragment parentFragment) {
+    public TranslationResponse(final Fragment parentFragment) {
 
-        if (parentFragment != null) {
-            translatorFragment = parentFragment.getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
-        }
+        if (parentFragment == null)
+            throw new NullPointerException("parentFragment is null");
+
+        translatorFragment = parentFragment.getChildFragmentManager().findFragmentByTag(Consts.TAG_FRAGMENT_TRANSLATOR);
     }
 
     /**
@@ -51,29 +52,19 @@ public class TranslatorResponse implements TranslationAlgorithm {
     @Override
     public void translate(final Translator translator) {
         String langDirection = translator.getInputLanguage() + "-" + translator.getOutputLanguage();
-        String text = translator.getText();
-        text = text.replace(";", "%3B");
-        text = text.replace("+", "%2B");
+        String text = StringEscaper.escapeResponse(translator.getText());
         App.getYandexTranslationApi().getTranslation(ApiKeys.YANDEX_API_KEY, text, langDirection).enqueue(new Callback<WordTranslator>() {
             @Override
             public void onResponse(Call<WordTranslator> call, Response<WordTranslator> response) {
-
-                if (translatorFragment.getView() == null)
-                    throw new NullPointerException("getView() is null");
 
                 if (response.body() == null)
                     return;
 
                 if (response.isSuccessful()) {
-                    if (translatorFragment != null) {
-                        WordTranslator wordTranslator = response.body();
-                        translator.setTranslation(wordTranslator.getText().get(0));
+                    WordTranslator wordTranslator = response.body();
+                    translator.setTranslation(wordTranslator.getText().get(0));
 
-                        TranslatorData translatorData = new TranslatorData();
-                        Display display = new TranslationDisplay(translatorFragment, translatorData);
-                        translatorData.setTranslator(translator);
-                        display.display();
-                    }
+                    showTranslation(translator);
                 } else {
                     try {
                         APIEror.parseError(response.body().getCode());
@@ -85,12 +76,29 @@ public class TranslatorResponse implements TranslationAlgorithm {
 
             @Override
             public void onFailure(Call<WordTranslator> call, Throwable t) {
-                if (translatorFragment != null) {
-                    TranslatorData translatorData = new TranslatorData();
-                    Display display = new NetworkConnectionError(translatorFragment, translatorData);
-                    display.display();
-                }
+                showConnectionError();
             }
         });
+    }
+
+    /**
+     * Отображение перевода на экран
+     *
+     * @param translator - транслятор
+     */
+    private void showTranslation(Translator translator) {
+        TranslatorData translatorData = new TranslatorData();
+        Display display = new TranslationDisplay(translatorFragment, translatorData);
+        translatorData.setTranslator(translator);
+        display.display();
+    }
+
+    /**
+     * Отображение ошибки в случае потери сети
+     */
+    private void showConnectionError() {
+        TranslatorData translatorData = new TranslatorData();
+        Display display = new NetworkConnectionError(translatorFragment, translatorData);
+        display.display();
     }
 }

@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class HistoryDisplay extends Display {
 
-    private static final String LOG_TAG = "HistoryDisplay";
+    private static final String LOG_TAG = HistoryDisplay.class.getSimpleName();
 
     /**
      * Фрагмент, в котором необходимо отобразить данные
@@ -36,9 +36,8 @@ public class HistoryDisplay extends Display {
      * @param translatorData - данные транслятора
      */
     public HistoryDisplay(Fragment fragment, TranslatorData translatorData) {
-        super(fragment.getContext());
         this.fragment = fragment;
-        db = new DataBase(context);
+        db = new DataBase(fragment.getContext());
         translatorData.registerObserver(this);
     }
 
@@ -73,6 +72,7 @@ public class HistoryDisplay extends Display {
     private void displayHistoryList() throws NullPointerException {
         if (((HistoryListFragment) fragment).getListView() == null)
             throw new NullPointerException("getListView is null");
+
         List<Translator> records = db.getAllRecords();
         AdapterHistory adapter = new AdapterHistory(fragment, records);
         ((HistoryListFragment) fragment).getListView().setAdapter(adapter);

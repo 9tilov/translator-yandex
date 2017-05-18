@@ -2,12 +2,13 @@ package com.moggot.multipreter;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.android.gms.analytics.Tracker;
-import com.moggot.multipreter.adapter.AdapterLanguage;
+import com.moggot.multipreter.adapter.RecyclerViewLanguageAdapter;
 import com.moggot.multipreter.animation.AnimationBounce;
 import com.moggot.multipreter.animation.BackButtonAnimationBounce;
 
@@ -16,7 +17,7 @@ import com.moggot.multipreter.animation.BackButtonAnimationBounce;
  */
 public class LanguageActivity extends AppCompatActivity {
 
-    private static final String LOG_TAG = "LanguageActivity";
+    private static final String LOG_TAG = LanguageActivity.class.getSimpleName();
 
     /**
      * Создание Activity
@@ -41,9 +42,13 @@ public class LanguageActivity extends AppCompatActivity {
         else
             ((TextView) findViewById(R.id.tvLanguage)).setText(getString(R.string.language_output));
 
-        ListView listView = (ListView) findViewById(R.id.lvLanguages);
-        AdapterLanguage adapter = new AdapterLanguage(this, type);
-        listView.setAdapter(adapter);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.langRecyclerView);
+        RecyclerViewLanguageAdapter adapter = new RecyclerViewLanguageAdapter(this, type);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
     }
 
     /**

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/lang_listitem_height"
-    android:background="@color/background_light"
+    android:background="?android:attr/selectableItemBackground"
     android:orientation="horizontal"
     android:weightSum="10">
 
@@ -17,7 +17,7 @@
         android:gravity="center_vertical" />
 
     <RadioButton
-        android:id="@+id/check"
+        android:id="@+id/rbCheck"
         android:layout_width="@dimen/button_size"
         android:layout_height="@dimen/button_size"
         android:background="@drawable/radiobutton"

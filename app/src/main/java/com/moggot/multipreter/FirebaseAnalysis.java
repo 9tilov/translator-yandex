@@ -1,9 +1,5 @@
 package com.moggot.multipreter;
 
-/**
- * Created by dmitry on 25.11.16.
- */
-
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -14,7 +10,6 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 /**
  * Класс {@link FirebaseAnalysis}
  */
-
 public class FirebaseAnalysis {
 
     /**

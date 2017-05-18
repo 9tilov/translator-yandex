@@ -14,7 +14,6 @@ import android.widget.Button;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.moggot.multipreter.App;
-import com.moggot.multipreter.Consts;
 import com.moggot.multipreter.DataBase;
 import com.moggot.multipreter.R;
 import com.moggot.multipreter.animation.AnimationBounce;
@@ -183,7 +182,6 @@ public class HistoryListFragment extends ListFragment {
      */
     @Override
     public void onResume() {
-
         super.onResume();
 
         if(tracker != null){

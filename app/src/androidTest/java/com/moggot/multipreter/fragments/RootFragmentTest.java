@@ -10,6 +10,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.action.ViewActions;
+import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.view.KeyEvent;
@@ -40,7 +41,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVi
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.not;
 
@@ -49,7 +49,7 @@ import static org.hamcrest.Matchers.not;
  */
 public class RootFragmentTest {
 
-    private static final String LOG_TAG = "RootFragmentTest";
+    private static final String LOG_TAG = RootFragmentTest.class.getSimpleName();
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(
@@ -97,14 +97,16 @@ public class RootFragmentTest {
 
     private void clickInputLang() {
         onView(withId(R.id.tvInputLang)).perform(click());
-        onData(anything()).inAdapterView(withId(R.id.lvLanguages)).atPosition(6).perform(click());
+        onView(withId(R.id.langRecyclerView))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(6, click()));
 
         onView(withId(R.id.tvInputLang)).check(matches(withText(mActivityRule.getActivity().getString(R.string.hy))));
     }
 
     private void clickOutputLang() {
         onView(withId(R.id.tvOutputLang)).perform(click());
-        onData(anything()).inAdapterView(withId(R.id.lvLanguages)).atPosition(5).perform(click());
+        onView(withId(R.id.langRecyclerView))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(5, click()));
 
         onView(withId(R.id.tvOutputLang)).check(matches(withText(mActivityRule.getActivity().getString(R.string.ar))));
     }
@@ -112,9 +114,11 @@ public class RootFragmentTest {
     private void checkTranslation() {
         rotateScreen();
         onView(withId(R.id.tvInputLang)).perform(click());
-        onData(anything()).inAdapterView(withId(R.id.lvLanguages)).atPosition(4).perform(click());
+        onView(withId(R.id.langRecyclerView))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(4, click()));
         onView(withId(R.id.tvOutputLang)).perform(click());
-        onData(anything()).inAdapterView(withId(R.id.lvLanguages)).atPosition(61).perform(click());
+        onView(withId(R.id.langRecyclerView))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(61, click()));
         onView(withId(R.id.etText)).perform(typeText("time"));
         rotateScreen();
         while (true) {
@@ -133,9 +137,11 @@ public class RootFragmentTest {
 
     private void checkLongText() {
         onView(withId(R.id.tvInputLang)).perform(click());
-        onData(anything()).inAdapterView(withId(R.id.lvLanguages)).atPosition(4).perform(click());
+        onView(withId(R.id.langRecyclerView))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(4, click()));
         onView(withId(R.id.tvOutputLang)).perform(click());
-        onData(anything()).inAdapterView(withId(R.id.lvLanguages)).atPosition(61).perform(click());
+        onView(withId(R.id.langRecyclerView))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(61, click()));
         onView(withId(R.id.etText)).perform(typeText("A Hello, World! program is traditionally used to introduce novice programmers to a programming language.\n" +
                 "Hello world! is also traditionally used in a sanity test to make sure that a computer language is correctly installed, and that the operator understands how to use it.\n"));
         onView(withId(R.id.etText)).perform(ViewActions.pressKey(KeyEvent.KEYCODE_BACK));

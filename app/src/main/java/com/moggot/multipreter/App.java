@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
-import com.moggot.multipreter.api.YandexDictionaryApi;
+import com.moggot.multipreter.api.DetailedTranslationApi;
 import com.moggot.multipreter.api.YandexTranslationApi;
 
 import retrofit2.Retrofit;
@@ -23,7 +23,7 @@ public class App extends Application {
     /**
      * Интерфейс с данными сервера детального перевода
      */
-    private static YandexDictionaryApi yandexDictionaryApi;
+    private static DetailedTranslationApi detailedTranslationApi;
 
     /**
      * Tracker отслеживания
@@ -47,7 +47,7 @@ public class App extends Application {
                 .baseUrl(Consts.BASE_URL_DICTIONARY)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        yandexDictionaryApi = retrofitDictionary.create(YandexDictionaryApi.class);
+        detailedTranslationApi = retrofitDictionary.create(DetailedTranslationApi.class);
     }
 
     /**
@@ -64,8 +64,8 @@ public class App extends Application {
      *
      * @return Интерфейс с данными сервера детального перевода
      */
-    public static YandexDictionaryApi getYandexDictionaryApi() {
-        return yandexDictionaryApi;
+    public static DetailedTranslationApi getDetailedTranslationApi() {
+        return detailedTranslationApi;
     }
 
     /**

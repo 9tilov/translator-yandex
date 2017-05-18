@@ -31,12 +31,11 @@
 
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/lvLanguages"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/langRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="9"
-        android:choiceMode="singleChoice"
-        android:descendantFocusability="beforeDescendants" />
+        android:scrollbars="vertical" />
 
 </LinearLayout>

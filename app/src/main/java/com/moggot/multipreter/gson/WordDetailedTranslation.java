@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Класс с данными тега "def" в json файле для детального перевода
  */
-public class WordDictionary {
+public class WordDetailedTranslation {
 
     /**
      * Список детальных данных перевода

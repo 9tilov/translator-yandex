@@ -11,6 +11,7 @@ import com.moggot.multipreter.fragments.TranslatorFragment;
 import com.moggot.multipreter.observer.Display;
 import com.moggot.multipreter.observer.TranslationDisplay;
 import com.moggot.multipreter.observer.TranslatorData;
+import com.moggot.multipreter.translation.Translation;
 import com.moggot.multipreter.translator.Translator;
 
 /**
@@ -18,7 +19,7 @@ import com.moggot.multipreter.translator.Translator;
  */
 public class TranslationOn extends State {
 
-    private static final String LOG_TAG = "TranslationOn";
+    private static final String LOG_TAG = Translation.class.getSimpleName();
 
     /**
      * Фрагмент с переводом слова

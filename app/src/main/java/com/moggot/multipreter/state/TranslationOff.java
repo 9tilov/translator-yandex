@@ -16,7 +16,7 @@ import com.moggot.multipreter.translator.Translator;
  */
 public class TranslationOff extends State {
 
-    private static final String LOG_TAG = "TranslationOff";
+    private static final String LOG_TAG = TranslationOff.class.getSimpleName();
 
     /**
      * Фрагмент с историей перевода

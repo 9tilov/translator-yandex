@@ -35,10 +35,10 @@ public class TranslateManager {
      */
     public void translate(Translator translator) {
         try {
-            Translation translation = new Translation(new TranslatorResponse(parentFragment));
+            Translation translation = new Translation(new TranslationResponse(parentFragment));
             translation.translate(translator);
 
-            translation.setAlgorithm(new DictionaryResponse(parentFragment));
+            translation.setAlgorithm(new DetailedTranslationResponse(parentFragment));
             translation.translate(translator);
         } catch (NullPointerException e) {
             e.printStackTrace();

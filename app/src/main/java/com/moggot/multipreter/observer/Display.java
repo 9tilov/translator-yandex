@@ -1,7 +1,5 @@
 package com.moggot.multipreter.observer;
 
-import android.content.Context;
-
 import com.moggot.multipreter.translator.Translator;
 
 /**
@@ -10,23 +8,9 @@ import com.moggot.multipreter.translator.Translator;
 public abstract class Display implements Observer {
 
     /**
-     * Контекст Activity
-     */
-    protected Context context;
-
-    /**
      * Транслятор
      */
     protected Translator translator;
-
-    /**
-     * Конструктор класса
-     *
-     * @param context - контекст Activity
-     */
-    public Display(Context context) {
-        this.context = context;
-    }
 
     /**
      * Обновление наблдателя
