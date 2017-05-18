@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.moggot.multipreter.conversation.LanguageConversation;
+import com.moggot.multipreter.conversation.LanguageConvertor;
 import com.moggot.multipreter.LangSharedPreferences;
 import com.moggot.multipreter.R;
 
@@ -24,7 +24,7 @@ public class RootFragmentDisplay extends Display {
     /**
      * Преобразование кодов языков в названия
      */
-    private LanguageConversation languageConversation;
+    private LanguageConvertor languageConvertor;
 
     /**
      * Конструктор
@@ -34,7 +34,7 @@ public class RootFragmentDisplay extends Display {
      */
     public RootFragmentDisplay(Fragment fragment, TranslatorData translatorData) {
         this.fragment = fragment;
-        this.languageConversation = new LanguageConversation(fragment.getContext());
+        this.languageConvertor = new LanguageConvertor(fragment.getResources());
         translatorData.registerObserver(this);
     }
 
@@ -58,7 +58,7 @@ public class RootFragmentDisplay extends Display {
     private void displayInputLang() throws NullPointerException {
         if (fragment.getView() == null)
             throw new NullPointerException("getView() is null");
-        ((TextView) fragment.getView().findViewById(R.id.tvInputLang)).setText(languageConversation.getLongLangName(translator.getInputLanguage()));
+        ((TextView) fragment.getView().findViewById(R.id.tvInputLang)).setText(languageConvertor.langCodeToLangName(translator.getInputLanguage()));
         LangSharedPreferences.saveInputLanguage(fragment.getContext(), translator.getInputLanguage());
     }
 
@@ -69,7 +69,7 @@ public class RootFragmentDisplay extends Display {
         if (fragment.getView() == null)
             throw new NullPointerException("getView() is null");
 
-        ((TextView) fragment.getView().findViewById(R.id.tvOutputLang)).setText(languageConversation.getLongLangName(translator.getOutputLanguage()));
+        ((TextView) fragment.getView().findViewById(R.id.tvOutputLang)).setText(languageConvertor.langCodeToLangName(translator.getOutputLanguage()));
         LangSharedPreferences.saveOutputLanguage(fragment.getContext(), translator.getOutputLanguage());
     }
 
