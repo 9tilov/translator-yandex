@@ -2,6 +2,7 @@ package com.moggot.multipreter;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -57,8 +58,7 @@ public class LanguageActivity extends AppCompatActivity implements RecyclerViewL
         setTitle();
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.langRecyclerView);
-        RecyclerView.ItemDecoration itemDecoration =
-                new DividerVerticalItemDecoration(this);
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
         recyclerView.addItemDecoration(itemDecoration);
 
         int adapterPosition = getAdapterPosition();
