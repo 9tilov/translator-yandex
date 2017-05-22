@@ -59,25 +59,39 @@ public class TranslationColorizer {
         Type type = new TypeToken<List<Def>>() {
         }.getType();
         List<Def> definitions = new Gson().fromJson(translator.getDetails(), type);
+        traverseTranslation(definitions);
+        return details;
+    }
+
+    private void traverseTranslation(List<Def> definitions) {
         if (definitions != null && !definitions.isEmpty()) {
             addDefinition(definitions);
             addTranscription(definitions);
             for (Def definition : definitions) {
-                addPartsOfSpeech(definition);
-                List<Tr> translations = definition.getTr();
-                if (translations != null) {
-                    for (int i_tr = 0; i_tr < translations.size(); ++i_tr) {
-                        addTranslationNumber(i_tr);
-                        addTranslation(translations.get(i_tr));
-                        addGender(translations.get(i_tr));
-                        addSynonyms(translations.get(i_tr));
-                        addMeaninig(translations.get(i_tr));
-                        addExplanations(translations.get(i_tr));
-                    }
-                }
+                traverseDefinition(definition);
             }
         }
-        return details;
+    }
+
+    private void traverseDefinition(Def definition) {
+        addPartsOfSpeech(definition);
+        List<Tr> translations = definition.getTr();
+        if (translations != null) {
+            int trNum = 0;
+            for (Tr translation : translations) {
+                ++trNum;
+                addTranslationNumber(trNum);
+                traverseTranslation(translation);
+            }
+        }
+    }
+
+    private void traverseTranslation(Tr translation) {
+        addTranslation(translation);
+        addGender(translation);
+        addSynonyms(translation);
+        addMeaninig(translation);
+        addExplanations(translation);
     }
 
     /**
@@ -95,7 +109,6 @@ public class TranslationColorizer {
      * @param definitions - список объектов с детальным переводом
      */
     private void addTranscription(List<Def> definitions) {
-        SpannableStringBuilder synBuilder = new SpannableStringBuilder();
         String transcription = definitions.get(0).getTs();
         if (transcription != null && !transcription.isEmpty()) {
             details.append(" ");
@@ -103,13 +116,7 @@ public class TranslationColorizer {
             Spannable transcriptionSpannable = stringToSpannableString(transcription, R.color.text_tr);
             details.append(transcriptionSpannable);
         }
-        details.append("\n");
-        if (!synBuilder.toString().isEmpty()) {
-            details.append(", ");
-            details.append(synBuilder);
-        }
-
-        details.append("\n");
+        details.append("\n\n");
     }
 
     /**
@@ -171,7 +178,7 @@ public class TranslationColorizer {
      * @param number - порядковый номер варианта перевода
      */
     private void addTranslationNumber(int number) {
-        Spannable numberSpannable = stringToSpannableString(String.valueOf(number + 1), R.color.text_numbers);
+        Spannable numberSpannable = stringToSpannableString(String.valueOf(number), R.color.text_numbers);
         details.append(numberSpannable);
         details.append(" ");
     }
@@ -212,20 +219,13 @@ public class TranslationColorizer {
         SpannableStringBuilder synBuilder = new SpannableStringBuilder();
         List<Syn> synonyms = translation.getSyn();
         if (synonyms != null) {
-            for (int i_syn = 0; i_syn < synonyms.size(); ++i_syn) {
-                String synText = synonyms.get(i_syn).getText();
-                if (synText != null && !synText.isEmpty()) {
-                    Spannable synSpannable = stringToSpannableString(synText, R.color.text_syn);
-                    synBuilder.append(synSpannable);
-                }
+            int synNum = 0;
+            for (Syn synonym : synonyms) {
+                addSynText(synBuilder, synonym);
+                addSynGen(synBuilder, synonym);
 
-                String synGen = synonyms.get(i_syn).getGen();
-                if (synGen != null && !synGen.isEmpty()) {
-                    Spannable synGenSpannable = stringToSpannableString(synGen, R.color.text_gen);
-                    synBuilder.append(" ");
-                    synBuilder.append(synGenSpannable);
-                }
-                if (i_syn < synonyms.size() - 1) {
+                ++synNum;
+                if (synNum < synonyms.size()) {
                     synBuilder.append(stringToSpannableString(", ", R.color.text_syn));
                 }
             }
@@ -234,6 +234,23 @@ public class TranslationColorizer {
         if (!synBuilder.toString().isEmpty()) {
             details.append(", ");
             details.append(synBuilder);
+        }
+    }
+
+    private void addSynText(SpannableStringBuilder synBuilder, Syn synonym) {
+        String synText = synonym.getText();
+        if (synText != null && !synText.isEmpty()) {
+            Spannable synSpannable = stringToSpannableString(synText, R.color.text_syn);
+            synBuilder.append(synSpannable);
+        }
+    }
+
+    private void addSynGen(SpannableStringBuilder synBuilder, Syn synonym) {
+        String synGen = synonym.getGen();
+        if (synGen != null && !synGen.isEmpty()) {
+            Spannable synGenSpannable = stringToSpannableString(synGen, R.color.text_gen);
+            synBuilder.append(" ");
+            synBuilder.append(synGenSpannable);
         }
     }
 
@@ -246,13 +263,15 @@ public class TranslationColorizer {
         SpannableStringBuilder meanBuilder = new SpannableStringBuilder();
         List<Mean> meanings = translation.getMean();
         if (meanings != null) {
-            for (int i_mean = 0; i_mean < meanings.size(); ++i_mean) {
-                String meanText = meanings.get(i_mean).getText();
+            int meanNum = 0;
+            for (Mean meaning : meanings) {
+                String meanText = meaning.getText();
                 if (meanText != null && !meanText.isEmpty()) {
-                    if (i_mean == 0)
+                    if (meanNum == 0)
                         meanBuilder.append(stringToSpannableString("  (", R.color.text_mean));
+                    ++meanNum;
                     meanBuilder.append(stringToSpannableString(meanText, R.color.text_mean));
-                    if (i_mean < meanings.size() - 1)
+                    if (meanNum < meanings.size())
                         meanBuilder.append(stringToSpannableString(", ", R.color.text_mean));
                     else
                         meanBuilder.append(stringToSpannableString(")", R.color.text_mean));
@@ -276,21 +295,23 @@ public class TranslationColorizer {
         SpannableStringBuilder exBuilder = new SpannableStringBuilder();
         List<Ex> explanations = translation.getEx();
         if (explanations != null) {
-            for (int i_ex = 0; i_ex < explanations.size(); ++i_ex) {
-                String exText = explanations.get(i_ex).getText();
+            int exNum = 0;
+            for (Ex explanation : explanations) {
+                String exText = explanation.getText();
                 if (exText != null && !exText.isEmpty()) {
                     exBuilder.append("       ");
                     exBuilder.append(stringToSpannableString(exText, R.color.text_ex));
                     exBuilder.append(stringToSpannableString(" - ", R.color.text_ex));
                     exBuilder.append("\n");
-                    List<Tr_> translations_ = explanations.get(i_ex).getTr();
+                    List<Tr_> translations_ = explanation.getTr();
                     if (translations_ != null) {
                         for (int i_tr_ = 0; i_tr_ < translations_.size(); ++i_tr_) {
                             String translation_ = translations_.get(i_tr_).getText();
                             if (translation_ != null && !translation_.isEmpty()) {
                                 exBuilder.append("       ");
                                 exBuilder.append(stringToSpannableString(translation_, R.color.text_ex));
-                                if (i_ex < explanations.size() - 1)
+                                ++exNum;
+                                if (exNum < explanations.size())
                                     exBuilder.append("\n");
                             }
                         }
